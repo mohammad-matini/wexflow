@@ -32,7 +32,7 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
                 // Parse JSON
                 string json = File.ReadAllText(MappingFile);
                 var o = JObject.Parse(json);
-                var auth = (string)o.SelectToken("Autorization");
+                var auth = (string)o.SelectToken("Authorization");
                 var listId = (string)o.SelectToken("listId");
                 var payload = o.SelectToken("Payload").ToString();
 
