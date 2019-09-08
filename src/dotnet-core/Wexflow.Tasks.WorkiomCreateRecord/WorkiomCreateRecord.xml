@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    WorkiomCreateRecord is a sequential task that creates a Workiom record.
+  -->
+  <Task id="$int" name="WorkiomCreateRecord" description="$string" enabled="true|false">
+    <!--  The mapping JSON file to create Workiom record. -->
+    <Setting name="mappingFile" value="$string" />
+  </Task>
+</Tasks>
