@@ -194,7 +194,9 @@
                     else {
                         if (force === false && workflowStatusChanged(workflow) === false) return;
 
-                        Common.disableButton(startButton, workflow.IsRunning);
+                        // commented to test queuing
+                        //Common.disableButton(startButton, workflow.IsRunning);
+                        Common.disableButton(startButton, false);
                         Common.disableButton(stopButton, !(workflow.IsRunning && !workflow.IsPaused));
                         Common.disableButton(suspendButton, !(workflow.IsRunning && !workflow.IsPaused));
                         Common.disableButton(resumeButton, !workflow.IsPaused);

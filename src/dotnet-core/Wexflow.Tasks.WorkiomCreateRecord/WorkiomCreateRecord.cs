@@ -24,8 +24,10 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
         {
             Info("Creating Workiom record ...");
 
-            bool success = true;
+            //Thread.Sleep(10 * 1000); // To test queuing
 
+            bool success = true;
+            
             try
             {
                 if (!Workflow.RestParams.ContainsKey(MappingKey))

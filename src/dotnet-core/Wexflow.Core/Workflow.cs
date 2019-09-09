@@ -183,6 +183,7 @@ namespace Wexflow.Core
         /// </summary>
         public string TasksFolder { get; private set; }
 
+        private Queue<Job> _jobsQueue;
         private Thread _thread;
         private HistoryEntry _historyEntry;
 
@@ -207,6 +208,7 @@ namespace Wexflow.Core
             , Variable[] globalVariables)
         {
             JobId = 1;
+            _jobsQueue = new Queue<Job>();
             _thread = null;
             WorkflowFilePath = path;
             WexflowTempFolder = wexflowTempFolder;
@@ -799,7 +801,12 @@ namespace Wexflow.Core
         /// </summary>
         public void Start()
         {
-            if (IsRunning) return;
+            if (IsRunning)
+            {
+                var job = new Job { Workflow = this, QueuedOn = DateTime.Now };
+                _jobsQueue.Enqueue(job);
+                return;
+            }
 
             //
             // Parse the workflow file (Global variables and local variables.)
@@ -981,6 +988,12 @@ namespace Wexflow.Core
 
                         Logger.InfoFormat("{0} Workflow finished.", LogTag);
                         JobId++;
+
+                        if(_jobsQueue.Count > 0)
+                        {
+                            var job = _jobsQueue.Dequeue();
+                            job.Workflow.Start();
+                        }
                     }
                 });
 
