@@ -1424,6 +1424,13 @@ namespace Wexflow.Core
                     _historyEntry.StatusDate = DateTime.Now;
                     Database.InsertHistoryEntry(_historyEntry);
                     IsDisapproved = false;
+
+                    if (_jobsQueue.Count > 0)
+                    {
+                        var job = _jobsQueue.Dequeue();
+                        job.Workflow.Start();
+                    }
+
                     return true;
                 }
                 catch (Exception e)
