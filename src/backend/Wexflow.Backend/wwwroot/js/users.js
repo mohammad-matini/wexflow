@@ -3,6 +3,7 @@
 
     var uri = Common.trimEnd(Settings.Uri, "/");
     var lnkManager = document.getElementById("lnk-manager");
+    var lnkWorkiom = document.getElementById("lnk-workiom");
     var lnkDesigner = document.getElementById("lnk-designer");
     var lnkApproval = document.getElementById("lnk-approval");
     var lnkUsers = document.getElementById("lnk-users");
@@ -60,6 +61,7 @@
 
                     divUsers.style.display = "block";
                     lnkManager.style.display = "inline";
+                    lnkWorkiom.style.display = "inline";
                     lnkDesigner.style.display = "inline";
                     lnkApproval.style.display = "inline";
                     lnkUsers.style.display = "inline";

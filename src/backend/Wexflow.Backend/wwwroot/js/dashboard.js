@@ -23,6 +23,7 @@
     var txtFrom = document.getElementById("txt-from");
     var txtTo = document.getElementById("txt-to");
     var lnkManager = document.getElementById("lnk-manager");
+    var lnkWorkiom = document.getElementById("lnk-workiom");
     var lnkDesigner = document.getElementById("lnk-designer");
     var lnkApproval = document.getElementById("lnk-approval");
     var lnkUsers = document.getElementById("lnk-users");
@@ -55,6 +56,7 @@
 
                 if (u.UserProfile === 0) {
                     lnkManager.style.display = "inline";
+                    lnkWorkiom.style.display = "inline";
                     lnkDesigner.style.display = "inline";
                     lnkApproval.style.display = "inline";
                     lnkUsers.style.display = "inline";

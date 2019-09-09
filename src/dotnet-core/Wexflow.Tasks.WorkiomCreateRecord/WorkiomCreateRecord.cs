@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -12,13 +11,13 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
 {
     public class WorkiomCreateRecord : Task
     {
+        private static readonly string MappingKey = "Mapping";
+
         public string CreateRecordUrl { get; }
-        public string MappingFile { get; }
 
         public WorkiomCreateRecord(XElement xe, Workflow wf) : base(xe, wf)
         {
             CreateRecordUrl = GetSetting("createRecordUrl");
-            MappingFile = GetSetting("mappingFile");
         }
 
         public override TaskStatus Run()
@@ -29,28 +28,36 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
 
             try
             {
-                // Parse JSON
-                string json = File.ReadAllText(MappingFile);
-                var o = JObject.Parse(json);
-                var auth = (string)o.SelectToken("Authorization");
-                var listId = (string)o.SelectToken("listId");
-                var payload = o.SelectToken("Payload").ToString();
-
-                // REST call
-                var url = CreateRecordUrl + listId;
-                var responseTask = Post(url, auth, payload);
-                responseTask.Wait();
-                var response = responseTask.Result;
-                var responseSuccess = (bool)JObject.Parse(response).SelectToken("success");
-                
-                if (responseSuccess)
+                if (!Workflow.RestParams.ContainsKey(MappingKey))
                 {
-                    Info("Record created.");
+                    Error(MappingKey + " key not found in REST params.");
+                    success = false;
                 }
                 else
                 {
-                    ErrorFormat("An error occured while creating the record: {0}", response);
-                    success = false;
+                    // Parse JSON
+                    var json = Workflow.RestParams[MappingKey];
+                    var o = JObject.Parse(json);
+                    var auth = (string)o.SelectToken("Authorization");
+                    var listId = (string)o.SelectToken("listId");
+                    var payload = o.SelectToken("Payload").ToString();
+
+                    // REST call
+                    var url = CreateRecordUrl + listId;
+                    var responseTask = Post(url, auth, payload);
+                    responseTask.Wait();
+                    var response = responseTask.Result;
+                    var responseSuccess = (bool)JObject.Parse(response).SelectToken("success");
+
+                    if (responseSuccess)
+                    {
+                        Info("Record created.");
+                    }
+                    else
+                    {
+                        ErrorFormat("An error occured while creating the record: {0}", response);
+                        success = false;
+                    }
                 }
 
             }

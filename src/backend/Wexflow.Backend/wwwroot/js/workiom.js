@@ -1,7 +1,7 @@
-﻿function WexflowApproval() {
+﻿function WexflowManager() {
     "use strict";
 
-    var id = "wf-approval";
+    var id = "wf-manager";
     var uri = Common.trimEnd(Settings.Uri, "/");
     var lnkManager = document.getElementById("lnk-manager");
     var lnkWorkiom = document.getElementById("lnk-workiom");
@@ -19,8 +19,6 @@
         + "<button id='wf-pause' type='button' class='btn btn-secondary btn-xs'>Suspend</button>"
         + "<button id='wf-resume' type='button' class='btn btn-secondary btn-xs'>Resume</button>"
         + "<button id='wf-stop' type='button' class='btn btn-danger btn-xs'>Stop</button>"
-        + "<button id='wf-approve' type='button' class='btn btn-primary btn-xs'>Approve</button>"
-        + "<button id='wf-disapprove' type='button' class='btn btn-danger btn-xs'>Disapprove</button>"
         + "</div>"
         + "<div id='wf-notifier'>"
         + "<input id='wf-notifier-text' type='text' name='fname' readonly>"
@@ -41,8 +39,6 @@
     var suspendButton = document.getElementById("wf-pause");
     var resumeButton = document.getElementById("wf-resume");
     var stopButton = document.getElementById("wf-stop");
-    var approveButton = document.getElementById("wf-approve");
-    var disapproveButton = document.getElementById("wf-disapprove");
     var searchButton = document.getElementById("wf-search-action");
     var searchText = document.getElementById("wf-search-text");
     var suser = getUser();
@@ -65,7 +61,7 @@
                     lnkUsers.style.display = "inline";
 
                     var btnLogout = document.getElementById("btn-logout");
-                    var divWorkflows = document.getElementById("wf-approval");
+                    var divWorkflows = document.getElementById("wf-manager");
                     divWorkflows.style.display = "block";
 
                     btnLogout.onclick = function () {
@@ -78,8 +74,6 @@
                     Common.disableButton(suspendButton, true);
                     Common.disableButton(resumeButton, true);
                     Common.disableButton(stopButton, true);
-                    Common.disableButton(approveButton, true);
-                    Common.disableButton(disapproveButton, true);
 
                     searchButton.onclick = function () {
                         loadWorkflows();
@@ -88,8 +82,6 @@
                         Common.disableButton(suspendButton, true);
                         Common.disableButton(resumeButton, true);
                         Common.disableButton(stopButton, true);
-                        Common.disableButton(approveButton, true);
-                        Common.disableButton(disapproveButton, true);
                     };
 
                     searchText.onkeyup = function (event) {
@@ -102,8 +94,6 @@
                             Common.disableButton(suspendButton, true);
                             Common.disableButton(resumeButton, true);
                             Common.disableButton(stopButton, true);
-                            Common.disableButton(approveButton, true);
-                            Common.disableButton(disapproveButton, true);
                         }
                     };
 
@@ -116,7 +106,7 @@
         });
     }
 
-
+   
 
     function compareById(wf1, wf2) {
         if (wf1.Id < wf2.Id) {
@@ -143,7 +133,7 @@
     }
 
     function loadWorkflows() {
-        Common.get(uri + "/searchApprovalWorkflows?s=" + encodeURIComponent(searchText.value), function (data) {
+        Common.get(uri + "/searchWithRestParams?s=" + encodeURIComponent(searchText.value), function (data) {
             data.sort(compareById);
             var items = [];
             var i;
@@ -156,6 +146,7 @@
                     + "<td class='wf-n' title='" + val.Name + "'>" + val.Name + "</td>"
                     + "<td class='wf-lt'>" + lt + "</td>"
                     + "<td class='wf-e'><input type='checkbox' readonly disabled " + (val.IsEnabled ? "checked" : "") + "></input></td>"
+                    + "<td class='wf-a'><input type='checkbox' readonly disabled " + (val.IsApproval ? "checked" : "") + "></input></td>"
                     + "<td class='wf-d' title='" + val.Description + "'>" + val.Description + "</td>"
                     + "</tr>");
 
@@ -168,6 +159,7 @@
                 + "<th class='wf-n'>Name</th>"
                 + "<th class='wf-lt'>LaunchType</th>"
                 + "<th class='wf-e'>Enabled</th>"
+                + "<th class='wf-a'>Approval</th>"
                 + "<th class='wf-d'>Description</th>"
                 + "</tr>"
                 + "</thead>"
@@ -198,8 +190,6 @@
                         Common.disableButton(suspendButton, true);
                         Common.disableButton(resumeButton, true);
                         Common.disableButton(stopButton, true);
-                        Common.disableButton(approveButton, true);
-                        Common.disableButton(disapproveButton, true);
                     }
                     else {
                         if (force === false && workflowStatusChanged(workflow) === false) return;
@@ -208,8 +198,6 @@
                         Common.disableButton(stopButton, !(workflow.IsRunning && !workflow.IsPaused));
                         Common.disableButton(suspendButton, !(workflow.IsRunning && !workflow.IsPaused));
                         Common.disableButton(resumeButton, !workflow.IsPaused);
-                        Common.disableButton(approveButton, !(workflow.IsWaitingForApproval && workflow.IsApproval));
-                        Common.disableButton(disapproveButton, !(workflow.IsWaitingForApproval && workflow.IsApproval));
 
                         if (workflow.IsApproval === true && workflow.IsWaitingForApproval === true && workflow.IsPaused === false) {
                             notify("This workflow is waiting for approval...");
@@ -223,7 +211,6 @@
                                 notify("");
                             }
                         }
-
                     }
                 });
             }
@@ -262,9 +249,31 @@
                 };
             }
 
+            // Start with REST params
             startButton.onclick = function () {
-                var startUri = uri + "/start/" + selectedId;
-                Common.post(startUri);
+                // POST URL: http://localhost:8000/wexflow/startWithRestParams?workflowId=
+                var startUri = uri + "/startWithRestParams?workflowId=" + selectedId;
+                var json = [
+                    {
+                        "ParamName": "Mapping",
+                        "ParamValue":
+                        {
+                            "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEwNiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJhZG1pbiIsIkFzcE5ldC5JZGVudGl0eS5TZWN1cml0eVN0YW1wIjoiNjJiNDM4OTctOWFjNC00ZDMwLTkyMzEtMTk5MzhmNTZlNjQ4IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJodHRwOi8vd3d3LmFzcG5ldGJvaWxlcnBsYXRlLmNvbS9pZGVudGl0eS9jbGFpbXMvdGVuYW50SWQiOiI3OSIsInN1YiI6IjEwNiIsImp0aSI6IjRmZjhmZTI2LWY1NTUtNGUwMC04MDkxLTQ1OGFjMWYyMDkxZiIsImlhdCI6MTU2ODAzNzE1MCwidG9rZW5fdmFsaWRpdHlfa2V5IjoiOTQzMjI4NjItNDllZS00MmNkLTgyNzMtMmRlMjYyOWRmOTRiIiwidXNlcl9pZGVudGlmaWVyIjoiMTA2QDc5IiwibmJmIjoxNTY4MDM3MTUwLCJleHAiOjE1NjgxMjM1NTAsImlzcyI6Ikxpc3R1cmUiLCJhdWQiOiJMaXN0dXJlIn0.tm5Spt3zYd4ezJzD_XygpdRvOMk_nU-kWMpvkrcQcqg",
+                            "listId": "a1e8d575-75f1-48d5-c29e-08d733bfc9d4",
+                            "Payload": { "61066": "test" }
+                        }
+                    }
+                ];
+
+                Common.post(startUri, function (res) {
+                    if (res === false) {
+                        Common.toastError("An error occured while starting the workflow " + selectedId + ".");
+                    } else {
+                        Common.toastSuccess("Workflow " + selectedId + " started with success.");
+                    }
+                }, function () {
+                        Common.toastError("An error occured while starting the workflow " + selectedId + ".");
+                }, json);
             };
 
             suspendButton.onclick = function () {
@@ -272,7 +281,7 @@
                 Common.post(suspendUri, function (res) {
                     if (res === true) {
                         updateButtons(selectedId, true);
-                    } else {
+                    } else{
                         Common.toastInfo("This operation is not supported.");
                     }
                 });
@@ -295,45 +304,9 @@
                     });
             };
 
-            approveButton.onclick = function () {
-                Common.disableButton(approveButton, true);
-                Common.disableButton(stopButton, true);
-                var approveUri = uri + "/approve/" + selectedId;
-                Common.post(approveUri,
-                    function (res) {
-                        if (res === true) {
-                            updateButtons(selectedId, true);
-                            Common.toastSuccess("The workflow " + selectedId + " was approved.");
-                        } else {
-                            Common.disableButton(approveButton, false);
-                            Common.disableButton(stopButton, false);
-                            Common.toastError("An error occured while approving the workflow " + selectedId + ".");
-                        }                                                                                       
-                    });
-            };
-
-            disapproveButton.onclick = function () {
-                Common.disableButton(disapproveButton, true);
-                Common.disableButton(approveButton, true);
-                Common.disableButton(stopButton, true);
-                var disapproveUri = uri + "/disapprove/" + selectedId;
-                Common.post(disapproveUri,
-                    function (res) {
-                        if (res === true) {
-                            updateButtons(selectedId, true);
-                            Common.toastSuccess("The workflow " + selectedId + " was disapproved.");
-                        } else {
-                            Common.disableButton(disapproveButton, true);
-                            Common.disableButton(approveButton, false);
-                            Common.disableButton(stopButton, false);
-                            Common.toastError("An error occured while disapproving the workflow " + selectedId + ".");
-                        }
-                    });
-            };
-
             // End of get workflows
         }, function () {
-            Common.toastError("An error occured while retrieving workflows. Check that Wexflow server is running correctly.");
+                Common.toastError("An error occured while retrieving workflows. Check that Wexflow server is running correctly.");
         });
     }
 

@@ -24,6 +24,8 @@ namespace Wexflow.Server.Contracts
         
         public bool IsWaitingForApproval { get; private set; }
 
+        public bool HasRestParams { get; private set; }
+
         public string Description { get;  set; }
 
         public bool IsRunning { get; set; }
@@ -40,7 +42,7 @@ namespace Wexflow.Server.Contracts
 
         public Variable[] LocalVariables { get; set; }
 
-        public WorkflowInfo(int id, string name, LaunchType launchType, bool isEnabled, bool isApproval, bool isWaitingForApproval, string desc, bool isRunning, bool isPaused, string period, string cronExpression, string path, bool isExecutionGraphEmpty, Variable[] localVariables)
+        public WorkflowInfo(int id, string name, LaunchType launchType, bool isEnabled, bool isApproval, bool isWaitingForApproval, bool hasRestParams, string desc, bool isRunning, bool isPaused, string period, string cronExpression, string path, bool isExecutionGraphEmpty, Variable[] localVariables)
         {
             Id = id;
             Name = name;
@@ -48,6 +50,7 @@ namespace Wexflow.Server.Contracts
             IsEnabled = isEnabled;
             IsApproval = isApproval;
             IsWaitingForApproval = isWaitingForApproval;
+            HasRestParams = hasRestParams;
             Description = desc;
             IsRunning = isRunning;
             IsPaused = isPaused;

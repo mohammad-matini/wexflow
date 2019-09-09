@@ -107,6 +107,14 @@ namespace Wexflow.Core
         /// </summary>
         public bool IsDisapproved { get; private set; }
         /// <summary>
+        /// Shows whether this workflow has REST params.
+        /// </summary>
+        public bool HasRestParams { get; private set; }
+        /// <summary>
+        /// REST params.
+        /// </summary>
+        public Dictionary<string, string> RestParams { get; private set; }
+        /// <summary>
         /// Shows whether this workflow is running or not.
         /// </summary>
         public bool IsRunning { get; private set; }
@@ -209,6 +217,7 @@ namespace Wexflow.Core
             Database = database;
             FilesPerTask = new Dictionary<int, List<FileInf>>();
             EntitiesPerTask = new Dictionary<int, List<Entity>>();
+            RestParams = new Dictionary<string, string>();
             Hashtable = new Hashtable();
             GlobalVariables = globalVariables;
             Check();
@@ -408,9 +417,14 @@ namespace Wexflow.Core
                         throw new Exception("The cron expression '" + CronExpression + "' is not valid.");
                     }
                 }
+
                 IsEnabled = bool.Parse(GetWorkflowSetting(xdoc, "enabled", true));
+
                 var isApprovalStr = GetWorkflowSetting(xdoc, "approval", false);
                 IsApproval = bool.Parse(string.IsNullOrEmpty(isApprovalStr) ? "false" : isApprovalStr);
+
+                var hasRestParamsStr = GetWorkflowSetting(xdoc, "hasRestParams", false);
+                HasRestParams = bool.Parse(string.IsNullOrEmpty(hasRestParamsStr) ? "false" : hasRestParamsStr);
 
                 if (xdoc.Root != null)
                 {
