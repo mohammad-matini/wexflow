@@ -449,7 +449,7 @@ namespace Wexflow.Core
                         // Try to load from root
                         type = Type.GetType(typeName);
 
-                        if(type == null) // Try to load from Tasks folder
+                        if (type == null) // Try to load from Tasks folder
                         {
                             var taskAssemblyFile = Path.Combine(TasksFolder, assemblyName + ".dll");
                             if (File.Exists(taskAssemblyFile))
@@ -812,7 +812,7 @@ namespace Wexflow.Core
             // Parse the workflow file (Global variables and local variables.)
             //
             string src = WorkflowFilePath;
-            string dest = Path.Combine(WorkflowsTempFolder, Path.GetFileNameWithoutExtension(WorkflowFilePath) + "_" +  Guid.NewGuid() + ".xml");
+            string dest = Path.Combine(WorkflowsTempFolder, Path.GetFileNameWithoutExtension(WorkflowFilePath) + "_" + Guid.NewGuid() + ".xml");
             Parse(src, dest);
             Load(dest);
 
@@ -847,7 +847,7 @@ namespace Wexflow.Core
                 LaunchType = ((Db.LaunchType)(int)LaunchType),
                 Description = Description
             };
-            
+
             var thread = new Thread(() =>
                 {
                     try
@@ -947,7 +947,7 @@ namespace Wexflow.Core
                                     _historyEntry.Status = Db.Status.Failed;
                                     break;
                                 case Status.Disapproved:
-                                    if(ExecutionGraph.OnDisapproved != null)
+                                    if (ExecutionGraph.OnDisapproved != null)
                                     {
                                         var disapprovedTasks = NodesToTasks(ExecutionGraph.OnDisapproved.Nodes);
                                         RunTasks(ExecutionGraph.OnDisapproved.Nodes, disapprovedTasks, true);
@@ -989,7 +989,7 @@ namespace Wexflow.Core
                         Logger.InfoFormat("{0} Workflow finished.", LogTag);
                         JobId++;
 
-                        if(_jobsQueue.Count > 0)
+                        if (_jobsQueue.Count > 0)
                         {
                             var job = _jobsQueue.Dequeue();
                             job.Workflow.Start();
@@ -1087,7 +1087,7 @@ namespace Wexflow.Core
                 }
             }
 
-            if(IsDisapproved)
+            if (IsDisapproved)
             {
                 return Status.Disapproved;
             }
@@ -1119,7 +1119,7 @@ namespace Wexflow.Core
                 if (!atLeastOneSucceed && status.Status == Status.Success) atLeastOneSucceed = true;
             }
 
-            if(tasks.Count() > 0 && !success && atLeastOneSucceed)
+            if (tasks.Count() > 0 && !success && atLeastOneSucceed)
             {
                 warning = true;
             }
