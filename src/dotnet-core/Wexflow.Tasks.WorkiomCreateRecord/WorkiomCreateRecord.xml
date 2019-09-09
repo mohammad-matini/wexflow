@@ -4,8 +4,6 @@
     WorkiomCreateRecord is a sequential task that creates a Workiom record.
   -->
   <Task id="$int" name="WorkiomCreateRecord" description="$string" enabled="true|false">
-    <!--  The mapping JSON file to create Workiom record. -->
-    <Setting name="mappingFile" value="$string" />
     <!-- Create record URL. Ex: http://api.workiom.club:88/api/services/app/Data/Create?listId= -->
     <Setting name="createRecordUrl" value="$string" />
   </Task>
