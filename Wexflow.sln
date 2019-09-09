@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Backend", "src\backend\Wexflow.Backend\Wexflow.Backend.csproj", "{C181F37A-30A6-45C6-A191-5672DE38F51F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dotnet-core", "dotnet-core", "{496E87FA-B46B-4B32-ADB3-C76605CDBDFA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wexflow.Core", "Wexflow.Core", "{70481AA7-1FB5-4F5B-AFE8-07C9E819CF1F}"
@@ -161,7 +159,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wexflow.Tasks.VimeoListUplo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wexflow.Tasks.Vimeo", "src\dotnet-core\Wexflow.Tasks.Vimeo\Wexflow.Tasks.Vimeo.csproj", "{1E87B9C0-C72D-43D0-823C-176BE5D777F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Tasks.WorkiomCreateRecord", "src\dotnet-core\Wexflow.Tasks.WorkiomCreateRecord\Wexflow.Tasks.WorkiomCreateRecord.csproj", "{4ED9BE4F-CF07-4FCA-B84B-3675E3A91CF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wexflow.Tasks.WorkiomCreateRecord", "src\dotnet-core\Wexflow.Tasks.WorkiomCreateRecord\Wexflow.Tasks.WorkiomCreateRecord.csproj", "{4ED9BE4F-CF07-4FCA-B84B-3675E3A91CF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Backend", "src\backend\Wexflow.Backend\Wexflow.Backend.csproj", "{C318AC20-F6A3-412D-AB2E-00E9EF729324}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -175,22 +175,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C181F37A-30A6-45C6-A191-5672DE38F51F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C181F37A-30A6-45C6-A191-5672DE38F51F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C181F37A-30A6-45C6-A191-5672DE38F51F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{C181F37A-30A6-45C6-A191-5672DE38F51F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{C181F37A-30A6-45C6-A191-5672DE38F51F}.Debug|x64.ActiveCfg = Debug|x64
-		{C181F37A-30A6-45C6-A191-5672DE38F51F}.Debug|x64.Build.0 = Debug|x64
-		{C181F37A-30A6-45C6-A191-5672DE38F51F}.Debug|x86.ActiveCfg = Debug|x86
-		{C181F37A-30A6-45C6-A191-5672DE38F51F}.Debug|x86.Build.0 = Debug|x86
-		{C181F37A-30A6-45C6-A191-5672DE38F51F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C181F37A-30A6-45C6-A191-5672DE38F51F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C181F37A-30A6-45C6-A191-5672DE38F51F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{C181F37A-30A6-45C6-A191-5672DE38F51F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{C181F37A-30A6-45C6-A191-5672DE38F51F}.Release|x64.ActiveCfg = Release|x64
-		{C181F37A-30A6-45C6-A191-5672DE38F51F}.Release|x64.Build.0 = Release|x64
-		{C181F37A-30A6-45C6-A191-5672DE38F51F}.Release|x86.ActiveCfg = Release|x86
-		{C181F37A-30A6-45C6-A191-5672DE38F51F}.Release|x86.Build.0 = Release|x86
 		{8A46FE09-0C9C-4872-BDDE-C69861250C24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8A46FE09-0C9C-4872-BDDE-C69861250C24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A46FE09-0C9C-4872-BDDE-C69861250C24}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -1359,12 +1343,27 @@ Global
 		{4ED9BE4F-CF07-4FCA-B84B-3675E3A91CF1}.Release|x64.Build.0 = Release|Any CPU
 		{4ED9BE4F-CF07-4FCA-B84B-3675E3A91CF1}.Release|x86.ActiveCfg = Release|Any CPU
 		{4ED9BE4F-CF07-4FCA-B84B-3675E3A91CF1}.Release|x86.Build.0 = Release|Any CPU
+		{C318AC20-F6A3-412D-AB2E-00E9EF729324}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C318AC20-F6A3-412D-AB2E-00E9EF729324}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C318AC20-F6A3-412D-AB2E-00E9EF729324}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C318AC20-F6A3-412D-AB2E-00E9EF729324}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C318AC20-F6A3-412D-AB2E-00E9EF729324}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C318AC20-F6A3-412D-AB2E-00E9EF729324}.Debug|x64.Build.0 = Debug|Any CPU
+		{C318AC20-F6A3-412D-AB2E-00E9EF729324}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C318AC20-F6A3-412D-AB2E-00E9EF729324}.Debug|x86.Build.0 = Debug|Any CPU
+		{C318AC20-F6A3-412D-AB2E-00E9EF729324}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C318AC20-F6A3-412D-AB2E-00E9EF729324}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C318AC20-F6A3-412D-AB2E-00E9EF729324}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C318AC20-F6A3-412D-AB2E-00E9EF729324}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C318AC20-F6A3-412D-AB2E-00E9EF729324}.Release|x64.ActiveCfg = Release|Any CPU
+		{C318AC20-F6A3-412D-AB2E-00E9EF729324}.Release|x64.Build.0 = Release|Any CPU
+		{C318AC20-F6A3-412D-AB2E-00E9EF729324}.Release|x86.ActiveCfg = Release|Any CPU
+		{C318AC20-F6A3-412D-AB2E-00E9EF729324}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{C181F37A-30A6-45C6-A191-5672DE38F51F} = {70188444-B660-4771-9A13-522E4ED76674}
 		{70481AA7-1FB5-4F5B-AFE8-07C9E819CF1F} = {496E87FA-B46B-4B32-ADB3-C76605CDBDFA}
 		{49D1A283-E9F1-42BD-8A15-8BD1CCB5B775} = {496E87FA-B46B-4B32-ADB3-C76605CDBDFA}
 		{6CC60633-28FB-45F3-8434-A79D00150CB2} = {496E87FA-B46B-4B32-ADB3-C76605CDBDFA}
@@ -1442,6 +1441,7 @@ Global
 		{49D20C63-D2C1-4DFC-9005-7EF335FC8CBC} = {6CC60633-28FB-45F3-8434-A79D00150CB2}
 		{1E87B9C0-C72D-43D0-823C-176BE5D777F0} = {6CC60633-28FB-45F3-8434-A79D00150CB2}
 		{4ED9BE4F-CF07-4FCA-B84B-3675E3A91CF1} = {6CC60633-28FB-45F3-8434-A79D00150CB2}
+		{C318AC20-F6A3-412D-AB2E-00E9EF729324} = {70188444-B660-4771-9A13-522E4ED76674}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {694D69C8-AA13-4F54-BAAA-5B967F1A8F9C}
