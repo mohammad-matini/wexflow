@@ -40,7 +40,8 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
                     // Parse JSON
                     var json = Workflow.RestParams[MappingKey];
                     var o = JObject.Parse(json);
-                    var auth = (string)o.SelectToken("Authorization");
+                    //var auth = (string)o.SelectToken("Authorization");
+                    var auth = Workflow.GetWorkiomAccessToken();
                     var listId = (string)o.SelectToken("listId");
                     var payload = o.SelectToken("Payload").ToString();
 

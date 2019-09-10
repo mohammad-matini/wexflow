@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
@@ -182,6 +185,22 @@ namespace Wexflow.Core
         /// Tasks folder.
         /// </summary>
         public string TasksFolder { get; private set; }
+        /// <summary>
+        /// Workiom authentication URL.
+        /// </summary>
+        public string WorkiomAuthUrl { get; private set; }
+        /// <summary>
+        /// Workiom username.
+        /// </summary>
+        public string WorkiomUsername { get; private set; }
+        /// <summary>
+        /// Workiom password.
+        /// </summary>
+        public string WorkiomPassword { get; private set; }
+        /// <summary>
+        /// Workiom tenant name.
+        /// </summary>
+        public string WorkiomTenantName { get; private set; }
 
         private Queue<Job> _jobsQueue;
         private Thread _thread;
@@ -375,6 +394,44 @@ namespace Wexflow.Core
 
         }
 
+        /// <summary>
+        /// Returns Workiom access token.
+        /// </summary>
+        /// <returns>Workiom access token.</returns>
+        public string GetWorkiomAccessToken()
+        {
+            try
+            {
+                var json = "{\"userNameOrEmailAddress\": \"" + WorkiomUsername + "\", \"password\": \"" + WorkiomPassword + "\", \"tenantName\": \"" + WorkiomTenantName + "\"}";
+                
+                var accessTokenTask = Post(WorkiomAuthUrl, json);
+                accessTokenTask.Wait();
+                var response = accessTokenTask.Result;
+                var accessToken = (string)JObject.Parse(response).SelectToken("result").SelectToken("accessToken");
+                return accessToken;
+            }
+            catch (Exception e)
+            {
+                Logger.ErrorFormat("Error while getting Workiom access token: ", e);
+                return string.Empty;
+            }
+        }
+
+        private async System.Threading.Tasks.Task<string> Post(string url, string json)
+        {
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+            using (var httpClient = new HttpClient())
+            {
+                var httpResponse = await httpClient.PostAsync(url, httpContent);
+                if (httpResponse.Content != null)
+                {
+                    var responseContent = await httpResponse.Content.ReadAsStringAsync();
+                    return responseContent;
+                }
+            }
+            return string.Empty;
+        }
+
         private void Load(string workflowFilePath)
         {
             FilesPerTask.Clear();
@@ -427,6 +484,11 @@ namespace Wexflow.Core
 
                 var hasRestParamsStr = GetWorkflowSetting(xdoc, "hasRestParams", false);
                 HasRestParams = bool.Parse(string.IsNullOrEmpty(hasRestParamsStr) ? "false" : hasRestParamsStr);
+
+                WorkiomAuthUrl = GetWorkflowSetting(xdoc, "workiomAuthUrl", false);
+                WorkiomUsername = GetWorkflowSetting(xdoc, "workiomUsername", false);
+                WorkiomPassword = GetWorkflowSetting(xdoc, "workiomPassword", false);
+                WorkiomTenantName = GetWorkflowSetting(xdoc, "workiomTenantName", false);
 
                 if (xdoc.Root != null)
                 {
