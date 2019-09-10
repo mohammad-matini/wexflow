@@ -253,17 +253,20 @@
 
             // Start with REST params
             startButton.onclick = function () {
-                // POST URL: http://localhost:8000/wexflow/startWithRestParams?workflowId=
                 var startUri = uri + "/startWithRestParams?workflowId=" + selectedId;
+                
                 var json = [
                     {
+                        "ParamName": "ListId",
+                        "ParamValue": "15db9ad3-e435-4b2b-170e-08d7363a65e1"
+                    },
+                    {
+                        "ParamName": "Trigger",
+                        "ParamValue": { "61068": "destination" }
+                    },
+                    {
                         "ParamName": "Mapping",
-                        "ParamValue":
-                        {
-                            //"Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEwNiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJhZG1pbiIsIkFzcE5ldC5JZGVudGl0eS5TZWN1cml0eVN0YW1wIjoiNjJiNDM4OTctOWFjNC00ZDMwLTkyMzEtMTk5MzhmNTZlNjQ4IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJodHRwOi8vd3d3LmFzcG5ldGJvaWxlcnBsYXRlLmNvbS9pZGVudGl0eS9jbGFpbXMvdGVuYW50SWQiOiI3OSIsInN1YiI6IjEwNiIsImp0aSI6IjRmZjhmZTI2LWY1NTUtNGUwMC04MDkxLTQ1OGFjMWYyMDkxZiIsImlhdCI6MTU2ODAzNzE1MCwidG9rZW5fdmFsaWRpdHlfa2V5IjoiOTQzMjI4NjItNDllZS00MmNkLTgyNzMtMmRlMjYyOWRmOTRiIiwidXNlcl9pZGVudGlmaWVyIjoiMTA2QDc5IiwibmJmIjoxNTY4MDM3MTUwLCJleHAiOjE1NjgxMjM1NTAsImlzcyI6Ikxpc3R1cmUiLCJhdWQiOiJMaXN0dXJlIn0.tm5Spt3zYd4ezJzD_XygpdRvOMk_nU-kWMpvkrcQcqg",
-                            "listId": "a1e8d575-75f1-48d5-c29e-08d733bfc9d4",
-                            "Payload": { "61066": "test" }
-                        }
+                        "ParamValue": { "61069": "61068" }
                     }
                 ];
 

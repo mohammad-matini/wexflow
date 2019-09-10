@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -11,8 +13,6 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
 {
     public class WorkiomCreateRecord : Task
     {
-        private static readonly string MappingKey = "Mapping";
-
         public string CreateRecordUrl { get; }
 
         public WorkiomCreateRecord(XElement xe, Workflow wf) : base(xe, wf)
@@ -27,40 +27,56 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
             //Thread.Sleep(10 * 1000); // To test queuing
 
             bool success = true;
-            
+
             try
             {
-                if (!Workflow.RestParams.ContainsKey(MappingKey))
+                // Retrieve listId
+                var listId = Workflow.RestParams["ListId"];
+
+                // Retrieve trigger
+                var trigger = new Trigger { Payload = JsonConvert.DeserializeObject<Dictionary<string, string>>(Workflow.RestParams["Trigger"]) };
+
+                // Retrieve mapping (only dynamic for the moment)
+                var mappingDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(Workflow.RestParams["Mapping"]);
+                var mapping = new Dictionary<string, MappingValue>();
+                foreach (var item in mappingDic)
                 {
-                    Error(MappingKey + " key not found in REST params.");
-                    success = false;
+                    mapping.Add(item.Key, new MappingValue { MappingType = MappingType.Dynamic, Value = item.Value });
                 }
-                else
+
+                // Genereate result
+                var result = new Dictionary<string, string>();
+
+                foreach (var item in mapping)
                 {
-                    // Parse JSON
-                    var json = Workflow.RestParams[MappingKey];
-                    var o = JObject.Parse(json);
-                    //var auth = (string)o.SelectToken("Authorization");
-                    var auth = Workflow.GetWorkiomAccessToken();
-                    var listId = (string)o.SelectToken("listId");
-                    var payload = o.SelectToken("Payload").ToString();
-
-                    // REST call
-                    var url = CreateRecordUrl + listId;
-                    var responseTask = Post(url, auth, payload);
-                    responseTask.Wait();
-                    var response = responseTask.Result;
-                    var responseSuccess = (bool)JObject.Parse(response).SelectToken("success");
-
-                    if (responseSuccess)
+                    if (item.Value.MappingType == MappingType.Dynamic &&  trigger.Payload.ContainsKey(item.Value.Value))
                     {
-                        Info("Record created.");
+                        result[item.Key] = trigger.Payload[item.Value.Value];
                     }
                     else
                     {
-                        ErrorFormat("An error occured while creating the record: {0}", response);
-                        success = false;
+                        result[item.Key] = item.Value.Value;
                     }
+                }
+
+                // Create record from result
+                var url = CreateRecordUrl + listId;
+                var auth = Workflow.GetWorkiomAccessToken();
+                var json = JsonConvert.SerializeObject(result);
+
+                var responseTask = Post(url, auth, json);
+                responseTask.Wait();
+                var response = responseTask.Result;
+                var responseSuccess = (bool)JObject.Parse(response).SelectToken("success");
+
+                if (responseSuccess)
+                {
+                    Info("Record created.");
+                }
+                else
+                {
+                    ErrorFormat("An error occured while creating the record: {0}", response);
+                    success = false;
                 }
 
             }
