@@ -257,7 +257,7 @@
 
                 var json = [];
 
-                if (selectedId === 137) { // create record
+                if (selectedId === 138) { // create record
                     json = [
                         {
                             "ParamName": "ListId",
@@ -272,7 +272,7 @@
                             "ParamValue": { "61069": "61068" }
                         }
                     ];
-                } else if (selectedId === 138) {  // update record
+                } else if (selectedId === 139) {  // update record
                     json = [
                         {
                             "ParamName": "ListId",
