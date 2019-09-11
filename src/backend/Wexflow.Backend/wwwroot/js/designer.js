@@ -6,7 +6,6 @@
     var id = "wf-designer";
     var uri = Common.trimEnd(Settings.Uri, "/");
     var lnkManager = document.getElementById("lnk-manager");
-    var lnkWorkiom = document.getElementById("lnk-workiom");
     var lnkDesigner = document.getElementById("lnk-designer");
     var lnkApproval = document.getElementById("lnk-approval");
     var lnkUsers = document.getElementById("lnk-users");
@@ -24,7 +23,6 @@
 
                 if (u.UserProfile === 0) {
                     lnkManager.style.display = "inline";
-                    lnkWorkiom.style.display = "inline";
                     lnkDesigner.style.display = "inline";
                     lnkApproval.style.display = "inline";
                     lnkUsers.style.display = "inline";
@@ -81,7 +79,7 @@
         "<tr><td class='wf-title'>Enabled</td><td class='wf-value'><input id='wf-enabled' type='checkbox' checked/></td></tr>" +
         "<tr><td class='wf-title'>Approval</td><td class='wf-value'><input id='wf-approval' type='checkbox' /></td></tr>" +
         "<tr><td class='wf-title'>Description</td><td class='wf-value'><input id='wf-desc' type='text' /></td></tr>" +
-        "<tr><td class='wf-title'>Path</td><td id='wf-path' class='wf-value'></td></tr>" +
+        //"<tr><td class='wf-title'>Path</td><td id='wf-path' class='wf-value'></td></tr>" +
         "<tr><td class='wf-title'>Status</td><td id='wf-status' class='wf-value'></td></tr>" +
         "</tbody>" +
         "</table>" +
@@ -312,22 +310,22 @@
                     var workflowId = parseInt(wfIdStr);
                     workflowInfos[workflowId].Name = this.value;
 
-                    if (this.value !== "" && saveCalled === false) {
-                        Common.get(uri + "/workflowsFolder",
-                            function (workflowsFolder) {
+                    //if (this.value !== "" && saveCalled === false) {
+                    //    Common.get(uri + "/workflowsFolder",
+                    //        function (workflowsFolder) {
 
-                                if (osname === "Linux" || osname === "UNIX" || osname === "Mac/iOS") {
-                                    workflowInfos[workflowId].Path = Common.trimEnd(workflowsFolder, "/") + "/" + that.value + ".xml";
-                                    document.getElementById("wf-path").innerHTML = workflowInfos[workflowId].Path;
-                                } else {
-                                    workflowInfos[workflowId].Path = Common.trimEnd(workflowsFolder, "\\") + "\\" + that.value + ".xml";
-                                    document.getElementById("wf-path").innerHTML = workflowInfos[workflowId].Path;
-                                }
-                            },
-                            function () {
-                                Common.toastError("An error occured while retrieving workflowsFolder.");
-                            });
-                    }
+                    //            if (osname === "Linux" || osname === "UNIX" || osname === "Mac/iOS") {
+                    //                workflowInfos[workflowId].Path = Common.trimEnd(workflowsFolder, "/") + "/" + that.value + ".xml";
+                    //                document.getElementById("wf-path").innerHTML = workflowInfos[workflowId].Path;
+                    //            } else {
+                    //                workflowInfos[workflowId].Path = Common.trimEnd(workflowsFolder, "\\") + "\\" + that.value + ".xml";
+                    //                document.getElementById("wf-path").innerHTML = workflowInfos[workflowId].Path;
+                    //            }
+                    //        },
+                    //        function () {
+                    //            Common.toastError("An error occured while retrieving workflowsFolder.");
+                    //        });
+                    //}
                 }
             };
 
@@ -1960,7 +1958,7 @@
                     workflowInfos[workflowId].Description = wfDesc.value;
                 };
 
-                document.getElementById("wf-path").innerHTML = workflow.Path;
+                //document.getElementById("wf-path").innerHTML = workflow.Path;
 
                 // Status
                 updateWorkflowStatus(workflow.Id);
