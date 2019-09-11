@@ -1,4 +1,4 @@
-﻿namespace Wexflow.Tasks.WorkiomCreateRecord
+﻿namespace Workiom.Core
 {
     public enum MappingType
     {

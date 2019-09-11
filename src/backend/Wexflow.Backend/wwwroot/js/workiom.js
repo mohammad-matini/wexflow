@@ -254,21 +254,44 @@
             // Start with REST params
             startButton.onclick = function () {
                 var startUri = uri + "/startWithRestParams?workflowId=" + selectedId;
-                
-                var json = [
-                    {
-                        "ParamName": "ListId",
-                        "ParamValue": "15db9ad3-e435-4b2b-170e-08d7363a65e1"
-                    },
-                    {
-                        "ParamName": "Trigger",
-                        "ParamValue": { "61068": "destination" }
-                    },
-                    {
-                        "ParamName": "Mapping",
-                        "ParamValue": { "61069": "61068" }
-                    }
-                ];
+
+                var json = [];
+
+                if (selectedId === 137) { // create record
+                    json = [
+                        {
+                            "ParamName": "ListId",
+                            "ParamValue": "15db9ad3-e435-4b2b-170e-08d7363a65e1"
+                        },
+                        {
+                            "ParamName": "Trigger",
+                            "ParamValue": { "61068": "destination" }
+                        },
+                        {
+                            "ParamName": "Mapping",
+                            "ParamValue": { "61069": "61068" }
+                        }
+                    ];
+                } else if (selectedId === 138) {  // update record
+                    json = [
+                        {
+                            "ParamName": "ListId",
+                            "ParamValue": "15db9ad3-e435-4b2b-170e-08d7363a65e1"
+                        },
+                        {
+                            "ParamName": "RecordId",
+                            "ParamValue": "5d78b173b2d6a400010da42f"
+                        },
+                        {
+                            "ParamName": "Trigger",
+                            "ParamValue": { "61068": "destination-updated" }
+                        },
+                        {
+                            "ParamName": "Mapping",
+                            "ParamValue": { "61069": "61068" }
+                        }
+                    ];
+                }
 
                 Common.post(startUri, function (res) {
                     if (res === false) {

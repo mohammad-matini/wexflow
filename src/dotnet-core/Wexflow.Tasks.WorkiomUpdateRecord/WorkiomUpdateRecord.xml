@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    WorkiomUpdateRecord is a sequential task that updates a Workiom record.
+  -->
+  <Task id="$int" name="WorkiomUpdateRecord" description="$string" enabled="true|false">
+    <!-- Update record URL. Ex: http://api.workiom.club:88/api/services/app/Data/Update?listId= -->
+    <Setting name="updateRecordUrl" value="$string" />
+  </Task>
+</Tasks>

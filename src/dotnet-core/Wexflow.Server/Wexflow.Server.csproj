@@ -84,6 +84,7 @@
     <ProjectReference Include="..\Wexflow.Tasks.Vimeo\Wexflow.Tasks.Vimeo.csproj" />
     <ProjectReference Include="..\Wexflow.Tasks.Wait\Wexflow.Tasks.Wait.csproj" />
     <ProjectReference Include="..\Wexflow.Tasks.WorkiomCreateRecord\Wexflow.Tasks.WorkiomCreateRecord.csproj" />
+    <ProjectReference Include="..\Wexflow.Tasks.WorkiomUpdateRecord\Wexflow.Tasks.WorkiomUpdateRecord.csproj" />
     <ProjectReference Include="..\Wexflow.Tasks.XmlToCsv\Wexflow.Tasks.XmlToCsv.csproj" />
     <ProjectReference Include="..\Wexflow.Tasks.Xslt\Wexflow.Tasks.Xslt.csproj" />
     <ProjectReference Include="..\Wexflow.Tasks.YouTubeListUploads\Wexflow.Tasks.YouTubeListUploads.csproj" />

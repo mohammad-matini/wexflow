@@ -7,20 +7,20 @@ using System.Xml.Linq;
 using Wexflow.Core;
 using Workiom.Core;
 
-namespace Wexflow.Tasks.WorkiomCreateRecord
+namespace Wexflow.Tasks.WorkiomUpdateRecord
 {
-    public class WorkiomCreateRecord : Task
+    public class WorkiomUpdateRecord : Task
     {
-        public string CreateRecordUrl { get; }
+        public string UpdateRecordUrl { get; }
 
-        public WorkiomCreateRecord(XElement xe, Workflow wf) : base(xe, wf)
+        public WorkiomUpdateRecord(XElement xe, Workflow wf) : base(xe, wf)
         {
-            CreateRecordUrl = GetSetting("createRecordUrl");
+            UpdateRecordUrl = GetSetting("updateRecordUrl");
         }
 
         public override TaskStatus Run()
         {
-            Info("Creating Workiom record ...");
+            Info("Updating Workiom record ...");
 
             //Thread.Sleep(10 * 1000); // To test queuing
 
@@ -30,6 +30,9 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
             {
                 // Retrieve listId
                 var listId = Workflow.RestParams["ListId"];
+
+                // Retrieve recordId
+                var recordId = Workflow.RestParams["RecordId"];
 
                 // Retrieve trigger
                 var trigger = new Trigger { Payload = JsonConvert.DeserializeObject<Dictionary<string, string>>(Workflow.RestParams["Trigger"]) };
@@ -45,23 +48,23 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
                 // Genereate result
                 var result = WorkiomHelper.Map(trigger, mapping);
 
-                // Create record from result
-                var url = CreateRecordUrl + listId;
+                // Update record from result
+                var url = UpdateRecordUrl + listId + "&id=" + recordId;
                 var auth = Workflow.GetWorkiomAccessToken();
                 var json = JsonConvert.SerializeObject(result);
 
-                var createTask = WorkiomHelper.Post(url, auth, json);
-                createTask.Wait();
-                var response = createTask.Result;
+                var updateTask = WorkiomHelper.Put(url, auth, json);
+                updateTask.Wait();
+                var response = updateTask.Result;
                 var responseSuccess = (bool)JObject.Parse(response).SelectToken("success");
 
                 if (responseSuccess)
                 {
-                    Info("Record created.");
+                    Info("Record " + recordId + " updated.");
                 }
                 else
                 {
-                    ErrorFormat("An error occured while creating the record: {0}", response);
+                    ErrorFormat("An error occured while updating the record {0}: {1}", recordId, response);
                     success = false;
                 }
 
@@ -72,7 +75,7 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
             }
             catch (Exception e)
             {
-                ErrorFormat("An error occured while creating Workiom record. Error: {0}", e.Message);
+                ErrorFormat("An error occured while updating Workiom record. Error: {0}", e.Message);
                 success = false;
             }
 
@@ -86,8 +89,6 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
             Info("Task finished.");
             return new TaskStatus(status);
         }
-
-       
 
     }
 }

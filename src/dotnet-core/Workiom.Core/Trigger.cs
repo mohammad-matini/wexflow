@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Wexflow.Tasks.WorkiomCreateRecord
+namespace Workiom.Core
 {
     public class Trigger
     {
