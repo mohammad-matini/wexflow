@@ -61,6 +61,7 @@ namespace Wexflow.Server
             SaveWorkflow();
             DeleteWorkflow();
             GetExecutionGraph();
+            DeleteWorkflows();
 
             //
             // Approval
@@ -115,7 +116,7 @@ namespace Wexflow.Server
                     .Where(wf =>
                         wf.HasRestParams &&
                         (wf.Name.ToUpper().Contains(keywordToUpper) || wf.Description.ToUpper().Contains(keywordToUpper)))
-                    .Select(wf => new WorkflowInfo(wf.Id, wf.Name,
+                    .Select(wf => new WorkflowInfo(wf.DbId, wf.Id, wf.Name,
                         (LaunchType)wf.LaunchType, wf.IsEnabled, wf.IsApproval, wf.IsWaitingForApproval, wf.HasRestParams, wf.Description, wf.IsRunning, wf.IsPaused,
                         wf.Period.ToString(@"dd\.hh\:mm\:ss"), wf.CronExpression,
                         wf.IsExecutionGraphEmpty
@@ -190,8 +191,8 @@ namespace Wexflow.Server
         {
             Get(Root + "workflows", args =>
             {
-                var workflows = Program.WexflowEngine.Workflows.Select(wf => new WorkflowInfo(wf.Id, wf.Name,
-                        (LaunchType) wf.LaunchType, wf.IsEnabled, wf.IsApproval, wf.IsWaitingForApproval, wf.HasRestParams, wf.Description, wf.IsRunning, wf.IsPaused,
+                var workflows = Program.WexflowEngine.Workflows.Select(wf => new WorkflowInfo(wf.DbId, wf.Id, wf.Name,
+                        (LaunchType)wf.LaunchType, wf.IsEnabled, wf.IsApproval, wf.IsWaitingForApproval, wf.HasRestParams, wf.Description, wf.IsRunning, wf.IsPaused,
                         wf.Period.ToString(@"dd\.hh\:mm\:ss"), wf.CronExpression,
                         wf.IsExecutionGraphEmpty
                         , wf.LocalVariables.Select(v => new Contracts.Variable { Key = v.Key, Value = v.Value }).ToArray()
@@ -220,8 +221,8 @@ namespace Wexflow.Server
                     .ToList()
                     .Where(wf =>
                         wf.Name.ToUpper().Contains(keywordToUpper) || wf.Description.ToUpper().Contains(keywordToUpper))
-                    .Select(wf => new WorkflowInfo(wf.Id, wf.Name,
-                        (LaunchType) wf.LaunchType, wf.IsEnabled, wf.IsApproval, wf.IsWaitingForApproval, wf.HasRestParams, wf.Description, wf.IsRunning, wf.IsPaused,
+                    .Select(wf => new WorkflowInfo(wf.DbId, wf.Id, wf.Name,
+                        (LaunchType)wf.LaunchType, wf.IsEnabled, wf.IsApproval, wf.IsWaitingForApproval, wf.HasRestParams, wf.Description, wf.IsRunning, wf.IsPaused,
                         wf.Period.ToString(@"dd\.hh\:mm\:ss"), wf.CronExpression,
                         wf.IsExecutionGraphEmpty
                         , wf.LocalVariables.Select(v => new Contracts.Variable { Key = v.Key, Value = v.Value }).ToArray()
@@ -251,7 +252,7 @@ namespace Wexflow.Server
                     .Where(wf =>
                         wf.IsApproval &&
                         (wf.Name.ToUpper().Contains(keywordToUpper) || wf.Description.ToUpper().Contains(keywordToUpper)))
-                    .Select(wf => new WorkflowInfo(wf.Id, wf.Name,
+                    .Select(wf => new WorkflowInfo(wf.DbId, wf.Id, wf.Name,
                         (LaunchType)wf.LaunchType, wf.IsEnabled, wf.IsApproval, wf.IsWaitingForApproval, wf.HasRestParams, wf.Description, wf.IsRunning, wf.IsPaused,
                         wf.Period.ToString(@"dd\.hh\:mm\:ss"), wf.CronExpression,
                         wf.IsExecutionGraphEmpty
@@ -279,7 +280,7 @@ namespace Wexflow.Server
                 Core.Workflow wf = Program.WexflowEngine.GetWorkflow(args.id);
                 if (wf != null)
                 {
-                    var workflow = new WorkflowInfo(wf.Id, wf.Name, (LaunchType)wf.LaunchType, wf.IsEnabled, wf.IsApproval, wf.IsWaitingForApproval, wf.HasRestParams, wf.Description,
+                    var workflow = new WorkflowInfo(wf.DbId, wf.Id, wf.Name, (LaunchType)wf.LaunchType, wf.IsEnabled, wf.IsApproval, wf.IsWaitingForApproval, wf.HasRestParams, wf.Description,
                         wf.IsRunning, wf.IsPaused, wf.Period.ToString(@"dd\.hh\:mm\:ss"), wf.CronExpression,
                         wf.IsExecutionGraphEmpty
                         , wf.LocalVariables.Select(v => new Contracts.Variable { Key = v.Key, Value = v.Value }).ToArray()
@@ -309,7 +310,7 @@ namespace Wexflow.Server
             Post(Root + "start/{id}", args =>
             {
                 Program.WexflowEngine.StartWorkflow(args.id);
-                
+
                 return new Response
                 {
                     ContentType = "application/json"
@@ -510,7 +511,7 @@ namespace Wexflow.Server
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    taskNames = new [] { "TasksNames.json is not valid." };
+                    taskNames = new[] { "TasksNames.json is not valid." };
                 }
 
                 var taskNamesStr = JsonConvert.SerializeObject(taskNames);
@@ -983,7 +984,7 @@ namespace Wexflow.Server
                             , xtasks
                         );
 
-                        if(workflowLaunchType == LaunchType.Periodic)
+                        if (workflowLaunchType == LaunchType.Periodic)
                         {
                             xwf.Element(xn + "Settings").Add(
                                  new XElement(xn + "Setting"
@@ -992,7 +993,7 @@ namespace Wexflow.Server
                                 );
                         }
 
-                        if(workflowLaunchType == LaunchType.Cron)
+                        if (workflowLaunchType == LaunchType.Cron)
                         {
                             xwf.Element(xn + "Settings").Add(
                                  new XElement(xn + "Setting"
@@ -1247,7 +1248,7 @@ namespace Wexflow.Server
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    
+
                     var resStr = JsonConvert.SerializeObject(false);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
@@ -1548,7 +1549,7 @@ namespace Wexflow.Server
                 string username = Request.Query["username"].ToString();
                 string email = Request.Query["email"].ToString();
                 int up = int.Parse(Request.Query["up"].ToString());
-                
+
                 try
                 {
                     Program.WexflowEngine.UpdateUsernameAndEmailAndUserProfile(userId, username, email, up);
@@ -1744,18 +1745,18 @@ namespace Wexflow.Server
                 HistoryEntry[] entries = Program.WexflowEngine.GetHistoryEntries(keyword, fromDate, toDate, page,
                     entriesCount, (EntryOrderBy)heo);
 
-                Contracts.HistoryEntry[] q =  entries.Select(e =>
-                    new Contracts.HistoryEntry
-                    {
-                        Id = e.Id,
-                        WorkflowId = e.WorkflowId,
-                        Name = e.Name,
-                        LaunchType = (LaunchType)((int)e.LaunchType),
-                        Description = e.Description,
-                        Status = (Contracts.Status)((int)e.Status),
+                Contracts.HistoryEntry[] q = entries.Select(e =>
+                   new Contracts.HistoryEntry
+                   {
+                       Id = e.Id,
+                       WorkflowId = e.WorkflowId,
+                       Name = e.Name,
+                       LaunchType = (LaunchType)((int)e.LaunchType),
+                       Description = e.Description,
+                       Status = (Contracts.Status)((int)e.Status),
                         //StatusDate = (e.StatusDate - baseDate).TotalMilliseconds
                         StatusDate = e.StatusDate.ToString(Program.Config["DateTimeFormat"])
-                    }).ToArray();
+                   }).ToArray();
 
                 var qStr = JsonConvert.SerializeObject(q);
                 var qBytes = Encoding.UTF8.GetBytes(qStr);
@@ -1956,6 +1957,48 @@ namespace Wexflow.Server
                     Contents = s => s.Write(dBytes, 0, dBytes.Length)
                 };
             });
+        }
+
+        /// <summary>
+        /// Saves a workflow.
+        /// </summary>
+        private void DeleteWorkflows()
+        {
+            Post(Root + "deleteWorkflows", args =>
+            {
+                try
+                {
+                    var json = RequestStream.FromStream(Request.Body).AsString();
+
+                    var workflowDbIds = JsonConvert.DeserializeObject<int[]>(json);
+
+                    var res = Program.WexflowEngine.DeleteWorkflows(workflowDbIds);
+
+                    var resStr = JsonConvert.SerializeObject(res);
+                    var resBytes = Encoding.UTF8.GetBytes(resStr);
+
+                    return new Response()
+                    {
+                        ContentType = "application/json",
+                        Contents = s => s.Write(resBytes, 0, resBytes.Length)
+                    };
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+
+                    var resStr = JsonConvert.SerializeObject(false);
+                    var resBytes = Encoding.UTF8.GetBytes(resStr);
+
+                    return new Response()
+                    {
+                        ContentType = "application/json",
+                        Contents = s => s.Write(resBytes, 0, resBytes.Length)
+                    };
+                }
+            });
+
         }
     }
 }
