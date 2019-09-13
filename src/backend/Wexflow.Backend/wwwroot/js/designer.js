@@ -1122,6 +1122,7 @@
             Common.post(uri + "/delete?w=" + workflowId + "&u=" + encodeURIComponent(username) + "&p=" + encodeURIComponent(password),
                 function (res) {
                     if (res === true) {
+                        Common.toastSuccess("Workflow " + workflowId + " deleted with success.");
                         clearInterval(timer);
                         setTimeout(function () {
                             loadWorkflows();
