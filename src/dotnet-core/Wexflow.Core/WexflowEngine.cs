@@ -177,10 +177,13 @@ namespace Wexflow.Core
 
         private void LoadWorkflows()
         {
-            //foreach (string file in Directory.GetFiles(@"C:\Workiom\Wexflow\Workflows"))
-            //{
-            //    Database.InsertWorkflow(new Db.Workflow { Xml = File.ReadAllText(file) });
-            //}
+            // C:\Workiom\Wexflow\Workflows\prod\windows
+            // C:\Workiom\Wexflow\Workflows\prod\linux
+            // C:\Workiom\Wexflow\Workflows\prod\macos
+            foreach (string file in Directory.GetFiles(@"C:\Workiom\Wexflow\Workflows\prod\macos"))
+            {
+                Database.InsertWorkflow(new Db.Workflow { Xml = File.ReadAllText(file) });
+            }
 
             var workflows = Database.GetWorkflows();
 
@@ -230,7 +233,8 @@ namespace Wexflow.Core
         /// Saves a workflow in the database.
         /// </summary>
         /// <param name="xml">XML of the workflow.</param>
-        public void SaveWorkflow(string xml)
+        /// <returns>Workflow db id.</returns>
+        public int SaveWorkflow(string xml)
         {
             try
             {
@@ -257,6 +261,7 @@ namespace Wexflow.Core
                         Logger.InfoFormat("New workflow {0} has been created. The workflow will be loaded.", newWorkflow.Name);
                         Workflows.Add(newWorkflow);
                         ScheduleWorkflow(newWorkflow);
+                        return dbId;
                     }
                     else // update
                     {
@@ -278,6 +283,7 @@ namespace Wexflow.Core
                             Workflows.Add(updatedWorkflow);
                             ScheduleWorkflow(updatedWorkflow);
 
+                            return changedWorkflow.DbId;
                         }
                     }
                 }
@@ -288,6 +294,7 @@ namespace Wexflow.Core
                 Logger.ErrorFormat("Error while saving a workflow: {0}", e.Message);
             }
 
+            return -1;
         }
 
         /// <summary>
@@ -299,6 +306,7 @@ namespace Wexflow.Core
             try
             {
                 Database.DeleteWorkflow(dbId);
+                Database.DeleteUserWorkflowRelationsByWorkflowId(dbId);
 
                 var removedWorkflow = Workflows.SingleOrDefault(wf => wf.DbId == dbId);
                 if (removedWorkflow != null)
@@ -337,6 +345,7 @@ namespace Wexflow.Core
 
                         StopCronJobs(removedWorkflow.Id);
                         Workflows.Remove(removedWorkflow);
+                        Database.DeleteUserWorkflowRelationsByWorkflowId(removedWorkflow.DbId);
                     }
                 }
 
@@ -346,6 +355,98 @@ namespace Wexflow.Core
             {
                 Logger.ErrorFormat("Error while deleting workflows: {0}", e.Message);
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Inserts a user workflow relation in DB.
+        /// </summary>
+        /// <param name="userId">User DB ID.</param>
+        /// <param name="workflowId">Workflow DB ID.</param>
+        public void InsertUserWorkflowRelation(int userId, int workflowId)
+        {
+            try
+            {
+                Database.InsertUserWorkflowRelation(new UserWorkflow { UserId = userId, WorkflowId = workflowId });
+            }
+            catch (Exception e)
+            {
+                Logger.ErrorFormat("Error while inserting user workflow relation: {0}", e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Deletes user workflow relations.
+        /// </summary>
+        /// <param name="userId">User DB ID.</param>
+        public void DeleteUserWorkflowRelations(int userId)
+        {
+            try
+            {
+                Database.DeleteUserWorkflowRelationsByUserId(userId);
+            }
+            catch (Exception e)
+            {
+                Logger.ErrorFormat("Error while deleting user workflow relations of user {0}: {1}", userId, e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Returns user workflows.
+        /// </summary>
+        /// <param name="userId">User DB ID.</param>
+        /// <returns>User worklofws.</returns>
+        public Workflow[] GetUserWorkflows(int userId)
+        {
+            try
+            {
+                var userWorkflows = Database.GetUserWorkflows(userId).ToArray();
+                var workflows = Workflows.Where(w => userWorkflows.Contains(w.DbId)).ToArray();
+                return workflows;
+            }
+            catch (Exception e)
+            {
+                Logger.ErrorFormat("Error while retrieving user workflows of user {0}: {1}", userId, e.Message);
+                return new Workflow[] { };
+            }
+        }
+
+        /// <summary>
+        /// Checks whether a user have access to a workflow.
+        /// </summary>
+        /// <param name="userId">User id.</param>
+        /// <param name="workflowId">Workflow db id.</param>
+        /// <returns>true/false.</returns>
+        public bool CheckUserWorkflow(int userId, int workflowId)
+        {
+            try
+            {
+                return Database.CheckUserWorkflow(userId, workflowId);
+            }
+            catch (Exception e)
+            {
+                Logger.ErrorFormat("Error while checking user workflows of user {0}: {1}", userId, e.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns administrators search result.
+        /// </summary>
+        /// <param name="keyword">Keyword.</param>
+        /// <param name="uo">User Order By.</param>
+        /// <returns>Administrators search result.</returns>
+        public User[] GetAdministrators(string keyword, UserOrderBy uo)
+        {
+            try
+            {
+                var admins = Database.GetAdministrators(keyword, uo);
+                return admins.ToArray();
+            }
+            catch (Exception e)
+            {
+                Logger.ErrorFormat("Error while retrieving administrators: {0}", e.Message);
+                return new User[] { };
             }
         }
 
