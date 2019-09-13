@@ -27,54 +27,54 @@ xcopy ..\samples\dotnet-core\macos\Wexflow\* %dstDir%\Wexflow\ /s /e
 copy ..\src\dotnet-core\Wexflow.Core\Workflow.xsd %dstDir%\Wexflow\
 
 :: Wexflow backend
-copy "..\src\backend\Wexflow.Backend\index.html" %dstDir%\%backend%\
-copy "..\src\backend\Wexflow.Backend\forgot-password.html" %dstDir%\%backend%\
-copy "..\src\backend\Wexflow.Backend\dashboard.html" %dstDir%\%backend%\
-copy "..\src\backend\Wexflow.Backend\manager.html" %dstDir%\%backend%\
-copy "..\src\backend\Wexflow.Backend\designer.html" %dstDir%\%backend%\
-copy "..\src\backend\Wexflow.Backend\approval.html" %dstDir%\%backend%\
-copy "..\src\backend\Wexflow.Backend\history.html" %dstDir%\%backend%\
-copy "..\src\backend\Wexflow.Backend\users.html" %dstDir%\%backend%\
-copy "..\src\backend\Wexflow.Backend\profiles.html" %dstDir%\%backend%\
+copy "..\src\backend\Wexflow.Backend\wwwroot\index.html" %dstDir%\%backend%\
+copy "..\src\backend\Wexflow.Backend\wwwroot\forgot-password.html" %dstDir%\%backend%\
+copy "..\src\backend\Wexflow.Backend\wwwroot\dashboard.html" %dstDir%\%backend%\
+copy "..\src\backend\Wexflow.Backend\wwwroot\manager.html" %dstDir%\%backend%\
+copy "..\src\backend\Wexflow.Backend\wwwroot\designer.html" %dstDir%\%backend%\
+copy "..\src\backend\Wexflow.Backend\wwwroot\approval.html" %dstDir%\%backend%\
+copy "..\src\backend\Wexflow.Backend\wwwroot\history.html" %dstDir%\%backend%\
+copy "..\src\backend\Wexflow.Backend\wwwroot\users.html" %dstDir%\%backend%\
+copy "..\src\backend\Wexflow.Backend\wwwroot\profiles.html" %dstDir%\%backend%\
 
-xcopy "..\src\backend\Wexflow.Backend\images\*" %dstDir%\%backend%\images\ /s /e
+xcopy "..\src\backend\Wexflow.Backend\wwwroot\images\*" %dstDir%\%backend%\images\ /s /e
 
-xcopy "..\src\backend\Wexflow.Backend\css\images\*" %dstDir%\%backend%\css\images\ /s /e
-copy "..\src\backend\Wexflow.Backend\css\login.min.css" %dstDir%\%backend%\css
-copy "..\src\backend\Wexflow.Backend\css\forgot-password.min.css" %dstDir%\%backend%\css
-copy "..\src\backend\Wexflow.Backend\css\dashboard.min.css" %dstDir%\%backend%\css
-copy "..\src\backend\Wexflow.Backend\css\manager.min.css" %dstDir%\%backend%\css
-copy "..\src\backend\Wexflow.Backend\css\designer.min.css" %dstDir%\%backend%\css
-copy "..\src\backend\Wexflow.Backend\css\approval.min.css" %dstDir%\%backend%\css
-copy "..\src\backend\Wexflow.Backend\css\history.min.css" %dstDir%\%backend%\css
-copy "..\src\backend\Wexflow.Backend\css\users.min.css" %dstDir%\%backend%\css
-copy "..\src\backend\Wexflow.Backend\css\profiles.min.css" %dstDir%\%backend%\css
+xcopy "..\src\backend\Wexflow.Backend\wwwroot\css\images\*" %dstDir%\%backend%\css\images\ /s /e
+copy "..\src\backend\Wexflow.Backend\wwwroot\css\login.min.css" %dstDir%\%backend%\css
+copy "..\src\backend\Wexflow.Backend\wwwroot\css\forgot-password.min.css" %dstDir%\%backend%\css
+copy "..\src\backend\Wexflow.Backend\wwwroot\css\dashboard.min.css" %dstDir%\%backend%\css
+copy "..\src\backend\Wexflow.Backend\wwwroot\css\manager.min.css" %dstDir%\%backend%\css
+copy "..\src\backend\Wexflow.Backend\wwwroot\css\designer.min.css" %dstDir%\%backend%\css
+copy "..\src\backend\Wexflow.Backend\wwwroot\css\approval.min.css" %dstDir%\%backend%\css
+copy "..\src\backend\Wexflow.Backend\wwwroot\css\history.min.css" %dstDir%\%backend%\css
+copy "..\src\backend\Wexflow.Backend\wwwroot\css\users.min.css" %dstDir%\%backend%\css
+copy "..\src\backend\Wexflow.Backend\wwwroot\css\profiles.min.css" %dstDir%\%backend%\css
 
-copy "..\src\backend\Wexflow.Backend\js\settings.js" %dstDir%\%backend%\js
-copy "..\src\backend\Wexflow.Backend\js\login.min.js" %dstDir%\%backend%\js
-copy "..\src\backend\Wexflow.Backend\js\forgot-password.min.js" %dstDir%\%backend%\js
-copy "..\src\backend\Wexflow.Backend\js\dashboard.min.js" %dstDir%\%backend%\js
-copy "..\src\backend\Wexflow.Backend\js\manager.min.js" %dstDir%\%backend%\js
+copy "..\src\backend\Wexflow.Backend\wwwroot\js\settings.js" %dstDir%\%backend%\js
+copy "..\src\backend\Wexflow.Backend\wwwroot\js\login.min.js" %dstDir%\%backend%\js
+copy "..\src\backend\Wexflow.Backend\wwwroot\js\forgot-password.min.js" %dstDir%\%backend%\js
+copy "..\src\backend\Wexflow.Backend\wwwroot\js\dashboard.min.js" %dstDir%\%backend%\js
+copy "..\src\backend\Wexflow.Backend\wwwroot\js\manager.min.js" %dstDir%\%backend%\js
 
-copy "..\src\backend\Wexflow.Backend\js\ace.js" %dstDir%\%backend%\js
-copy "..\src\backend\Wexflow.Backend\js\worker-xml.js" %dstDir%\%backend%\js
-copy "..\src\backend\Wexflow.Backend\js\mode-xml.js" %dstDir%\%backend%\js
-copy "..\src\backend\Wexflow.Backend\js\ext-searchbox.js" %dstDir%\%backend%\js
-copy "..\src\backend\Wexflow.Backend\js\ext-prompt.js" %dstDir%\%backend%\js
-copy "..\src\backend\Wexflow.Backend\js\ext-keybinding_menu.js" %dstDir%\%backend%\js
-copy "..\src\backend\Wexflow.Backend\js\ext-settings_menu.js" %dstDir%\%backend%\js
-copy "..\src\backend\Wexflow.Backend\js\theme-*.js" %dstDir%\%backend%\js
-copy "..\src\backend\Wexflow.Backend\js\designer.min.js" %dstDir%\%backend%\js
-::copy "..\src\backend\Wexflow.Backend\js\common.js" %dstDir%\%backend%\js
-::copy "..\src\backend\Wexflow.Backend\js\authenticate.js" %dstDir%\%backend%\js
-::copy "..\src\backend\Wexflow.Backend\js\cytoscape-dagre.min.js" %dstDir%\%backend%\js
-::copy "..\src\backend\Wexflow.Backend\js\highlight.pack.js" %dstDir%\%backend%\js
-::copy "..\src\backend\Wexflow.Backend\js\designer.js" %dstDir%\%backend%\js
+copy "..\src\backend\Wexflow.Backend\wwwroot\js\ace.js" %dstDir%\%backend%\js
+copy "..\src\backend\Wexflow.Backend\wwwroot\js\worker-xml.js" %dstDir%\%backend%\js
+copy "..\src\backend\Wexflow.Backend\wwwroot\js\mode-xml.js" %dstDir%\%backend%\js
+copy "..\src\backend\Wexflow.Backend\wwwroot\js\ext-searchbox.js" %dstDir%\%backend%\js
+copy "..\src\backend\Wexflow.Backend\wwwroot\js\ext-prompt.js" %dstDir%\%backend%\js
+copy "..\src\backend\Wexflow.Backend\wwwroot\js\ext-keybinding_menu.js" %dstDir%\%backend%\js
+copy "..\src\backend\Wexflow.Backend\wwwroot\js\ext-settings_menu.js" %dstDir%\%backend%\js
+copy "..\src\backend\Wexflow.Backend\wwwroot\js\theme-*.js" %dstDir%\%backend%\js
+copy "..\src\backend\Wexflow.Backend\wwwroot\js\designer.min.js" %dstDir%\%backend%\js
+::copy "..\src\backend\Wexflow.Backend\wwwroot\js\common.js" %dstDir%\%backend%\js
+::copy "..\src\backend\Wexflow.Backend\wwwroot\js\authenticate.js" %dstDir%\%backend%\js
+::copy "..\src\backend\Wexflow.Backend\wwwroot\js\cytoscape-dagre.min.js" %dstDir%\%backend%\js
+::copy "..\src\backend\Wexflow.Backend\wwwroot\js\highlight.pack.js" %dstDir%\%backend%\js
+::copy "..\src\backend\Wexflow.Backend\wwwroot\js\designer.js" %dstDir%\%backend%\js
 
-copy "..\src\backend\Wexflow.Backend\js\approval.min.js" %dstDir%\%backend%\js
-copy "..\src\backend\Wexflow.Backend\js\history.min.js" %dstDir%\%backend%\js
-copy "..\src\backend\Wexflow.Backend\js\users.min.js" %dstDir%\%backend%\js
-copy "..\src\backend\Wexflow.Backend\js\profiles.min.js" %dstDir%\%backend%\js
+copy "..\src\backend\Wexflow.Backend\wwwroot\js\approval.min.js" %dstDir%\%backend%\js
+copy "..\src\backend\Wexflow.Backend\wwwroot\js\history.min.js" %dstDir%\%backend%\js
+copy "..\src\backend\Wexflow.Backend\wwwroot\js\users.min.js" %dstDir%\%backend%\js
+copy "..\src\backend\Wexflow.Backend\wwwroot\js\profiles.min.js" %dstDir%\%backend%\js
 
 :: Wexflow server
 dotnet publish ..\src\dotnet-core\Wexflow.Server\Wexflow.Server.csproj --force --output %~dp0\%dstDir%\Wexflow.Server
