@@ -271,34 +271,34 @@
                     json = [
                         {
                             "ParamName": "ListId",
-                            "ParamValue": "15db9ad3-e435-4b2b-170e-08d7363a65e1"
+                            "ParamValue": "5a2b8615-af4d-4966-e051-08d7385c1609"
                         },
                         {
                             "ParamName": "Trigger",
-                            "ParamValue": { "61068": "destination" }
+                            "ParamValue": { "59792": "destination" }
                         },
                         {
                             "ParamName": "Mapping",
-                            "ParamValue": { "61069": "61068" }
+                            "ParamValue": { "59793": "59792" }
                         }
                     ];
                 } else if (selectedId === 139) {  // update record
                     json = [
                         {
                             "ParamName": "ListId",
-                            "ParamValue": "15db9ad3-e435-4b2b-170e-08d7363a65e1"
+                            "ParamValue": "5a2b8615-af4d-4966-e051-08d7385c1609"
                         },
                         {
                             "ParamName": "RecordId",
-                            "ParamValue": "5d78b173b2d6a400010da42f"
+                            "ParamValue": "5d7be067e3aae40001a0610c"
                         },
                         {
                             "ParamName": "Trigger",
-                            "ParamValue": { "61068": "destination-updated" }
+                            "ParamValue": { "59792": "destination-updated" }
                         },
                         {
                             "ParamName": "Mapping",
-                            "ParamValue": { "61069": "61068" }
+                            "ParamValue": { "59793": "59792" }
                         }
                     ];
                 }
