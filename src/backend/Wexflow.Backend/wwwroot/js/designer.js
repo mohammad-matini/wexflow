@@ -20,7 +20,11 @@
         Common.redirectToLoginPage();
     } else {
         var user = JSON.parse(suser);
-        Common.get(uri + "/user?username=" + encodeURIComponent(user.Username), function (u) {
+
+        username = user.Username;
+        password = user.Password;
+
+        Common.get(uri + "/user?qu=" + encodeURIComponent(username) + "&qp=" + encodeURIComponent(password) + "&username=" + encodeURIComponent(user.Username), function (u) {
             if (user.Password !== u.Password) {
                 Common.redirectToLoginPage();
             } else {
@@ -35,9 +39,6 @@
                     if (u.UserProfile === 0) {
                         lnkProfiles.style.display = "inline";
                     }
-
-                    username = u.Username;
-                    password = u.Password;
 
                     var btnLogout = document.getElementById("btn-logout");
                     var divDesigner = document.getElementById("wf-designer");
@@ -172,13 +173,13 @@
                     }
                 }, function () {
                     Common.toastError("An error occured while deleting workflows.");
-                    }, {
+                }, {
                         "Username": username,
                         "Password": password,
                         "WorkflowsToDelete": workflowsToDelete
                     });
             }
-        } 
+        }
     };
 
     // CTRL+S
@@ -720,7 +721,7 @@
                 editorWorkflowId = currentWorkflowId;
                 workflowInfos[currentWorkflowId] = workflowInfos[workflowId];
                 workflowTasks[currentWorkflowId] = workflowTasks[workflowId];
-                
+
 
                 if (workflowId !== currentWorkflowId) {
                     deleteEditor(workflowId);

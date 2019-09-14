@@ -27,12 +27,18 @@
     var suser = getUser();
     var from = null;
     var to = null;
+    var username = "";
+    var password = "";
 
     if (suser === null || suser === "") {
         Common.redirectToLoginPage();
     } else {
         var user = JSON.parse(suser);
-        Common.get(uri + "/user?username=" + encodeURIComponent(user.Username), function (u) {
+
+        username = user.Username;
+        password = user.Password;
+
+        Common.get(uri + "/user?qu=" + encodeURIComponent(username) + "&qp=" + encodeURIComponent(password) + "&username=" + encodeURIComponent(user.Username), function (u) {
             if (user.Password !== u.Password) {
                 Common.redirectToLoginPage();
             } else {
@@ -59,7 +65,7 @@
 
                 btnLogout.innerHTML = "Logout (" + u.Username + ")";
                 Common.get(uri + "/historyEntryStatusDateMin",
-                    function(dateMin) {
+                    function (dateMin) {
                         Common.get(uri + "/historyEntryStatusDateMax",
                             function (dateMax) {
 
@@ -78,7 +84,7 @@
                                         changeMonth: true,
                                         changeYear: true,
                                         dateFormat: "dd-mm-yy",
-                                        onSelect: function() {
+                                        onSelect: function () {
                                             from = $(this).datepicker("getDate");
                                         }
                                     });
@@ -154,12 +160,12 @@
 
                                     loadEntries();
 
+                                });
+
                             });
 
-                    });
 
-                
-            });
+                    });
 
             }
         });
@@ -209,7 +215,7 @@
     function loadEntries() {
         var entriesCount = getEntriesCount();
 
-        Common.get(uri + "/searchHistoryEntriesByPageOrderBy?s=" + encodeURIComponent(txtSearch.value) +"&from="+ from.getTime() + "&to=" + to.getTime() + "&page=" + page + "&entriesCount=" + entriesCount + "&heo=" + heo, function (data) {
+        Common.get(uri + "/searchHistoryEntriesByPageOrderBy?s=" + encodeURIComponent(txtSearch.value) + "&from=" + from.getTime() + "&to=" + to.getTime() + "&page=" + page + "&entriesCount=" + entriesCount + "&heo=" + heo, function (data) {
             var items = [];
             var i;
             for (i = 0; i < data.length; i++) {
@@ -347,7 +353,7 @@
                 thName.innerHTML = "Name";
                 thLt.innerHTML = "LaunchType";
                 thDesc.innerHTML = "Description";
-            } 
+            }
 
             thDate.onclick = function () {
                 if (heo === 1) {
