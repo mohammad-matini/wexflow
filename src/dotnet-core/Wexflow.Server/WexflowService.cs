@@ -32,6 +32,17 @@ namespace Wexflow.Server
 
         public WexflowService(IAppConfiguration appConfig)
         {
+            //
+            // Index
+            //
+            Get("/", _ =>
+            {
+                return Response.AsRedirect(Root);
+            });
+
+            //
+            // Hello
+            //
             Hello();
 
             //
