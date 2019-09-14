@@ -66,6 +66,19 @@ namespace Wexflow.Server
             ResumeWorkflow();
 
             //
+            // Approval
+            //
+            SearchApprovalWorkflows();
+            ApproveWorkflow();
+            DisapproveWorkflow();
+
+            //
+            // Workiom
+            //
+            SearchWithRestParams();
+            StartWorkflowWithRestParams();
+
+            //
             // Designer
             // 
             GetTasks();
@@ -82,19 +95,6 @@ namespace Wexflow.Server
             DeleteWorkflow();
             DeleteWorkflows();
             GetExecutionGraph();
-
-            //
-            // Approval
-            //
-            SearchApprovalWorkflows();
-            ApproveWorkflow();
-            DisapproveWorkflow();
-
-            //
-            // Workiom
-            //
-            SearchWithRestParams();
-            StartWorkflowWithRestParams();
 
             //
             // Users
@@ -167,6 +167,9 @@ namespace Wexflow.Server
                 + DocPost("resume?w={id}&u={username}&p={password}", "Resumes a workflow.")
                 + DocPost("approve?w={id}&u={username}&p={password}", "Approves a workflow.")
                 + DocPost("disapprove?w={id}&u={username}&p={password}", "Disapproves a workflow.")
+                + DocH2("Workiom")
+                + DocGet("searchWithRestParams?s={keyword}&u={username}&p={password}", "Search for workflows with REST params.")
+                + DocPost("startWithRestParams?w={id}&u={username}&p={password}", "Starts a workflow with REST params.")
                 + DocH2("Designer")
                 + DocGet("tasks/{id}", "Returns workflow's tasks.")
                 + DocGet("xml/{id}", "Returns a workflow as XML.")
