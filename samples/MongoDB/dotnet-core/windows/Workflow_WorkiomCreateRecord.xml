@@ -1,0 +1,17 @@
+<Workflow xmlns="urn:wexflow-schema" id="138" name="Workflow_WorkiomCreateRecord" description="Workflow_WorkiomCreateRecord">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+		<Setting name="hasRestParams" value="true" />
+		
+		<Setting name="workiomAuthUrl" value="http://api.workiom.club/api/TokenAuth/Authenticate" />
+		<Setting name="workiomUsername" value="admin" />
+		<Setting name="workiomPassword" value="alarm1" />
+		<Setting name="workiomTenantName" value="demo" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="WorkiomCreateRecord" description="Creating Workiom record..." enabled="true">
+			<Setting name="createRecordUrl" value="http://api.workiom.club/api/services/app/Data/Create?listId=" />
+		</Task>
+	</Tasks>
+</Workflow>

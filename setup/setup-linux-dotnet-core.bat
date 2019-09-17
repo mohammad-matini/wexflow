@@ -17,6 +17,8 @@ mkdir %dstDir%\%backend%\images\
 mkdir %dstDir%\%backend%\css\
 mkdir %dstDir%\%backend%\css\images\
 mkdir %dstDir%\%backend%\js\
+mkdir %dstDir%\Wexflow.Scripts.MongoDB
+mkdir %dstDir%\Wexflow.Scripts.MongoDB\Workflows
 
 :: WexflowTesting
 xcopy ..\samples\WexflowTesting\* %dstDir%\WexflowTesting\ /s /e
@@ -79,6 +81,11 @@ copy "..\src\backend\Wexflow.Backend\wwwroot\js\profiles.min.js" %dstDir%\%backe
 :: Wexflow server
 dotnet publish ..\src\dotnet-core\Wexflow.Server\Wexflow.Server.csproj --force --output %~dp0\%dstDir%\Wexflow.Server
 copy dotnet-core\linux\appsettings.json %dstDir%\Wexflow.Server
+
+:: MongoDB script
+dotnet publish ..\src\dotnet-core\Wexflow.Scripts.MongoDB\Wexflow.Scripts.MongoDB.csproj --force --output %~dp0\%dstDir%\Wexflow.Scripts.MongoDB
+copy dotnet-core\linux\MongoDB\appsettings.json %dstDir%\Wexflow.Scripts.MongoDB
+xcopy "..\samples\MongoDB\dotnet-core\linux\*" %dstDir%\Wexflow.Scripts.MongoDB\Workflows /s /e
 
 :: License
 :: copy ..\LICENSE.txt %dstDir%

@@ -46,7 +46,7 @@ namespace Wexflow.Core
         /// <summary>
         /// Database ID.
         /// </summary>
-        public int DbId { get; private set; }
+        public string DbId { get; private set; }
         /// <summary>
         /// XML of the workflow.
         /// </summary>
@@ -221,7 +221,7 @@ namespace Wexflow.Core
         /// <param name="database">Database.</param>
         /// <param name="globalVariables">Global variables.</param>
         public Workflow(
-              int dbId
+              string dbId
             , string xml
             , string wexflowTempFolder
             , string workflowsTempFolder
@@ -906,7 +906,7 @@ namespace Wexflow.Core
             {
                 entry.Status = Db.Status.Running;
                 entry.StatusDate = DateTime.Now;
-                Database.UpdateEntry(entry);
+                Database.UpdateEntry(entry.GetDbId(), entry);
             }
             entry = Database.GetEntry(Id);
 
@@ -942,7 +942,7 @@ namespace Wexflow.Core
                                 Database.IncrementDisapprovedCount();
                                 entry.Status = Db.Status.Disapproved;
                                 entry.StatusDate = DateTime.Now;
-                                Database.UpdateEntry(entry);
+                                Database.UpdateEntry(entry.GetDbId(), entry);
                                 _historyEntry.Status = Db.Status.Disapproved;
                             }
                             else
@@ -952,7 +952,7 @@ namespace Wexflow.Core
                                     Database.IncrementDoneCount();
                                     entry.Status = Db.Status.Done;
                                     entry.StatusDate = DateTime.Now;
-                                    Database.UpdateEntry(entry);
+                                    Database.UpdateEntry(entry.GetDbId(), entry);
                                     _historyEntry.Status = Db.Status.Done;
 
                                 }
@@ -961,7 +961,7 @@ namespace Wexflow.Core
                                     Database.IncrementWarningCount();
                                     entry.Status = Db.Status.Warning;
                                     entry.StatusDate = DateTime.Now;
-                                    Database.UpdateEntry(entry);
+                                    Database.UpdateEntry(entry.GetDbId(), entry);
                                     _historyEntry.Status = Db.Status.Warning;
                                 }
                                 else if (error)
@@ -969,7 +969,7 @@ namespace Wexflow.Core
                                     Database.IncrementFailedCount();
                                     entry.Status = Db.Status.Failed;
                                     entry.StatusDate = DateTime.Now;
-                                    Database.UpdateEntry(entry);
+                                    Database.UpdateEntry(entry.GetDbId(), entry);
                                     _historyEntry.Status = Db.Status.Failed;
                                 }
                             }
@@ -989,7 +989,7 @@ namespace Wexflow.Core
                                     Database.IncrementDoneCount();
                                     entry.Status = Db.Status.Done;
                                     entry.StatusDate = DateTime.Now;
-                                    Database.UpdateEntry(entry);
+                                    Database.UpdateEntry(entry.GetDbId(), entry);
                                     _historyEntry.Status = Db.Status.Done;
                                     break;
                                 case Status.Warning:
@@ -1001,7 +1001,7 @@ namespace Wexflow.Core
                                     Database.IncrementWarningCount();
                                     entry.Status = Db.Status.Warning;
                                     entry.StatusDate = DateTime.Now;
-                                    Database.UpdateEntry(entry);
+                                    Database.UpdateEntry(entry.GetDbId(), entry);
                                     _historyEntry.Status = Db.Status.Warning;
                                     break;
                                 case Status.Error:
@@ -1013,7 +1013,7 @@ namespace Wexflow.Core
                                     Database.IncrementFailedCount();
                                     entry.Status = Db.Status.Failed;
                                     entry.StatusDate = DateTime.Now;
-                                    Database.UpdateEntry(entry);
+                                    Database.UpdateEntry(entry.GetDbId(), entry);
                                     _historyEntry.Status = Db.Status.Failed;
                                     break;
                                 case Status.Disapproved:
@@ -1025,7 +1025,7 @@ namespace Wexflow.Core
                                     Database.IncrementDisapprovedCount();
                                     entry.Status = Db.Status.Disapproved;
                                     entry.StatusDate = DateTime.Now;
-                                    Database.UpdateEntry(entry);
+                                    Database.UpdateEntry(entry.GetDbId(), entry);
                                     _historyEntry.Status = Db.Status.Disapproved;
                                     break;
                             }
@@ -1489,7 +1489,7 @@ namespace Wexflow.Core
                     var entry = Database.GetEntry(Id);
                     entry.Status = Db.Status.Stopped;
                     entry.StatusDate = DateTime.Now;
-                    Database.UpdateEntry(entry);
+                    Database.UpdateEntry(entry.GetDbId(), entry);
                     _historyEntry.Status = Db.Status.Stopped;
                     _historyEntry.StatusDate = DateTime.Now;
                     Database.InsertHistoryEntry(_historyEntry);
@@ -1530,7 +1530,7 @@ namespace Wexflow.Core
                     var entry = Database.GetEntry(Id);
                     entry.Status = Db.Status.Pending;
                     entry.StatusDate = DateTime.Now;
-                    Database.UpdateEntry(entry);
+                    Database.UpdateEntry(entry.GetDbId(), entry);
                     return true;
                 }
                 catch (Exception e)
@@ -1559,7 +1559,7 @@ namespace Wexflow.Core
                     var entry = Database.GetEntry(Id);
                     entry.Status = Db.Status.Running;
                     entry.StatusDate = DateTime.Now;
-                    Database.UpdateEntry(entry);
+                    Database.UpdateEntry(entry.GetDbId(), entry);
                 }
                 catch (Exception e)
                 {

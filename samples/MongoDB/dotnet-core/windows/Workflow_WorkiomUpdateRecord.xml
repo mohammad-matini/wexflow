@@ -1,0 +1,17 @@
+<Workflow xmlns="urn:wexflow-schema" id="139" name="Workflow_WorkiomUpdateRecord" description="Workflow_WorkiomUpdateRecord">
+	<Settings>
+		<Setting name="launchType" value="trigger" />
+		<Setting name="enabled" value="true" />
+		<Setting name="hasRestParams" value="true" />
+		
+		<Setting name="workiomAuthUrl" value="http://api.workiom.club/api/TokenAuth/Authenticate" />
+		<Setting name="workiomUsername" value="admin" />
+		<Setting name="workiomPassword" value="alarm1" />
+		<Setting name="workiomTenantName" value="demo" />
+	</Settings>
+	<Tasks>
+		<Task id="1" name="WorkiomUpdateRecord" description="Updating Workiom record..." enabled="true">
+			<Setting name="updateRecordUrl" value="http://api.workiom.club/api/services/app/Data/Update?listId=" />
+		</Task>
+	</Tasks>
+</Workflow>
