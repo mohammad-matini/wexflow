@@ -13,7 +13,7 @@ namespace Wexflow.Core.MongoDB
         public Db(string connectionString) : base(connectionString)
         {
             var client = new MongoClient(ConnectionString);
-            _db = client.GetDatabase("wexflow-workiom-dotnet-core");
+            _db = client.GetDatabase("wexflow-workiom");
         }
 
         public override void Init()

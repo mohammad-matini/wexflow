@@ -212,7 +212,7 @@ namespace Wexflow.Core
             // C:\Workiom\Wexflow\Workflows\prod\windows
             // C:\Workiom\Wexflow\Workflows\prod\linux
             // C:\Workiom\Wexflow\Workflows\prod\macos
-            //foreach (string file in Directory.GetFiles(@"C:\Workiom\Wexflow\Workflows\prod\macos"))
+            //foreach (string file in Directory.GetFiles(@"C:\Workiom\Wexflow\Workflows\prod\windows"))
             //{
             //    Database.InsertWorkflow(new Db.Workflow { Xml = File.ReadAllText(file) });
             //}
