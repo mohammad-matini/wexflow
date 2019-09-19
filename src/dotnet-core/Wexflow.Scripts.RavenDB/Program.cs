@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
-using Wexflow.Core.MongoDB;
+using Wexflow.Core.RavenDB;
 using Wexflow.Scripts.Core;
 
-namespace Wexflow.Scripts.MongoDB
+namespace Wexflow.Scripts.RavenDB
 {
     class Program
     {

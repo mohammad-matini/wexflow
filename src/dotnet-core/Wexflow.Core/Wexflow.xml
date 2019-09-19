@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Wexflow>
+  <Setting name="workflowsFolder" value="C:\Workiom\Wexflow\Workflows" />
+  <Setting name="trashFolder" value="C:\Workiom\Wexflow\Trash" />
   <Setting name="tempFolder" value="C:\Workiom\Wexflow\Temp" />
   <Setting name="tasksFolder" value="C:\Workiom\Wexflow\Tasks" />
   <Setting name="approvalFolder" value="C:\Workiom\Wexflow\Approval" />
   <Setting name="xsd" value="C:\Workiom\Wexflow\Workflow.xsd" />
   <Setting name="tasksNamesFile" value="C:\Workiom\Wexflow\TasksNames.json" />
   <Setting name="tasksSettingsFile" value="C:\Workiom\Wexflow\TasksSettings.json" />
-  <!-- LiteDB or MongoDB -->
+  <!-- LiteDB or MongoDB or RavenDB -->
   <Setting name="dbType" value="LiteDB" />
   <!--LiteDB-->
   <Setting name="connectionString" value="Filename=C:\Workiom\Wexflow\Database\Wexflow.db; Mode=Exclusive" />
   <!--MongoDB-->
   <!-- <Setting name="connectionString" value="mongodb://localhost:27017" /> -->
+  <!--RavenDB-->
+  <!--<Setting name="connectionString" value="http://localhost:8080" />-->
   <Setting name="globalVariablesFile" value="C:\Workiom\Wexflow\GlobalVariables.xml" />
   <Setting name="maxRetries" value="5" />
   <Setting name="retryTimeout" value="700" />

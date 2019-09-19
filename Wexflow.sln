@@ -171,13 +171,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wexflow.Tasks.WorkiomUpdate
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wexflow.Tasks.Slack", "src\dotnet-core\Wexflow.Tasks.Slack\Wexflow.Tasks.Slack.csproj", "{74074DC5-6778-427C-9A07-FE19D9B92C33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Core.LiteDB", "src\dotnet-core\Wexflow.Core.LiteDB\Wexflow.Core.LiteDB.csproj", "{BCB83211-217E-498D-AE1E-14A385568943}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wexflow.Core.LiteDB", "src\dotnet-core\Wexflow.Core.LiteDB\Wexflow.Core.LiteDB.csproj", "{BCB83211-217E-498D-AE1E-14A385568943}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Core.MongoDB", "src\dotnet-core\Wexflow.Core.MongoDB\Wexflow.Core.MongoDB.csproj", "{9CE697FD-898F-4B9D-81A6-92EB11E68C52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wexflow.Core.MongoDB", "src\dotnet-core\Wexflow.Core.MongoDB\Wexflow.Core.MongoDB.csproj", "{9CE697FD-898F-4B9D-81A6-92EB11E68C52}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wexflow.Scripts", "Wexflow.Scripts", "{730B755A-1729-4DB1-A96C-8E8AAD997542}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Scripts.MongoDB", "src\dotnet-core\Wexflow.Scripts.MongoDB\Wexflow.Scripts.MongoDB.csproj", "{E1B4D17B-8E4B-4973-A69D-A1DC58438BE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wexflow.Scripts.MongoDB", "src\dotnet-core\Wexflow.Scripts.MongoDB\Wexflow.Scripts.MongoDB.csproj", "{E1B4D17B-8E4B-4973-A69D-A1DC58438BE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Core.RavenDB", "src\dotnet-core\Wexflow.Core.RavenDB\Wexflow.Core.RavenDB.csproj", "{70FEC1B3-4E6B-4D68-8090-C9B17B77BC5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Scripts.Core", "src\dotnet-core\Wexflow.Scripts.Core\Wexflow.Scripts.Core.csproj", "{DC47485B-C285-4596-ADF3-BBCE142F307F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wexflow.Scripts.RavenDB", "src\dotnet-core\Wexflow.Scripts.RavenDB\Wexflow.Scripts.RavenDB.csproj", "{EBCFEFC7-AA18-4D0D-9BCE-33BF17E98AAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1471,6 +1477,54 @@ Global
 		{E1B4D17B-8E4B-4973-A69D-A1DC58438BE9}.Release|x64.Build.0 = Release|Any CPU
 		{E1B4D17B-8E4B-4973-A69D-A1DC58438BE9}.Release|x86.ActiveCfg = Release|Any CPU
 		{E1B4D17B-8E4B-4973-A69D-A1DC58438BE9}.Release|x86.Build.0 = Release|Any CPU
+		{70FEC1B3-4E6B-4D68-8090-C9B17B77BC5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70FEC1B3-4E6B-4D68-8090-C9B17B77BC5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70FEC1B3-4E6B-4D68-8090-C9B17B77BC5A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{70FEC1B3-4E6B-4D68-8090-C9B17B77BC5A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{70FEC1B3-4E6B-4D68-8090-C9B17B77BC5A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{70FEC1B3-4E6B-4D68-8090-C9B17B77BC5A}.Debug|x64.Build.0 = Debug|Any CPU
+		{70FEC1B3-4E6B-4D68-8090-C9B17B77BC5A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{70FEC1B3-4E6B-4D68-8090-C9B17B77BC5A}.Debug|x86.Build.0 = Debug|Any CPU
+		{70FEC1B3-4E6B-4D68-8090-C9B17B77BC5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70FEC1B3-4E6B-4D68-8090-C9B17B77BC5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70FEC1B3-4E6B-4D68-8090-C9B17B77BC5A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{70FEC1B3-4E6B-4D68-8090-C9B17B77BC5A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{70FEC1B3-4E6B-4D68-8090-C9B17B77BC5A}.Release|x64.ActiveCfg = Release|Any CPU
+		{70FEC1B3-4E6B-4D68-8090-C9B17B77BC5A}.Release|x64.Build.0 = Release|Any CPU
+		{70FEC1B3-4E6B-4D68-8090-C9B17B77BC5A}.Release|x86.ActiveCfg = Release|Any CPU
+		{70FEC1B3-4E6B-4D68-8090-C9B17B77BC5A}.Release|x86.Build.0 = Release|Any CPU
+		{DC47485B-C285-4596-ADF3-BBCE142F307F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC47485B-C285-4596-ADF3-BBCE142F307F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC47485B-C285-4596-ADF3-BBCE142F307F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DC47485B-C285-4596-ADF3-BBCE142F307F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DC47485B-C285-4596-ADF3-BBCE142F307F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DC47485B-C285-4596-ADF3-BBCE142F307F}.Debug|x64.Build.0 = Debug|Any CPU
+		{DC47485B-C285-4596-ADF3-BBCE142F307F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DC47485B-C285-4596-ADF3-BBCE142F307F}.Debug|x86.Build.0 = Debug|Any CPU
+		{DC47485B-C285-4596-ADF3-BBCE142F307F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC47485B-C285-4596-ADF3-BBCE142F307F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC47485B-C285-4596-ADF3-BBCE142F307F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DC47485B-C285-4596-ADF3-BBCE142F307F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DC47485B-C285-4596-ADF3-BBCE142F307F}.Release|x64.ActiveCfg = Release|Any CPU
+		{DC47485B-C285-4596-ADF3-BBCE142F307F}.Release|x64.Build.0 = Release|Any CPU
+		{DC47485B-C285-4596-ADF3-BBCE142F307F}.Release|x86.ActiveCfg = Release|Any CPU
+		{DC47485B-C285-4596-ADF3-BBCE142F307F}.Release|x86.Build.0 = Release|Any CPU
+		{EBCFEFC7-AA18-4D0D-9BCE-33BF17E98AAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBCFEFC7-AA18-4D0D-9BCE-33BF17E98AAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBCFEFC7-AA18-4D0D-9BCE-33BF17E98AAC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EBCFEFC7-AA18-4D0D-9BCE-33BF17E98AAC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EBCFEFC7-AA18-4D0D-9BCE-33BF17E98AAC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EBCFEFC7-AA18-4D0D-9BCE-33BF17E98AAC}.Debug|x64.Build.0 = Debug|Any CPU
+		{EBCFEFC7-AA18-4D0D-9BCE-33BF17E98AAC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EBCFEFC7-AA18-4D0D-9BCE-33BF17E98AAC}.Debug|x86.Build.0 = Debug|Any CPU
+		{EBCFEFC7-AA18-4D0D-9BCE-33BF17E98AAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBCFEFC7-AA18-4D0D-9BCE-33BF17E98AAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBCFEFC7-AA18-4D0D-9BCE-33BF17E98AAC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EBCFEFC7-AA18-4D0D-9BCE-33BF17E98AAC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EBCFEFC7-AA18-4D0D-9BCE-33BF17E98AAC}.Release|x64.ActiveCfg = Release|Any CPU
+		{EBCFEFC7-AA18-4D0D-9BCE-33BF17E98AAC}.Release|x64.Build.0 = Release|Any CPU
+		{EBCFEFC7-AA18-4D0D-9BCE-33BF17E98AAC}.Release|x86.ActiveCfg = Release|Any CPU
+		{EBCFEFC7-AA18-4D0D-9BCE-33BF17E98AAC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1562,6 +1616,9 @@ Global
 		{9CE697FD-898F-4B9D-81A6-92EB11E68C52} = {70481AA7-1FB5-4F5B-AFE8-07C9E819CF1F}
 		{730B755A-1729-4DB1-A96C-8E8AAD997542} = {496E87FA-B46B-4B32-ADB3-C76605CDBDFA}
 		{E1B4D17B-8E4B-4973-A69D-A1DC58438BE9} = {730B755A-1729-4DB1-A96C-8E8AAD997542}
+		{70FEC1B3-4E6B-4D68-8090-C9B17B77BC5A} = {70481AA7-1FB5-4F5B-AFE8-07C9E819CF1F}
+		{DC47485B-C285-4596-ADF3-BBCE142F307F} = {730B755A-1729-4DB1-A96C-8E8AAD997542}
+		{EBCFEFC7-AA18-4D0D-9BCE-33BF17E98AAC} = {730B755A-1729-4DB1-A96C-8E8AAD997542}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {694D69C8-AA13-4F54-BAAA-5B967F1A8F9C}
