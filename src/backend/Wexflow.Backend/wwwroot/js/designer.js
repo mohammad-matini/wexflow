@@ -76,7 +76,7 @@
     var isDarkTheme = false;
     var loadXmlCalled = false;
     var timeoutInterval = 300; // Timeout interval after db query
-    var maxRetries = 10;
+    var maxRetries = 0; // disable retries
     var retries = 0;
     //var statusRetries = 0;
 
