@@ -32,7 +32,7 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
                 var listId = Workflow.RestParams["ListId"];
 
                 // Retrieve trigger
-                var trigger = new Trigger { Payload = JsonConvert.DeserializeObject<Dictionary<string, string>>(Workflow.RestParams["Trigger"]) };
+                var trigger = new Trigger { Payload = JsonConvert.DeserializeObject<Dictionary<string, string>>(Workflow.RestParams["Payload"]) };
 
                 // Retrieve mapping (only dynamic for the moment)
                 var mappingDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(Workflow.RestParams["Mapping"]);

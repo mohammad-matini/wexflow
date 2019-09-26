@@ -277,7 +277,7 @@
                             "ParamValue": "5a2b8615-af4d-4966-e051-08d7385c1609"
                         },
                         {
-                            "ParamName": "Trigger",
+                            "ParamName": "Payload",
                             "ParamValue": { "59792": "destination" }
                         },
                         {

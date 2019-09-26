@@ -30,6 +30,13 @@ namespace Wexflow.Core.Service.Client
             webClient.UploadString(uri, string.Empty);
         }
 
+        public void StartWorkflow(int id, string username, string password, string json)
+        {
+            string uri = Uri + "/startWithRestParams?w=" + id + "&u=" + SecurityElement.Escape(username) + "&p=" + SecurityElement.Escape(password);
+            var webClient = new WebClient();
+            webClient.UploadString(uri, json);
+        }
+
         public void StopWorkflow(int id, string username, string password)
         {
             string uri = Uri + "/stop?w=" + id + "&u=" + SecurityElement.Escape(username) + "&p=" + SecurityElement.Escape(password);
