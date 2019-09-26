@@ -16,7 +16,10 @@ namespace Wexflow.RabbitMQ.Server
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 
-            var factory = new ConnectionFactory() { HostName = "localhost" };
+            var uri = config["CloudAmpqUrl"];
+
+            //var factory = new ConnectionFactory() { HostName = "localhost" };
+            var factory = new ConnectionFactory() { Uri = new Uri(uri) };
             var client = new WexflowServiceClient(config["WexflowWebServiceUri"]);
             var username = config["Username"];
             var password = config["Password"];
