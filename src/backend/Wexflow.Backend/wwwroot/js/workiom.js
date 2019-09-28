@@ -71,7 +71,7 @@
                         lnkProfiles.style.display = "inline";
                     }
 
-                    
+
 
                     var btnLogout = document.getElementById("btn-logout");
                     var divWorkflows = document.getElementById("wf-manager");
@@ -119,7 +119,7 @@
         });
     }
 
-   
+
 
     function compareById(wf1, wf2) {
         if (wf1.Id < wf2.Id) {
@@ -273,16 +273,8 @@
                 if (selectedId === 138) { // create record
                     json = [
                         {
-                            "ParamName": "ListId",
-                            "ParamValue": "5a2b8615-af4d-4966-e051-08d7385c1609"
-                        },
-                        {
                             "ParamName": "Payload",
                             "ParamValue": { "59792": "destination" }
-                        },
-                        {
-                            "ParamName": "Mapping",
-                            "ParamValue": { "59793": "59792" }
                         }
                     ];
                 } else if (selectedId === 139) {  // update record
@@ -313,7 +305,7 @@
                         Common.toastSuccess("Workflow " + selectedId + " started with success.");
                     }
                 }, function () {
-                        Common.toastError("An error occured while starting the workflow " + selectedId + ".");
+                    Common.toastError("An error occured while starting the workflow " + selectedId + ".");
                 }, json);
             };
 
@@ -322,7 +314,7 @@
                 Common.post(suspendUri, function (res) {
                     if (res === true) {
                         updateButtons(selectedId, true);
-                    } else{
+                    } else {
                         Common.toastInfo("This operation is not supported.");
                     }
                 });
@@ -347,7 +339,7 @@
 
             // End of get workflows
         }, function () {
-                Common.toastError("An error occured while retrieving workflows. Check that Wexflow server is running correctly.");
+            Common.toastError("An error occured while retrieving workflows. Check that Wexflow server is running correctly.");
         });
     }
 

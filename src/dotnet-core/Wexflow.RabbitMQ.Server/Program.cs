@@ -42,8 +42,10 @@ namespace Wexflow.RabbitMQ.Server
                         Console.WriteLine(" [x] Received {0}", message);
 
                         var o = JObject.Parse(message);
-                        var workflowId = o.Value<int>("WorkflowId");
-                        var parameters = o.Value<JArray>("Params").ToString();
+                        var workflowId = o.Value<int>("workflowId");
+                        var payload = o.Value<JObject>("payload");
+
+                        var parameters = "[{\"ParamName\":\"Payload\",\"ParamValue\":" + payload.ToString() + "}]";
 
                         client.StartWorkflow(workflowId, username, password, parameters);
                     }

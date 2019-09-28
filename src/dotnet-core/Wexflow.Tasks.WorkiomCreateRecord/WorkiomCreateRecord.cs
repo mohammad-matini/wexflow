@@ -12,10 +12,14 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
     public class WorkiomCreateRecord : Task
     {
         public string CreateRecordUrl { get; }
+        public string ListId { get; }
+        public string Mapping { get; }
 
         public WorkiomCreateRecord(XElement xe, Workflow wf) : base(xe, wf)
         {
             CreateRecordUrl = GetSetting("createRecordUrl");
+            ListId = GetSetting("listId");
+            Mapping = GetSetting("mapping");
         }
 
         public override TaskStatus Run()
@@ -28,14 +32,11 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
 
             try
             {
-                // Retrieve listId
-                var listId = Workflow.RestParams["ListId"];
-
-                // Retrieve trigger
+                // Retrieve payload
                 var trigger = new Trigger { Payload = JsonConvert.DeserializeObject<Dictionary<string, string>>(Workflow.RestParams["Payload"]) };
 
                 // Retrieve mapping (only dynamic for the moment)
-                var mappingDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(Workflow.RestParams["Mapping"]);
+                var mappingDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(Mapping);
                 var mapping = new Dictionary<string, MappingValue>();
                 foreach (var item in mappingDic)
                 {
@@ -46,7 +47,7 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
                 var result = WorkiomHelper.Map(trigger, mapping);
 
                 // Create record from result
-                var url = CreateRecordUrl + listId;
+                var url = CreateRecordUrl + ListId;
                 var auth = Workflow.GetWorkiomAccessToken();
                 var json = JsonConvert.SerializeObject(result);
 

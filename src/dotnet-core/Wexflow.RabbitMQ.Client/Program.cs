@@ -25,7 +25,6 @@ namespace Wexflow.RabbitMQ.Client
                                      autoDelete: false,
                                      arguments: null);
 
-                //string message = "Hello World!";
                 string message = GetMessage();
                 var body = Encoding.UTF8.GetBytes(message);
 
@@ -43,24 +42,26 @@ namespace Wexflow.RabbitMQ.Client
 
         static string GetMessage()
         {
-            return "{" +
-                "\"WorkflowId\": 138," +
-                "\"Params\":" +
-                "[" +
-                "	{" +
-                "		\"ParamName\": \"ListId\"," +
-                "		\"ParamValue\": \"5a2b8615-af4d-4966-e051-08d7385c1609\"" +
-                "	}," +
-                "	{" +
-                "		\"ParamName\": \"Payload\"," +
-                "		\"ParamValue\": { \"59792\": \"destination\" }" +
-                "	}," +
-                "	{" +
-                "		\"ParamName\": \"Mapping\"," +
-                "		\"ParamValue\": { \"59793\": \"59792\" }" +
-                "	}" +
-                "]" +
-                "}";
+            //return "{" +
+            //    "\"WorkflowId\": 138," +
+            //    "\"Params\":" +
+            //    "[" +
+            //    "	{" +
+            //    "		\"ParamName\": \"ListId\"," +
+            //    "		\"ParamValue\": \"5a2b8615-af4d-4966-e051-08d7385c1609\"" +
+            //    "	}," +
+            //    "	{" +
+            //    "		\"ParamName\": \"Payload\"," +
+            //    "		\"ParamValue\": { \"59792\": \"destination\" }" +
+            //    "	}," +
+            //    "	{" +
+            //    "		\"ParamName\": \"Mapping\"," +
+            //    "		\"ParamValue\": { \"59793\": \"59792\" }" +
+            //    "	}" +
+            //    "]" +
+            //    "}";
+
+            return "{\"tenantId\": 79,\"payload\": {\"_id\":\"5d8e2b5368b2491918f57294\",\"59792\":\"destination\"},\"workflowId\": 138}";
         }
     }
 }
