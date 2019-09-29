@@ -3,11 +3,16 @@ using log4net.Config;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Xml;
 using Wexflow.Core;
+using Wexflow.Core.Service.Client;
 
 namespace Wexflow.Server
 {
@@ -31,22 +36,68 @@ namespace Wexflow.Server
             WexflowEngine = new WexflowEngine(wexflowSettingsFile);
             WexflowEngine.Run();
 
-            int port = int.Parse(Config["WexflowServicePort"]);
 
-            var host = new WebHostBuilder()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseKestrel((context, options) =>
-                {
-                    options.ListenAnyIP(port);
-                })
-                .UseStartup<Startup>()
+            IConfiguration config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 
-            host.Run();
+            var uri = config["CloudAmpqUrl"];
+            var queueName = config["QueueName"];
+            var factory = new ConnectionFactory() { Uri = new Uri(uri) };
+            var client = new WexflowServiceClient(config["WexflowWebServiceUri"]);
+            var username = config["Username"];
+            var password = config["Password"];
+            using (var connection = factory.CreateConnection())
+            using (var channel = connection.CreateModel())
+            {
+                channel.QueueDeclare(queue: queueName,
+                                     durable: true,
+                                     exclusive: false,
+                                     autoDelete: false,
+                                     arguments: null);
 
-            Console.Write("Press any key to stop Wexflow server...");
-            Console.ReadKey();
+                var consumer = new EventingBasicConsumer(channel);
+                consumer.Received += (model, ea) =>
+                {
+                    try
+                    {
+                        var body = ea.Body;
+                        var message = Encoding.UTF8.GetString(body);
+                        Console.WriteLine(" [x] Received {0}", message);
+
+                        var o = JObject.Parse(message);
+                        var workflowId = o.Value<int>("workflowId");
+                        var payload = o.Value<JObject>("payload");
+
+                        var parameters = "[{\"ParamName\":\"Payload\",\"ParamValue\":" + payload.ToString() + "}]";
+
+                        client.StartWorkflow(workflowId, username, password, parameters);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                };
+                channel.BasicConsume(queue: queueName,
+                                     autoAck: true,
+                                     consumer: consumer);
+
+                int port = int.Parse(Config["WexflowServicePort"]);
+
+                var host = new WebHostBuilder()
+                    .UseContentRoot(Directory.GetCurrentDirectory())
+                    .UseKestrel((context, options) =>
+                    {
+                        options.ListenAnyIP(port);
+                    })
+                    .UseStartup<Startup>()
+                    .Build();
+
+                host.Run();
+
+                Console.Write("Press any key to stop Wexflow server...");
+                Console.ReadKey();
+            }
         }
-
     }
 }

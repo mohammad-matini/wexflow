@@ -16,11 +16,12 @@ namespace Wexflow.RabbitMQ.Client
 
             //var factory = new ConnectionFactory() { HostName = "localhost" };
             var factory = new ConnectionFactory() { Uri = new Uri(uri) };
+            var queueName = "Standard";
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
-                channel.QueueDeclare(queue: "wexflow",
-                                     durable: false,
+                channel.QueueDeclare(queue: queueName,
+                                     durable: true,
                                      exclusive: false,
                                      autoDelete: false,
                                      arguments: null);
@@ -29,7 +30,7 @@ namespace Wexflow.RabbitMQ.Client
                 var body = Encoding.UTF8.GetBytes(message);
 
                 channel.BasicPublish(exchange: "",
-                                     routingKey: "wexflow",
+                                     routingKey: queueName,
                                      basicProperties: null,
                                      body: body);
 
@@ -42,25 +43,6 @@ namespace Wexflow.RabbitMQ.Client
 
         static string GetMessage()
         {
-            //return "{" +
-            //    "\"WorkflowId\": 138," +
-            //    "\"Params\":" +
-            //    "[" +
-            //    "	{" +
-            //    "		\"ParamName\": \"ListId\"," +
-            //    "		\"ParamValue\": \"5a2b8615-af4d-4966-e051-08d7385c1609\"" +
-            //    "	}," +
-            //    "	{" +
-            //    "		\"ParamName\": \"Payload\"," +
-            //    "		\"ParamValue\": { \"59792\": \"destination\" }" +
-            //    "	}," +
-            //    "	{" +
-            //    "		\"ParamName\": \"Mapping\"," +
-            //    "		\"ParamValue\": { \"59793\": \"59792\" }" +
-            //    "	}" +
-            //    "]" +
-            //    "}";
-
             return "{\"tenantId\": 79,\"payload\": {\"_id\":\"5d8e2b5368b2491918f57294\",\"59792\":\"destination\"},\"workflowId\": 138}";
         }
     }
