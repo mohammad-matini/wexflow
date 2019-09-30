@@ -12,10 +12,14 @@ namespace Wexflow.Tasks.WorkiomUpdateRecord
     public class WorkiomUpdateRecord : Task
     {
         public string UpdateRecordUrl { get; }
+        public string ListId { get; }
+        public string[] Mappings { get; }
 
         public WorkiomUpdateRecord(XElement xe, Workflow wf) : base(xe, wf)
         {
             UpdateRecordUrl = GetSetting("updateRecordUrl");
+            ListId = GetSetting("listId");
+            Mappings = GetSettings("mapping");
         }
 
         public override TaskStatus Run()
@@ -28,44 +32,44 @@ namespace Wexflow.Tasks.WorkiomUpdateRecord
 
             try
             {
-                // Retrieve listId
-                var listId = Workflow.RestParams["ListId"];
-
                 // Retrieve recordId
                 var recordId = Workflow.RestParams["RecordId"];
 
                 // Retrieve trigger
-                var trigger = new Trigger { Payload = JsonConvert.DeserializeObject<Dictionary<string, string>>(Workflow.RestParams["Trigger"]) };
+                var trigger = new Trigger { Payload = JsonConvert.DeserializeObject<Dictionary<string, string>>(Workflow.RestParams["Payload"]) };
 
                 // Retrieve mapping (only dynamic for the moment)
-                var mappingDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(Workflow.RestParams["Mapping"]);
-                var mapping = new Dictionary<string, MappingValue>();
-                foreach (var item in mappingDic)
+                foreach (var map in Mappings)
                 {
-                    mapping.Add(item.Key, new MappingValue { MappingType = MappingType.Dynamic, Value = item.Value });
-                }
+                    var mappingDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(map);
+                    var mapping = new Dictionary<string, MappingValue>();
+                    foreach (var item in mappingDic)
+                    {
+                        mapping.Add(item.Key, new MappingValue { MappingType = MappingType.Dynamic, Value = item.Value });
+                    }
 
-                // Genereate result
-                var result = WorkiomHelper.Map(trigger, mapping);
+                    // Genereate result
+                    var result = WorkiomHelper.Map(trigger, mapping);
 
-                // Update record from result
-                var url = UpdateRecordUrl + listId + "&id=" + recordId;
-                var auth = Workflow.GetWorkiomAccessToken();
-                var json = JsonConvert.SerializeObject(result);
+                    // Update record from result
+                    var url = UpdateRecordUrl + ListId + "&id=" + recordId;
+                    var auth = Workflow.GetWorkiomAccessToken();
+                    var json = JsonConvert.SerializeObject(result);
 
-                var updateTask = WorkiomHelper.Put(url, auth, json);
-                updateTask.Wait();
-                var response = updateTask.Result;
-                var responseSuccess = (bool)JObject.Parse(response).SelectToken("success");
+                    var updateTask = WorkiomHelper.Put(url, auth, json);
+                    updateTask.Wait();
+                    var response = updateTask.Result;
+                    var responseSuccess = (bool)JObject.Parse(response).SelectToken("success");
 
-                if (responseSuccess)
-                {
-                    Info("Record " + recordId + " updated.");
-                }
-                else
-                {
-                    ErrorFormat("An error occured while updating the record {0}: {1}", recordId, response);
-                    success = false;
+                    if (responseSuccess)
+                    {
+                        Info("Record " + recordId + " updated.");
+                    }
+                    else
+                    {
+                        ErrorFormat("An error occured while updating the record {0}: {1}", recordId, response);
+                        success = false;
+                    }
                 }
 
             }

@@ -13,13 +13,13 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
     {
         public string CreateRecordUrl { get; }
         public string ListId { get; }
-        public string Mapping { get; }
+        public string[] Mappings { get; }
 
         public WorkiomCreateRecord(XElement xe, Workflow wf) : base(xe, wf)
         {
             CreateRecordUrl = GetSetting("createRecordUrl");
             ListId = GetSetting("listId");
-            Mapping = GetSetting("mapping");
+            Mappings = GetSettings("mapping");
         }
 
         public override TaskStatus Run()
@@ -36,34 +36,37 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
                 var trigger = new Trigger { Payload = JsonConvert.DeserializeObject<Dictionary<string, string>>(Workflow.RestParams["Payload"]) };
 
                 // Retrieve mapping (only dynamic for the moment)
-                var mappingDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(Mapping);
-                var mapping = new Dictionary<string, MappingValue>();
-                foreach (var item in mappingDic)
+                foreach (var map in Mappings)
                 {
-                    mapping.Add(item.Key, new MappingValue { MappingType = MappingType.Dynamic, Value = item.Value });
-                }
+                    var mappingDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(map);
+                    var mapping = new Dictionary<string, MappingValue>();
+                    foreach (var item in mappingDic)
+                    {
+                        mapping.Add(item.Key, new MappingValue { MappingType = MappingType.Dynamic, Value = item.Value });
+                    }
 
-                // Genereate result
-                var result = WorkiomHelper.Map(trigger, mapping);
+                    // Genereate result
+                    var result = WorkiomHelper.Map(trigger, mapping);
 
-                // Create record from result
-                var url = CreateRecordUrl + ListId;
-                var auth = Workflow.GetWorkiomAccessToken();
-                var json = JsonConvert.SerializeObject(result);
+                    // Create record from result
+                    var url = CreateRecordUrl + ListId;
+                    var auth = Workflow.GetWorkiomAccessToken();
+                    var json = JsonConvert.SerializeObject(result);
 
-                var createTask = WorkiomHelper.Post(url, auth, json);
-                createTask.Wait();
-                var response = createTask.Result;
-                var responseSuccess = (bool)JObject.Parse(response).SelectToken("success");
+                    var createTask = WorkiomHelper.Post(url, auth, json);
+                    createTask.Wait();
+                    var response = createTask.Result;
+                    var responseSuccess = (bool)JObject.Parse(response).SelectToken("success");
 
-                if (responseSuccess)
-                {
-                    Info("Record created.");
-                }
-                else
-                {
-                    ErrorFormat("An error occured while creating the record: {0}", response);
-                    success = false;
+                    if (responseSuccess)
+                    {
+                        Info("Record created.");
+                    }
+                    else
+                    {
+                        ErrorFormat("An error occured while creating the record: {0}", response);
+                        success = false;
+                    }
                 }
 
             }

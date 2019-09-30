@@ -274,26 +274,19 @@
                     json = [
                         {
                             "ParamName": "Payload",
-                            "ParamValue": { "59792": "destination" }
+                            "ParamValue": { "59792": "destination", "59793": "123" }
                         }
                     ];
                 } else if (selectedId === 139) {  // update record
                     json = [
                         {
-                            "ParamName": "ListId",
-                            "ParamValue": "5a2b8615-af4d-4966-e051-08d7385c1609"
-                        },
-                        {
                             "ParamName": "RecordId",
-                            "ParamValue": "5d7be067e3aae40001a0610c"
+                            "ParamValue": "5d91be503aeff00001d26f84"
                         },
                         {
-                            "ParamName": "Trigger",
+                            "ParamName": "Payload",
+                            //"ParamValue": { "59792": "destination-updated", "59793": "desc-updated" }
                             "ParamValue": { "59792": "destination-updated" }
-                        },
-                        {
-                            "ParamName": "Mapping",
-                            "ParamValue": { "59793": "59792" }
                         }
                     ];
                 }

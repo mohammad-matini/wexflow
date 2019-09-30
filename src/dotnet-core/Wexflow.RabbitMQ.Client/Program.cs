@@ -43,7 +43,10 @@ namespace Wexflow.RabbitMQ.Client
 
         static string GetMessage()
         {
-            return "{\"tenantId\": 79,\"payload\": {\"_id\":\"5d8e2b5368b2491918f57294\",\"59792\":\"destination\"},\"workflowId\": 138}";
+            // Create
+            //return "{\"tenantId\": 79,\"payload\": {\"_id\":\"5d8e2b5368b2491918f57294\",\"59792\":\"destination\"},\"workflowId\": 138}";
+            // Update
+            return "{\"tenantId\": 79, \"recordId\": \"5d91be503aeff00001d26f84\", \"payload\": {\"_id\":\"5d8e2b5368b2491918f57294\",\"59792\":\"destination-updated\"},\"workflowId\": 139}";
         }
     }
 }
