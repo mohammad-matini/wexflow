@@ -285,8 +285,8 @@
                         },
                         {
                             "ParamName": "Payload",
-                            //"ParamValue": { "59792": "destination-updated", "59793": "desc-updated" }
-                            "ParamValue": { "59792": "destination-updated" }
+                            "ParamValue": { "59792": "destination-updated", "59793": "desc-updated" }
+                            //"ParamValue": { "59792": "destination-updated" }
                         }
                     ];
                 }
