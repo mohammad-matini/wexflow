@@ -14,8 +14,8 @@ namespace Wexflow.RabbitMQ.Client
                .Build();
             var uri = config["CloudAmpqUrl"];
 
-            //var factory = new ConnectionFactory() { HostName = "localhost" };
             var factory = new ConnectionFactory() { Uri = new Uri(uri) };
+            //var factory = new ConnectionFactory() { HostName = "localhost" };
             var queueName = "Standard";
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
