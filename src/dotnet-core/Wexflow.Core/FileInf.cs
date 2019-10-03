@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -11,20 +12,22 @@ namespace Wexflow.Core
     {
         private string _path;
         private string _renameTo;
+        private FileInfo _fileInfo;
 
         /// <summary>
         /// File path.
         /// </summary>
-        public string Path { 
-            get 
-            { 
-                return _path; 
-            } 
-            set 
+        public string Path
+        {
+            get
+            {
+                return _path;
+            }
+            set
             {
                 _path = value;
                 FileName = System.IO.Path.GetFileName(value);
-            } 
+            }
         }
         /// <summary>
         /// File name.
@@ -37,7 +40,8 @@ namespace Wexflow.Core
         /// <summary>
         /// RenameTo.
         /// </summary>
-        public string RenameTo {
+        public string RenameTo
+        {
             get
             {
                 return _renameTo;
@@ -47,7 +51,9 @@ namespace Wexflow.Core
                 _renameTo = value;
 
                 if (!string.IsNullOrEmpty(value))
+                {
                     RenameToOrName = value;
+                }
             }
         }
         /// <summary>
@@ -58,6 +64,11 @@ namespace Wexflow.Core
         /// List of tags.
         /// </summary>
         public List<Tag> Tags { get; private set; }
+
+        /// <summary>
+        /// File system info from <see cref="Path"/>.
+        /// </summary>
+        public FileInfo FileInfo => _fileInfo ?? (_fileInfo = new FileInfo(Path));
 
         /// <summary>
         /// Creates a new instance of FileInf.

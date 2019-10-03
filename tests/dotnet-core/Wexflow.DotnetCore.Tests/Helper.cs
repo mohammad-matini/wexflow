@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using Wexflow.Core;
@@ -7,7 +8,26 @@ namespace Wexflow.DotnetCore.Tests
 {
     public class Helper
     {
-        private static readonly WexflowEngine WexflowEngine = new WexflowEngine(@"C:\Wexflow-dotnet-core\Wexflow.xml");
+        private static readonly WexflowEngine WexflowEngine = new WexflowEngine(
+            Environment.OSVersion.Platform == PlatformID.Unix
+            ? "/opt/wexflow/Wexflow/Wexflow.xml"
+            : (Environment.OSVersion.Platform == PlatformID.MacOSX
+               ? "/Applications/wexflow/Wexflow/Wexflow.xml"
+               : @"C:\Workiom\Wexflow\Wexflow.xml"));
+
+        public static readonly string TempFolder =
+            Environment.OSVersion.Platform == PlatformID.Unix
+            ? "/opt/wexflow/Wexflow/Temp/"
+            : (Environment.OSVersion.Platform == PlatformID.MacOSX
+               ? "/Applications/wexflow/Wexflow/Temp/"
+               : @"C:\Workiom\Wexflow\Temp\");
+
+        public static readonly string SourceFilesFolder =
+            Environment.OSVersion.Platform == PlatformID.Unix
+            ? "/opt/wexflow/WexflowTesting/"
+            : (Environment.OSVersion.Platform == PlatformID.MacOSX
+               ? "/Applications/wexflow/WexflowTesting/"
+               : @"C:\WexflowTesting\");
 
         public static void Run()
         {

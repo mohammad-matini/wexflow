@@ -37,6 +37,15 @@ namespace Wexflow.Server
                 XmlConfigurator.Configure(repo, log4NetConfig["log4net"]);
 
                 string wexflowSettingsFile = Config["WexflowSettingsFile"];
+                if (Environment.OSVersion.Platform == PlatformID.Unix)
+                {
+                    wexflowSettingsFile = Config["WexflowSettingsFileLinux"];
+                }
+                else if (Environment.OSVersion.Platform == PlatformID.MacOSX)
+                {
+                    wexflowSettingsFile = Config["WexflowSettingsFileMacOS"];
+                }
+
                 WexflowEngine = new WexflowEngine(wexflowSettingsFile);
                 WexflowEngine.Run();
 
