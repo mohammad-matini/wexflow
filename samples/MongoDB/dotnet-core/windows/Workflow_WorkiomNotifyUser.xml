@@ -1,0 +1,18 @@
+<Workflow id="140" name="Workflow_WorkiomNotifyUser" description="Workflow_WorkiomNotifyUser" xmlns="urn:wexflow-schema">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+    <Setting name="approval" value="false" />
+    <Setting name="hasRestParams" value="true" />
+    <Setting name="workiomAuthUrl" value="http://api.workiom.club:88/api/TokenAuth/Authenticate" />
+    <Setting name="workiomUsername" value="admin" />
+    <Setting name="workiomPassword" value="alarm1" />
+    <Setting name="workiomTenantName" value="demo" />
+  </Settings>
+  <LocalVariables />
+  <Tasks>
+    <Task id="1" name="WorkiomNotifyUser" description="Notifying user" enabled="true">
+      <Setting name="notifyUserUrl" value="http://api.workiom.club:88/api/services/app/Notification/CreateNotification" />
+    </Task>
+  </Tasks>
+</Workflow>

@@ -286,7 +286,17 @@
                         {
                             "ParamName": "Payload",
                             "ParamValue": { "59792": "destination-updated", "59793": "desc-updated" }
-                            //"ParamValue": { "59792": "destination-updated" }
+                        }
+                    ];
+                } else if (selectedId === 140) {  // notify user
+                    json = [
+                        {
+                            "ParamName": "UserId",
+                            "ParamValue": 106
+                        },
+                        {
+                            "ParamName": "Message",
+                            "ParamValue": "Test from Wexflow."
                         }
                     ];
                 }

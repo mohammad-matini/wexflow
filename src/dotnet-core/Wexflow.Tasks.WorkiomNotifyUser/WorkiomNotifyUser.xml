@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    WorkiomNotifyUser is a sequential task that notifies a Workiom user.
+  -->
+  <Task id="$int" name="WorkiomNotifyUser" description="$string" enabled="true|false">
+    <!-- Create record URL. Ex: http://api.workiom.club:88/api/services/app/Notification/CreateNotification -->
+    <Setting name="notifyUserUrl" value="$string" />
+  </Task>
+</Tasks>

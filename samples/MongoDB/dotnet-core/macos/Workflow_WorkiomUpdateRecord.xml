@@ -1,17 +1,18 @@
 <Workflow xmlns="urn:wexflow-schema" id="139" name="Workflow_WorkiomUpdateRecord" description="Workflow_WorkiomUpdateRecord">
-	<Settings>
-		<Setting name="launchType" value="trigger" />
-		<Setting name="enabled" value="true" />
-		<Setting name="hasRestParams" value="true" />
-		
-		<Setting name="workiomAuthUrl" value="http://api.workiom.club/api/TokenAuth/Authenticate" />
-		<Setting name="workiomUsername" value="admin" />
-		<Setting name="workiomPassword" value="alarm1" />
-		<Setting name="workiomTenantName" value="demo" />
-	</Settings>
-	<Tasks>
-		<Task id="1" name="WorkiomUpdateRecord" description="Updating Workiom record..." enabled="true">
-			<Setting name="updateRecordUrl" value="http://api.workiom.club/api/services/app/Data/Update?listId=" />
-		</Task>
-	</Tasks>
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+    <Setting name="hasRestParams" value="true" />
+    <Setting name="workiomAuthUrl" value="http://api.workiom.club:88/api/TokenAuth/Authenticate" />
+    <Setting name="workiomUsername" value="admin" />
+    <Setting name="workiomPassword" value="alarm1" />
+    <Setting name="workiomTenantName" value="demo" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="WorkiomUpdateRecord" description="Updating Workiom record" enabled="true">
+      <Setting name="updateRecordUrl" value="http://api.workiom.club:88/api/services/app/Data/Update?listId=" />
+      <Setting name="listId" value="15db9ad3-e435-4b2b-170e-08d7363a65e1" />
+      <Setting name="mapping" value="[{&quot;Field&quot;: &quot;61069&quot;, &quot;Value&quot;: &quot;59792&quot;, &quot;Type&quot;: &quot;Field&quot;}, {&quot;Field&quot;: &quot;61079&quot;, &quot;Value&quot;: &quot;59793&quot;, &quot;Type&quot;: &quot;Field&quot;}, {&quot;Field&quot;: &quot;61080&quot;, &quot;Value&quot;: &quot;ABC Value&quot;,&quot;Type&quot;: &quot;Static&quot;}]" />
+    </Task>
+  </Tasks>
 </Workflow>
