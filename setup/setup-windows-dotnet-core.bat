@@ -1,6 +1,6 @@
 ::@echo off
 
-set version=4.5
+set version=4.9
 set dst=wexflow-%version%-windows-dotnet-core
 set dstDir=.\%dst%
 set backend=Backend
@@ -81,7 +81,7 @@ copy dotnet-core\windows\run.bat %dstDir%
 :: MongoDB script
 dotnet publish ..\src\dotnet-core\Wexflow.Scripts.MongoDB\Wexflow.Scripts.MongoDB.csproj --force --output %~dp0\%dstDir%\Wexflow.Scripts.MongoDB
 copy dotnet-core\windows\MongoDB\appsettings.json %dstDir%\Wexflow.Scripts.MongoDB
-xcopy "..\samples\MongoDB\dotnet-core\windows\*" %dstDir%\Wexflow.Scripts.MongoDB\Workflows /s /e
+xcopy "..\samples\workflows\dotnet-core\windows\*" %dstDir%\Wexflow.Scripts.MongoDB\Workflows /s /e
 copy dotnet-core\windows\install-MongoDB.bat %dstDir%
 
 :: License
