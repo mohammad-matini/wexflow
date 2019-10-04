@@ -18,7 +18,7 @@ namespace Workiom.Core
                 {
                     result[item.Key] = trigger.Payload[item.Value.Value];
                 }
-                else
+                else if (item.Value.MappingType == MappingType.Static)
                 {
                     result[item.Key] = item.Value.Value;
                 }

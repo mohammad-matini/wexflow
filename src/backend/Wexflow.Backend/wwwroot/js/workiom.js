@@ -274,7 +274,8 @@
                     json = [
                         {
                             "ParamName": "Payload",
-                            "ParamValue": { "59792": "destination", "59793": "123" }
+                            //"ParamValue": { "59792": "destination", "59793": "123" }
+                            "ParamValue": { "_id": "5d97cb1261e64c00015ff44c", "61068": "T" }
                         }
                     ];
                 } else if (selectedId === 139) {  // update record
