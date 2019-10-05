@@ -13,6 +13,7 @@
   <Tasks>
     <Task id="1" name="WorkiomNotifyUser" description="Notifying user" enabled="true">
       <Setting name="notifyUserUrl" value="http://api.workiom.club:88/api/services/app/Notification/CreateNotification" />
+      <Setting name="mapping" value="[{&quot;Field&quot;: &quot;61069&quot;, &quot;Value&quot;: &quot;61068&quot;, &quot;Type&quot;: &quot;Field&quot;}]" />
     </Task>
   </Tasks>
 </Workflow>

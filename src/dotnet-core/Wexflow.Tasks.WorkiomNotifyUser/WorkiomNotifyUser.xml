@@ -6,5 +6,6 @@
   <Task id="$int" name="WorkiomNotifyUser" description="$string" enabled="true|false">
     <!-- Create record URL. Ex: http://api.workiom.club:88/api/services/app/Notification/CreateNotification -->
     <Setting name="notifyUserUrl" value="$string" />
+    <Setting name="mapping" value="$string" />
   </Task>
 </Tasks>

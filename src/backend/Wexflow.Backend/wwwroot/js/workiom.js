@@ -293,8 +293,8 @@
                 } else if (selectedId === 140) {  // notify user
                     json = [
                         {
-                            "ParamName": "UserId",
-                            "ParamValue": 106
+                            "ParamName": "Payload",
+                            "ParamValue": { "_id": "5d97cb1261e64c00015ff44c", "61068": "106" }
                         },
                         {
                             "ParamName": "Message",
