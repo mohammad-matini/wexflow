@@ -282,11 +282,12 @@
                     json = [
                         {
                             "ParamName": "RecordId",
-                            "ParamValue": "5d91be503aeff00001d26f84"
+                            "ParamValue": "5d987cb061e64c00015ff44f"
                         },
                         {
                             "ParamName": "Payload",
-                            "ParamValue": { "59792": "destination-updated", "59793": "desc-updated" }
+                            //"ParamValue": { "59792": "destination-updated", "59793": "desc-updated" }
+                            "ParamValue": { "_id": "5d97cb1261e64c00015ff44c", "61068": "T-updated" }
                         }
                     ];
                 } else if (selectedId === 140) {  // notify user

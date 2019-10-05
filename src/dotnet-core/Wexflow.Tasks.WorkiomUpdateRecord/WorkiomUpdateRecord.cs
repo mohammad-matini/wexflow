@@ -32,6 +32,8 @@ namespace Wexflow.Tasks.WorkiomUpdateRecord
 
             try
             {
+                InfoFormat("Mapping: {0}", Mapping);
+
                 // Retrieve recordId
                 var recordId = Workflow.RestParams["RecordId"];
 
@@ -48,32 +50,39 @@ namespace Wexflow.Tasks.WorkiomUpdateRecord
                     var val = item.Value<string>("Value");
                     var type = item.Value<string>("Type");
 
-                    mapping.Add(field, new MappingValue { Value = val, MappingType = type == "Field" ? MappingType.Dynamic : MappingType.Static });
+                    mapping.Add(field, new MappingValue { Value = val, MappingType = type.ToLower() == "field" ? MappingType.Dynamic : MappingType.Static });
                 }
 
                 // Genereate result
                 var result = WorkiomHelper.Map(trigger, mapping);
 
                 // Update record from result
-                var url = UpdateRecordUrl + ListId + "&id=" + recordId;
-                var auth = Workflow.GetWorkiomAccessToken();
-                var json = JsonConvert.SerializeObject(result);
-
-                var updateTask = WorkiomHelper.Put(url, auth, json);
-                updateTask.Wait();
-                var response = updateTask.Result;
-                var responseSuccess = (bool)JObject.Parse(response).SelectToken("success");
-
-                if (responseSuccess)
+                if (result.Count > 0)
                 {
-                    Info("Record " + recordId + " updated.");
+                    var url = UpdateRecordUrl + ListId + "&id=" + recordId;
+                    var auth = Workflow.GetWorkiomAccessToken();
+                    var json = JsonConvert.SerializeObject(result);
+                    InfoFormat("Payload: {0}", json);
+
+                    var updateTask = WorkiomHelper.Put(url, auth, json);
+                    updateTask.Wait();
+                    var response = updateTask.Result;
+                    var responseSuccess = (bool)JObject.Parse(response).SelectToken("success");
+
+                    if (responseSuccess)
+                    {
+                        Info("Record " + recordId + " updated.");
+                    }
+                    else
+                    {
+                        ErrorFormat("An error occured while updating the record {0}: {1}", recordId, response);
+                        success = false;
+                    }
                 }
                 else
                 {
-                    ErrorFormat("An error occured while updating the record {0}: {1}", recordId, response);
-                    success = false;
+                    Info("The mapping resulted in an empty payload.");
                 }
-
 
             }
             catch (ThreadAbortException)
