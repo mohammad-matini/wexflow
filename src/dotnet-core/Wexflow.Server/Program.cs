@@ -79,14 +79,12 @@ namespace Wexflow.Server
                             var workflowId = o.Value<int>("workflowId");
                             var recordId = o.Value<string>("recordId");
                             var payload = o.Value<JObject>("payload");
-                            var userId = o.Value<string>("userId");
                             var msg = o.Value<string>("message");
 
                             var parameters =
                             "[" +
                                 "{\"ParamName\":\"Payload\",\"ParamValue\":" + (payload == null ? "\"\"" : payload.ToString()) + "}," +
                                 "{\"ParamName\":\"RecordId\",\"ParamValue\":\"" + recordId + "\"}," +
-                                "{\"ParamName\":\"UserId\",\"ParamValue\":\"" + userId + "\"}," +
                                 "{\"ParamName\":\"Message\",\"ParamValue\":\"" + msg + "\"}" +
                             "]";
 
