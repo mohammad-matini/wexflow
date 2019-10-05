@@ -6,5 +6,7 @@
   <Task id="$int" name="WorkiomCreateRecord" description="$string" enabled="true|false">
     <!-- Create record URL. Ex: http://api.workiom.club:88/api/services/app/Data/Create?listId= -->
     <Setting name="createRecordUrl" value="$string" />
+    <Setting name="listId" value="$string" />
+    <Setting name="mapping" value="$string" />
   </Task>
 </Tasks>

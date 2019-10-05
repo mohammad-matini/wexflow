@@ -32,6 +32,8 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
 
             try
             {
+                InfoFormat("Mapping: {0}", Mapping);
+
                 // Retrieve payload
                 var trigger = new Trigger { Payload = JsonConvert.DeserializeObject<Dictionary<string, string>>(Workflow.RestParams["Payload"]) };
 
@@ -45,32 +47,39 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
                     var val = item.Value<string>("Value");
                     var type = item.Value<string>("Type");
 
-                    mapping.Add(field, new MappingValue { Value = val, MappingType = type == "Field" ? MappingType.Dynamic : MappingType.Static });
+                    mapping.Add(field, new MappingValue { Value = val, MappingType = type.ToLower() == "field" ? MappingType.Dynamic : MappingType.Static });
                 }
 
                 // Genereate result
                 var result = WorkiomHelper.Map(trigger, mapping);
 
                 // Create record from result
-                var url = CreateRecordUrl + ListId;
-                var auth = Workflow.GetWorkiomAccessToken();
-                var json = JsonConvert.SerializeObject(result);
-
-                var createTask = WorkiomHelper.Post(url, auth, json);
-                createTask.Wait();
-                var response = createTask.Result;
-                var responseSuccess = (bool)JObject.Parse(response).SelectToken("success");
-
-                if (responseSuccess)
+                if (result.Count > 0)
                 {
-                    Info("Record created.");
+                    var url = CreateRecordUrl + ListId;
+                    var auth = Workflow.GetWorkiomAccessToken();
+                    var json = JsonConvert.SerializeObject(result);
+                    InfoFormat("Payload: {0}", json);
+
+                    var createTask = WorkiomHelper.Post(url, auth, json);
+                    createTask.Wait();
+                    var response = createTask.Result;
+                    var responseSuccess = (bool)JObject.Parse(response).SelectToken("success");
+
+                    if (responseSuccess)
+                    {
+                        Info("Record created.");
+                    }
+                    else
+                    {
+                        ErrorFormat("An error occured while creating the record: {0}", response);
+                        success = false;
+                    }
                 }
                 else
                 {
-                    ErrorFormat("An error occured while creating the record: {0}", response);
-                    success = false;
+                    Info("The mapping resulted in an empty payload.");
                 }
-
 
             }
             catch (ThreadAbortException)
