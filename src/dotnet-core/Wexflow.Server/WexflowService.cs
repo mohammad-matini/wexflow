@@ -1222,7 +1222,7 @@ namespace Wexflow.Server
                         if (user.UserProfile == Core.Db.UserProfile.SuperAdministrator)
                         {
                             var id = Program.WexflowEngine.SaveWorkflow(user.GetId(), user.UserProfile, xml);
-                            if(id == "-1")
+                            if (id == "-1")
                             {
                                 res = false;
                             }
@@ -1315,7 +1315,9 @@ namespace Wexflow.Server
 
                     JObject o = JObject.Parse(json);
                     var wi = o.SelectToken("WorkflowInfo");
-                    var isNew = (bool)wi.SelectToken("IsNew");
+                    int currentWorkflowId = (int)wi.SelectToken("Id");
+                    //var isNew = (bool)wi.SelectToken("IsNew");
+                    var isNew = !Program.WexflowEngine.Workflows.Any(w => w.Id == currentWorkflowId);
 
                     var username = o.Value<string>("Username");
                     var password = o.Value<string>("Password");
@@ -1361,8 +1363,27 @@ namespace Wexflow.Server
                         }
 
                         bool isWorkflowEnabled = (bool)wi.SelectToken("IsEnabled");
-                        bool isWorkflowApproval = (bool)wi.SelectToken("IsApproval");
+                        var isWorkflowApprovalObj = wi.SelectToken("IsApproval");
+                        var isWorkflowApproval = false;
+                        if (isWorkflowApprovalObj != null)
+                        {
+                            isWorkflowApproval = (bool)isWorkflowApprovalObj;
+                        }
+
                         string workflowDesc = (string)wi.SelectToken("Description");
+
+                        // Workiom settings
+                        var hasRestParamsObj = wi.SelectToken("HasRestParams");
+                        var hasRestParams = false;
+                        if (hasRestParamsObj != null)
+                        {
+                            hasRestParams = (bool)hasRestParamsObj;
+                        }
+
+                        var workiomAuthUrl = wi.Value<string>("WorkiomAuthUrl");
+                        var workiomUsername = wi.Value<string>("WorkiomUsername");
+                        var workiomPassword = wi.Value<string>("WorkiomPassword");
+                        var workiomTenantName = wi.Value<string>("WorkiomTenantName");
 
                         // Local variables
                         var xLocalVariables = new XElement(xn + "LocalVariables");
@@ -1451,8 +1472,11 @@ namespace Wexflow.Server
                                     , new XAttribute("name", "enabled")
                                     , new XAttribute("value", isWorkflowEnabled.ToString().ToLower()))
                                 , new XElement(xn + "Setting"
-                                , new XAttribute("name", "approval")
-                                , new XAttribute("value", isWorkflowApproval.ToString().ToLower()))
+                                    , new XAttribute("name", "approval")
+                                    , new XAttribute("value", isWorkflowApproval.ToString().ToLower()))
+                                , new XElement(xn + "Setting"
+                                    , new XAttribute("name", "hasRestParams")
+                                    , new XAttribute("value", hasRestParams.ToString().ToLower()))
                             //, new XElement(xn + "Setting"
                             //    , new XAttribute("name", "period")
                             //    , new XAttribute("value", workflowPeriod.ToString(@"dd\.hh\:mm\:ss")))
@@ -1480,6 +1504,33 @@ namespace Wexflow.Server
                                     , new XAttribute("name", "cronExpression")
                                     , new XAttribute("value", cronExpression))
                                 );
+                        }
+
+                        if (!string.IsNullOrEmpty(workiomAuthUrl) && !string.IsNullOrEmpty(workiomUsername) && !string.IsNullOrEmpty(workiomPassword) && !string.IsNullOrEmpty(workiomTenantName))
+                        {
+                            xwf.Element(xn + "Settings").Add(
+                                 new XElement(xn + "Setting"
+                                    , new XAttribute("name", "workiomAuthUrl")
+                                    , new XAttribute("value", workiomAuthUrl))
+                                );
+
+                            xwf.Element(xn + "Settings").Add(
+                                new XElement(xn + "Setting"
+                                   , new XAttribute("name", "workiomUsername")
+                                   , new XAttribute("value", workiomUsername))
+                               );
+
+                            xwf.Element(xn + "Settings").Add(
+                                new XElement(xn + "Setting"
+                                   , new XAttribute("name", "workiomPassword")
+                                   , new XAttribute("value", workiomPassword))
+                               );
+
+                            xwf.Element(xn + "Settings").Add(
+                                new XElement(xn + "Setting"
+                                   , new XAttribute("name", "workiomTenantName")
+                                   , new XAttribute("value", workiomTenantName))
+                               );
                         }
 
                         xdoc.Add(xwf);
@@ -1603,6 +1654,88 @@ namespace Wexflow.Server
                             //        xwfCronExpression.Remove();
                             //    }
                             //}
+
+                            // Workiom settings
+                            var hasRestParamsObj = wi.SelectToken("HasRestParams");
+                            var hasRestParams = false;
+                            if (hasRestParamsObj != null)
+                            {
+                                hasRestParams = (bool)hasRestParamsObj;
+                            }
+
+                            var workiomAuthUrl = wi.Value<string>("WorkiomAuthUrl");
+                            var workiomUsername = wi.Value<string>("WorkiomUsername");
+                            var workiomPassword = wi.Value<string>("WorkiomPassword");
+                            var workiomTenantName = wi.Value<string>("WorkiomTenantName");
+
+                            var xwfHasRestParams = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='hasRestParams']", wf.XmlNamespaceManager);
+                            if (xwfHasRestParams == null)
+                            {
+                                xdoc.Root.XPathSelectElement("wf:Settings", wf.XmlNamespaceManager)
+                                    .Add(new XElement(xn + "Setting"
+                                            , new XAttribute("name", "hasRestParams")
+                                            , new XAttribute("value", hasRestParams.ToString().ToLower())));
+                            }
+                            else
+                            {
+                                xwfHasRestParams.Attribute("value").Value = hasRestParams.ToString().ToLower();
+                            }
+
+                            if (!string.IsNullOrEmpty(workiomAuthUrl) && !string.IsNullOrEmpty(workiomUsername) && !string.IsNullOrEmpty(workiomPassword) && !string.IsNullOrEmpty(workiomTenantName))
+                            {
+                                var xwfWorkiomAuthUrl = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='workiomAuthUrl']", wf.XmlNamespaceManager);
+                                if (xwfWorkiomAuthUrl == null)
+                                {
+                                    xdoc.Root.XPathSelectElement("wf:Settings", wf.XmlNamespaceManager)
+                                        .Add(new XElement(xn + "Setting"
+                                                , new XAttribute("name", "workiomAuthUrl")
+                                                , new XAttribute("value", workiomAuthUrl.ToString())));
+                                }
+                                else
+                                {
+                                    xwfWorkiomAuthUrl.Attribute("value").Value = workiomAuthUrl.ToString();
+                                }
+
+                                var xwfWorkiomUsername = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='workiomUsername']", wf.XmlNamespaceManager);
+                                if (xwfWorkiomUsername == null)
+                                {
+                                    xdoc.Root.XPathSelectElement("wf:Settings", wf.XmlNamespaceManager)
+                                        .Add(new XElement(xn + "Setting"
+                                                , new XAttribute("name", "workiomUsername")
+                                                , new XAttribute("value", workiomUsername.ToString())));
+                                }
+                                else
+                                {
+                                    xwfWorkiomUsername.Attribute("value").Value = workiomUsername.ToString();
+                                }
+
+                                var xwfWorkiomPassword = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='workiomPassword']", wf.XmlNamespaceManager);
+                                if (xwfWorkiomPassword == null)
+                                {
+                                    xdoc.Root.XPathSelectElement("wf:Settings", wf.XmlNamespaceManager)
+                                        .Add(new XElement(xn + "Setting"
+                                                , new XAttribute("name", "workiomPassword")
+                                                , new XAttribute("value", workiomPassword.ToString())));
+                                }
+                                else
+                                {
+                                    xwfWorkiomPassword.Attribute("value").Value = workiomPassword.ToString();
+                                }
+
+                                var xwfWorkiomTenantName = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='workiomTenantName']", wf.XmlNamespaceManager);
+                                if (xwfWorkiomTenantName == null)
+                                {
+                                    xdoc.Root.XPathSelectElement("wf:Settings", wf.XmlNamespaceManager)
+                                        .Add(new XElement(xn + "Setting"
+                                                , new XAttribute("name", "workiomTenantName")
+                                                , new XAttribute("value", workiomTenantName.ToString())));
+                                }
+                                else
+                                {
+                                    xwfWorkiomTenantName.Attribute("value").Value = workiomTenantName.ToString();
+                                }
+
+                            }
 
                             // Local variables
                             var xLocalVariables = xdoc.Root.Element(wf.XNamespaceWf + "LocalVariables");
