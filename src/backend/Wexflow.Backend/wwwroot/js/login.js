@@ -22,23 +22,26 @@ function Login() {
         var username = usernameTxt.value;
         var password = passwordTxt.value;
         var passwordHash = MD5(password);
+        auth = "Basic " + btoa(username + ":" + passwordHash);
 
         if (username === "" || password === "") {
             Common.toastInfo("Enter a valid username and password.");
         } else {
-            Common.get(uri + "/user?qu=" + encodeURIComponent(username) + "&qp=" + encodeURIComponent(passwordHash) + "&username=" + encodeURIComponent(username), function (user) {
-                if (typeof user === "undefined" || user === null) {
-                    Common.toastError("Wrong credentials.");
-                } else {
-                    if (passwordHash === user.Password) {
-                        authorize(username, passwordHash, user.UserProfile);
-                        window.location.replace("dashboard.html");
+            Common.get(uri + "/user?username=" + encodeURIComponent(username),
+                function (user) {
+                    if (typeof user === "undefined" || user === null) {
+                        Common.toastError("Wrong credentials.");
                     } else {
-                        Common.toastError("The password is incorrect.");
-                    }
+                        if (passwordHash === user.Password) {
+                            authorize(username, passwordHash, user.UserProfile);
+                            window.location.replace("dashboard.html");
+                        } else {
+                            Common.toastError("The password is incorrect.");
+                        }
 
-                }
-            });
+                    }
+                },
+                function () { }, auth);
         }
     }
 

@@ -14,6 +14,7 @@
     var suser = getUser();
     var username = "";
     var password = "";
+    var auth = "";
     //var osname = Common.os();
 
     if (suser === null || suser === "") {
@@ -23,40 +24,43 @@
 
         username = user.Username;
         password = user.Password;
+        auth = "Basic " + btoa(username + ":" + password);
 
-        Common.get(uri + "/user?qu=" + encodeURIComponent(username) + "&qp=" + encodeURIComponent(password) + "&username=" + encodeURIComponent(user.Username), function (u) {
-            if (user.Password !== u.Password) {
-                Common.redirectToLoginPage();
-            } else {
+        Common.get(uri + "/user?username=" + encodeURIComponent(user.Username),
+            function (u) {
+                if (user.Password !== u.Password) {
+                    Common.redirectToLoginPage();
+                } else {
 
-                if (u.UserProfile === 0 || u.UserProfile === 1) {
-                    lnkManager.style.display = "inline";
-                    lnkDesigner.style.display = "inline";
-                    lnkApproval.style.display = "inline";
-                    lnkWorkiom.style.display = "inline";
-                    lnkUsers.style.display = "inline";
+                    if (u.UserProfile === 0 || u.UserProfile === 1) {
+                        lnkManager.style.display = "inline";
+                        lnkDesigner.style.display = "inline";
+                        lnkApproval.style.display = "inline";
+                        lnkWorkiom.style.display = "inline";
+                        lnkUsers.style.display = "inline";
 
-                    if (u.UserProfile === 0) {
-                        lnkProfiles.style.display = "inline";
+                        if (u.UserProfile === 0) {
+                            lnkProfiles.style.display = "inline";
+                        }
+
+                        var btnLogout = document.getElementById("btn-logout");
+                        var divDesigner = document.getElementById("wf-designer");
+                        divDesigner.style.display = "block";
+
+                        btnLogout.onclick = function () {
+                            deleteUser();
+                            Common.redirectToLoginPage();
+                        };
+
+                        btnLogout.innerHTML = "Logout (" + u.Username + ")";
+                        loadWorkflows();
+                    } else {
+                        Common.redirectToLoginPage();
                     }
 
-                    var btnLogout = document.getElementById("btn-logout");
-                    var divDesigner = document.getElementById("wf-designer");
-                    divDesigner.style.display = "block";
-
-                    btnLogout.onclick = function () {
-                        deleteUser();
-                        Common.redirectToLoginPage();
-                    };
-
-                    btnLogout.innerHTML = "Logout (" + u.Username + ")";
-                    loadWorkflows();
-                } else {
-                    Common.redirectToLoginPage();
                 }
-
-            }
-        });
+            },
+            function () { }, auth);
     }
 
     var selectedId = -1;
@@ -174,10 +178,10 @@
                 }, function () {
                     Common.toastError("An error occured while deleting workflows.");
                 }, {
-                        "Username": username,
-                        "Password": password,
-                        "WorkflowsToDelete": workflowsToDelete
-                    });
+                    //"Username": username,
+                    //"Password": password,
+                    "WorkflowsToDelete": workflowsToDelete
+                }, auth);
             }
         }
     };
@@ -462,7 +466,7 @@
                 },
                 function () {
                     Common.toastError("An error occured while retrieving task names.");
-                });
+                }, auth);
         }
 
 
@@ -526,7 +530,8 @@
                                                         } else {
                                                             Common.toastInfo("The period format is not valid. The valid format is: dd.hh:mm:ss");
                                                         }
-                                                    }
+                                                    }, function () { }
+                                                    , auth
                                                 );
                                             } // Cron expression validation
                                             else if (lt === "cron" && document.getElementById("wf-cron").value !== "") {
@@ -542,7 +547,8 @@
                                                                 openInNewTab("https://github.com/aelassas/Wexflow/wiki/Cron-scheduling");
                                                             }
                                                         }
-                                                    }
+                                                    }, function () { }
+                                                    , auth
                                                 );
                                             } else {
                                                 saveFunc();
@@ -555,7 +561,7 @@
                         } else {
                             Common.toastInfo("The workflow id is already in use. Enter another one.");
                         }
-                    });
+                    }, function () { }, auth);
             } else {
 
                 if (document.getElementById("wf-name").value === "") {
@@ -600,7 +606,8 @@
                                             } else {
                                                 Common.toastInfo("The period format is not valid. The valid format is: dd.hh:mm:ss");
                                             }
-                                        }
+                                        }, function () { }
+                                        , auth
                                     );
                                 } // Cron expression validation
                                 else if (lt === "cron" && document.getElementById("wf-cron").value !== "") {
@@ -616,7 +623,8 @@
                                                     openInNewTab("https://github.com/aelassas/Wexflow/wiki/Cron-scheduling");
                                                 }
                                             }
-                                        }
+                                        }, function () { }
+                                        , auth
                                     );
                                 } else {
                                     saveFunc();
@@ -687,7 +695,7 @@
                 retries = 0;
             }
 
-        }, xml);   // End of isXmlWorkflowValid.
+        }, xml, auth);   // End of isXmlWorkflowValid.
     }
 
     function saveXml(xml, workflowId, selectedWorkflowId, selectWorkflow, scrollToWorkflow, callback) {
@@ -704,14 +712,19 @@
                     document.getElementById("wf-save").disabled = false;
                     Common.toastInfo("The workflow id " + vcurrentWorkflowId + " is already in use. Enter another one.");
                 }
-            });
+            }, function () { }, auth);
         } else {
             saveXmlQuery(xml, workflowId, selectedWorkflowId, selectWorkflow, scrollToWorkflow, callback);
         }
     }
 
     function saveXmlQuery(xml, workflowId, selectedWorkflowId, selectWorkflow, scrollToWorkflow, callback) {
-        var json = { workflowId: selectedWorkflowId, username: username, password: password, xml: xml };
+        var json = {
+            workflowId: selectedWorkflowId,
+            //username: username,
+            //password: password,
+            xml: xml
+        };
         Common.post(uri + "/saveXml", function (res) {
             if (res === true) {
 
@@ -866,7 +879,7 @@
                 Common.toastError("An error occured while saving the workflow " + workflowId + ".");
                 retries = 0;
             }
-        }, json);  // End of saveXml.
+        }, json, auth);  // End of saveXml.
     }
 
     function saveWorkflow(workflowId, selectedWorkflowId, scrollToWorkflow, callback) {
@@ -880,7 +893,7 @@
                     document.getElementById("wf-save").disabled = false;
                     Common.toastInfo("The workflow id " + vcurrentWorkflowId + " is already in use. Enter another one.");
                 }
-            });
+            }, function () { }, auth);
         } else {
             saveWorkflowQuery(workflowId, selectedWorkflowId, scrollToWorkflow, callback);
         }
@@ -889,8 +902,8 @@
     function saveWorkflowQuery(workflowId, selectedWorkflowId, scrollToWorkflow, callback) {
         var workflowEditor = getEditor(currentWorkflowId);
         var json = {
-            "Username": username,
-            "Password": password,
+            //"Username": username,
+            //"Password": password,
             "Id": selectedWorkflowId,
             "WorkflowInfo": workflowInfos[workflowId],
             "Tasks": workflowTasks[workflowId]
@@ -1035,7 +1048,7 @@
                 Common.toastError("An error occured while saving the workflow " + workflowId + ".");
                 retries = 0;
             }
-        }, json);
+        }, json, auth);
     }
 
     //function updateWorkflowStatus(workflowId) {
@@ -1119,8 +1132,7 @@
         var r = confirm("Are you sure you want to delete this workflow?");
         if (r === true) {
             var workflowId = parseInt(document.getElementById("wf-id").value);
-
-            Common.post(uri + "/delete?w=" + workflowId + "&u=" + encodeURIComponent(username) + "&p=" + encodeURIComponent(password),
+            Common.post(uri + "/delete?w=" + workflowId,
                 function (res) {
                     if (res === true) {
                         Common.toastSuccess("Workflow " + workflowId + " deleted with success.");
@@ -1145,7 +1157,7 @@
                 function () {
                     Common.toastError("An error occured while deleting the workflow" + workflowId + ".");
                     document.getElementById("wf-delete").disabled = false;
-                });
+                }, "", auth);
         } else {
             document.getElementById("wf-delete").disabled = false;
         }
@@ -1243,7 +1255,7 @@
                     },
                     function () {
                         Common.toastError("An error occured while retrieving settings.");
-                    });
+                    }, auth);
             } else {
                 workflowTasks[workflowId][index].Settings = [];
                 wfSettingsTable.innerHTML = "";
@@ -1379,7 +1391,7 @@
                 };
             }, function () {
                 Common.toastError("An error occured while retrieving the settings.");
-            });
+            }, auth);
         }
 
     }
@@ -1525,24 +1537,24 @@
     }
 
     function getWorkflow(wid, func) {
-        Common.get(uri + "/workflow?u=" + encodeURIComponent(username) + "&p=" + encodeURIComponent(password) + "&w=" + wid,
+        Common.get(uri + "/workflow?w=" + wid,
             function (w) {
                 func(w);
-            });
+            }, function () { }, auth);
     }
 
     function getTasks(wid, func) {
         Common.get(uri + "/tasks/" + wid,
             function (tasks) {
                 func(tasks);
-            });
+            }, function () { }, auth);
     }
 
     function getXml(wid, func) {
         Common.get(uri + "/xml/" + wid,
             function (tasks) {
                 func(tasks);
-            });
+            }, function () { }, auth);
     }
 
     function loadExecutionGraph(workflow) {
@@ -1609,7 +1621,6 @@
                 }
             });
         } else if (workflow.IsExecutionGraphEmpty === false) {
-
             Common.get(uri + "/graph/" + workflow.Id,
                 function (wfNodes) {
                     var nodes = [];
@@ -1637,7 +1648,7 @@
                 },
                 function () {
                     Common.toastError("An error occured while retrieving the execution graph of this workflow.");
-                });
+                }, auth);
         }
         // end of execution graph
     }
@@ -1773,7 +1784,7 @@
             },
             function () {
                 Common.toastError("An error occured while retrieving the XML of the task " + task.Id + ".");
-            }, task);
+            }, task, auth);
     }
 
     function doc(workflowId, btn) {
@@ -2401,7 +2412,7 @@
                                 },
                                 function () {
                                     Common.toastError("An error occured while retrieving settings.");
-                                });
+                                }, auth);
                         } else {
                             workflowTasks[workflowId][m].Settings = [];
                             wfSettingsTable.innerHTML = "";
@@ -2507,7 +2518,7 @@
 
             function () {
                 Common.toastError("An error occured while retrieving task names.");
-            });
+            }, auth);
     }
 
     function cancel(workflowId) {
@@ -2517,34 +2528,35 @@
     }
 
     function loadWorkflows(callback, workflowId, recursive) {
-        Common.get(uri + "/search?s=" + encodeURIComponent(searchText.value) + "&u=" + encodeURIComponent(username) + "&p=" + encodeURIComponent(password), function (data) {
-            if (typeof workflowId !== "undefined" && typeof recursive !== "undefined" && recursive === true) {
-                var workflowFound = false;
-                for (var i = 0; i < data.length; i++) {
-                    var val = data[i];
-                    if (val.Id === workflowId) {
-                        workflowFound = true;
-                        break;
+        Common.get(uri + "/search?s=" + encodeURIComponent(searchText.value),
+            function (data) {
+                if (typeof workflowId !== "undefined" && typeof recursive !== "undefined" && recursive === true) {
+                    var workflowFound = false;
+                    for (var i = 0; i < data.length; i++) {
+                        var val = data[i];
+                        if (val.Id === workflowId) {
+                            workflowFound = true;
+                            break;
+                        }
                     }
-                }
 
-                if (workflowFound === false && retries < maxRetries) {
-                    setTimeout(function () {
-                        //console.log("recursive: loadWorkflows");
-                        retries++;
-                        loadWorkflows(callback, workflowId, recursive);
-                    }, timeoutInterval);
+                    if (workflowFound === false && retries < maxRetries) {
+                        setTimeout(function () {
+                            //console.log("recursive: loadWorkflows");
+                            retries++;
+                            loadWorkflows(callback, workflowId, recursive);
+                        }, timeoutInterval);
+                    } else {
+                        loadWorkflowsResponse(data, callback);
+                        retries = 0;
+                    }
                 } else {
                     loadWorkflowsResponse(data, callback);
-                    retries = 0;
                 }
-            } else {
-                loadWorkflowsResponse(data, callback);
-            }
-        },
+            },
             function () {
                 Common.toastError("An error occured while retrieving workflows. Check that wexflow server is running correctly.");
-            });
+            }, auth);
 
     }
 
