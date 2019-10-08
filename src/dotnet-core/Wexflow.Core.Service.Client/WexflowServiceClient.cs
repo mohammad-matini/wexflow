@@ -106,5 +106,40 @@ namespace Wexflow.Core.Service.Client
             return user;
         }
 
+        public bool CreateWorkflow(string username, string password, string payload)
+        {
+            string uri = Uri + "/save";
+            var webClient = new WebClient();
+            webClient.Headers.Add("Authorization", Base64Encode(username + ":" + password));
+            var response = webClient.UploadString(uri, payload);
+            return bool.Parse(response);
+        }
+
+        public bool UpdateWorkflow(string username, string password, string payload)
+        {
+            string uri = Uri + "/save";
+            var webClient = new WebClient();
+            webClient.Headers.Add("Authorization", Base64Encode(username + ":" + password));
+            var response = webClient.UploadString(uri, payload);
+            return bool.Parse(response);
+        }
+
+        public bool DeleteWorkflow(string username, string password, int id)
+        {
+            string uri = Uri + "/delete?w=" + id;
+            var webClient = new WebClient();
+            webClient.Headers.Add("Authorization", Base64Encode(username + ":" + password));
+            var response = webClient.UploadString(uri, string.Empty);
+            return bool.Parse(response);
+        }
+
+        public string ReadWorkflow(string username, string password, int id)
+        {
+            string uri = Uri + "/xml/" + id;
+            var webClient = new WebClient();
+            webClient.Headers.Add("Authorization", Base64Encode(username + ":" + password));
+            var response = webClient.DownloadString(uri);
+            return response;
+        }
     }
 }
