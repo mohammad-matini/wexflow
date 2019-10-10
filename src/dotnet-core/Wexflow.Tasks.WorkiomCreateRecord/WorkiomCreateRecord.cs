@@ -35,7 +35,7 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
                 InfoFormat("Mapping: {0}", Mapping);
 
                 // Retrieve payload
-                var trigger = new Trigger { Payload = JsonConvert.DeserializeObject<Dictionary<string, string>>(Workflow.RestParams["Payload"]) };
+                var trigger = new Trigger { Payload = JsonConvert.DeserializeObject<Dictionary<string, object>>(Workflow.RestParams["Payload"]) };
 
                 // Retrieve mapping
                 var jArray = JArray.Parse(Mapping);

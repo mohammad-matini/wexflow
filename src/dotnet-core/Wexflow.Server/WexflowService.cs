@@ -1483,6 +1483,18 @@ namespace Wexflow.Server
             return new Auth { Username = username, Password = password };
         }
 
+        private Response GetFalseResponse()
+        {
+            var qFalseStr = JsonConvert.SerializeObject(false);
+            var qFalseBytes = Encoding.UTF8.GetBytes(qFalseStr);
+
+            return new Response()
+            {
+                ContentType = "application/json",
+                Contents = s => s.Write(qFalseBytes, 0, qFalseBytes.Length)
+            };
+        }
+
         /// <summary>
         /// Saves a workflow from JSON.
         /// </summary>
@@ -1511,12 +1523,12 @@ namespace Wexflow.Server
 
                     if (!user.Password.Equals(password))
                     {
-                        return false;
+                        return GetFalseResponse();
                     }
 
                     if (user.UserProfile == Core.Db.UserProfile.Restricted)
                     {
-                        return false;
+                        return GetFalseResponse();
                     }
 
                     if (user.UserProfile == Core.Db.UserProfile.Administrator && !isNew)
@@ -1526,7 +1538,7 @@ namespace Wexflow.Server
                         var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetId(), workflowDbId);
                         if (!check)
                         {
-                            return false;
+                            return GetFalseResponse();
                         }
                     }
 

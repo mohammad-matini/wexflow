@@ -4,6 +4,6 @@ namespace Workiom.Core
 {
     public class Trigger
     {
-        public Dictionary<string, string> Payload { get; set; }
+        public Dictionary<string, object> Payload { get; set; }
     }
 }

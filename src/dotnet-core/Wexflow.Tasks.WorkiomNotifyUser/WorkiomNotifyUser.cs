@@ -34,7 +34,7 @@ namespace Wexflow.Tasks.WorkiomNotifyUser
                 InfoFormat("Mapping: {0}", Mapping);
 
                 // Retrieve payload
-                var trigger = new Trigger { Payload = JsonConvert.DeserializeObject<Dictionary<string, string>>(Workflow.RestParams["Payload"]) };
+                var trigger = new Trigger { Payload = JsonConvert.DeserializeObject<Dictionary<string, object>>(Workflow.RestParams["Payload"]) };
 
                 // Retrieve mapping
                 var jArray = JArray.Parse(Mapping);
@@ -54,7 +54,7 @@ namespace Wexflow.Tasks.WorkiomNotifyUser
 
                 if (result.Count > 0)
                 {
-                    var userId = int.Parse(result.Values.First());
+                    var userId = result.Values.First();
                     var message = Workflow.RestParams["Message"];
 
                     var json = "{\"userId\":" + userId + ",\"message\":\"" + message + "\"}";

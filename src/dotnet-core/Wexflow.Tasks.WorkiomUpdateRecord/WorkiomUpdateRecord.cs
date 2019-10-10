@@ -38,7 +38,7 @@ namespace Wexflow.Tasks.WorkiomUpdateRecord
                 var recordId = Workflow.RestParams["RecordId"];
 
                 // Retrieve trigger
-                var trigger = new Trigger { Payload = JsonConvert.DeserializeObject<Dictionary<string, string>>(Workflow.RestParams["Payload"]) };
+                var trigger = new Trigger { Payload = JsonConvert.DeserializeObject<Dictionary<string, object>>(Workflow.RestParams["Payload"]) };
 
                 // Retrieve mapping
                 var jArray = JArray.Parse(Mapping);

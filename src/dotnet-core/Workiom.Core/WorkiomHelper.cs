@@ -8,9 +8,9 @@ namespace Workiom.Core
 {
     public class WorkiomHelper
     {
-        public static Dictionary<string, string> Map(Trigger trigger, Dictionary<string, MappingValue> mapping)
+        public static Dictionary<string, object> Map(Trigger trigger, Dictionary<string, MappingValue> mapping)
         {
-            var result = new Dictionary<string, string>();
+            var result = new Dictionary<string, object>();
 
             foreach (var item in mapping)
             {
