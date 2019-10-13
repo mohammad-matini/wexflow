@@ -14,9 +14,9 @@ namespace Workiom.Core
 
             foreach (var item in mapping)
             {
-                if (item.Value.MappingType == MappingType.Dynamic && trigger.Payload.ContainsKey(item.Value.Value))
+                if (item.Value.MappingType == MappingType.Dynamic && trigger.Payload.ContainsKey(item.Value.Value.ToString()))
                 {
-                    result[item.Key] = trigger.Payload[item.Value.Value];
+                    result[item.Key] = trigger.Payload[item.Value.Value.ToString()];
                 }
                 else if (item.Value.MappingType == MappingType.Static)
                 {

@@ -48,7 +48,7 @@ namespace Wexflow.RabbitMQ.Client
             // Update
             //return "{\"tenantId\": 79, \"recordId\": \"5d91be503aeff00001d26f84\", \"payload\": {\"_id\":\"5d8e2b5368b2491918f57294\",\"59792\":\"destination-updated\",\"59793\":\"desc-updated\"},\"workflowId\": 139}";
             // Notify
-            return "{\"payload\": { \"_id\": \"5d97cb1261e64c00015ff44c\", \"61068\": \"106\" }, \"message\": \"Test from Wexflow.\", \"workflowId\": 140}";
+            return "{\"payload\": { \"_id\": \"5d97cb1261e64c00015ff44c\", \"61068\": 106 }, \"message\": \"Test from Wexflow.\", \"workflowId\": 140}";
         }
     }
 }

@@ -9,6 +9,6 @@
     public class MappingValue
     {
         public MappingType MappingType { get; set; }
-        public string Value { get; set; }
+        public object Value { get; set; }
     }
 }

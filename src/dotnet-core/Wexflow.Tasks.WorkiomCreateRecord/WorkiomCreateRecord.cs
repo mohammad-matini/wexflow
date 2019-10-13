@@ -44,7 +44,7 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
                 foreach (var item in jArray)
                 {
                     var field = item.Value<string>("Field");
-                    var val = item.Value<string>("Value");
+                    var val = item.Value<object>("Value");
                     var type = item.Value<string>("Type");
 
                     mapping.Add(field, new MappingValue { Value = val, MappingType = type.ToLower() == "field" ? MappingType.Dynamic : MappingType.Static });

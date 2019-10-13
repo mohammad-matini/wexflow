@@ -95,6 +95,7 @@
         "<tr><td class='wf-title'>Cron expression</td><td class='wf-value'><input id='wf-cron' type='text' /></td></tr>" +
         "<tr><td class='wf-title'>Enabled</td><td class='wf-value'><input id='wf-enabled' type='checkbox' checked/></td></tr>" +
         "<tr><td class='wf-title'>Approval</td><td class='wf-value'><input id='wf-approval' type='checkbox' /></td></tr>" +
+        "<tr><td class='wf-title'>HasRestParams</td><td class='wf-value'><input id='wf-restparams' type='checkbox' /></td></tr>" +
         "<tr><td class='wf-title'>Description</td><td class='wf-value'><input id='wf-desc' type='text' /></td></tr>" +
         //"<tr><td class='wf-title'>Path</td><td id='wf-path' class='wf-value'></td></tr>" +
         //"<tr><td class='wf-title'>Status</td><td id='wf-status' class='wf-value'></td></tr>" +
@@ -338,6 +339,7 @@
                         "CronExpression": document.getElementById("wf-cron").value,
                         "IsEnabled": document.getElementById("wf-enabled").checked,
                         "IsApproval": document.getElementById("wf-approval").checked,
+                        "HasRestParams": document.getElementById("wf-restparams").checked,
                         "Description": document.getElementById("wf-desc").value,
                         "Path": "",
                         "IsNew": true,
@@ -419,6 +421,14 @@
                 if (isInt(wfIdStr)) {
                     var workflowId = parseInt(wfIdStr);
                     workflowInfos[workflowId].IsApproval = this.checked;
+                }
+            };
+
+            document.getElementById("wf-restparams").onchange = function () {
+                var wfIdStr = document.getElementById("wf-id").value;
+                if (isInt(wfIdStr)) {
+                    var workflowId = parseInt(wfIdStr);
+                    workflowInfos[workflowId].HasRestParams = this.checked;
                 }
             };
 
@@ -1969,6 +1979,8 @@
                     "Period": workflow.Period,
                     "CronExpression": workflow.CronExpression,
                     "IsEnabled": workflow.IsEnabled,
+                    "IsApproval": workflow.IsApproval,
+                    "HasRestParams": workflow.HasRestParams,
                     "Description": workflow.Description,
                     "Path": workflow.Path,
                     "IsNew": false,
@@ -2025,6 +2037,12 @@
                 wfApproval.checked = workflow.IsApproval;
                 wfApproval.onchange = function () {
                     workflowInfos[workflowId].IsApproval = wfApproval.checked;
+                };
+
+                var wfRestParams = document.getElementById("wf-restparams");
+                wfRestParams.checked = workflow.HasRestParams;
+                wfRestParams.onchange = function () {
+                    workflowInfos[workflowId].HasRestParams = wfRestParams.checked;
                 };
 
                 var wfDesc = document.getElementById("wf-desc");
