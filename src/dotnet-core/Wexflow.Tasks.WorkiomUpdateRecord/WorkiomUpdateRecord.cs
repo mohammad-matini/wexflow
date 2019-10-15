@@ -14,12 +14,14 @@ namespace Wexflow.Tasks.WorkiomUpdateRecord
         public string UpdateRecordUrl { get; }
         public string ListId { get; }
         public string Mapping { get; }
+        public string RecordIdSource { get; }
 
         public WorkiomUpdateRecord(XElement xe, Workflow wf) : base(xe, wf)
         {
             UpdateRecordUrl = GetSetting("updateRecordUrl");
             ListId = GetSetting("listId");
             Mapping = GetSetting("mapping");
+            RecordIdSource = GetSetting("recordIdSource");
         }
 
         public override TaskStatus Run()
@@ -34,11 +36,42 @@ namespace Wexflow.Tasks.WorkiomUpdateRecord
             {
                 InfoFormat("Mapping: {0}", Mapping);
 
-                // Retrieve recordId
-                var recordId = Workflow.RestParams["RecordId"];
-
                 // Retrieve trigger
                 var trigger = new Trigger { Payload = JsonConvert.DeserializeObject<Dictionary<string, object>>(Workflow.RestParams["Payload"]) };
+
+                // Retrieve recordId
+                //var recordId = Workflow.RestParams["RecordId"];
+                var recordId = string.Empty;
+                var recordIdSourceObj = JObject.Parse(RecordIdSource);
+                var recordIdSourceType = recordIdSourceObj.Value<string>("type");
+                if (recordIdSourceType.ToLower() == "static")
+                {
+                    recordId = recordIdSourceObj.Value<string>("id");
+                }
+                else
+                {
+                    var linkedFiledId = recordIdSourceObj.Value<string>("linkedFiledId");
+
+                    foreach (var kvp in trigger.Payload)
+                    {
+                        if (kvp.Key == linkedFiledId)
+                        {
+                            var linkedFiled = JArray.Parse(kvp.Value.ToString());
+                            recordId = linkedFiled[0].Value<string>("id");
+                            break;
+                        }
+                    }
+
+                }
+
+                if (string.IsNullOrEmpty(recordId))
+                {
+                    Info("RecordId not found.");
+                }
+                else
+                {
+                    InfoFormat("RecordId: {0}", recordId);
+                }
 
                 // Retrieve mapping
                 var jArray = JArray.Parse(Mapping);

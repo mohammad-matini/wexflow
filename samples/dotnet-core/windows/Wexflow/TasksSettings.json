@@ -65,7 +65,7 @@
 	"VimeoListUploads": [ "token" ],
 	"Wait": [ "duration" ],
 	"WorkiomCreateRecord": [ "createRecordUrl", "listId", "mapping" ],
-	"WorkiomUpdateRecord": [ "updateRecordUrl", "listId", "mapping" ],
+	"WorkiomUpdateRecord": [ "updateRecordUrl", "listId", "mapping", "recordIdSource" ],
 	"WorkiomNotifyUser": [ "notifyUserUrl" ],
 	"XmlToCsv": [ "selectFiles" ],
 	"Xslt": [ "selectFiles", "xsltPath", "version", "removeWexflowProcessingNodes" ],
