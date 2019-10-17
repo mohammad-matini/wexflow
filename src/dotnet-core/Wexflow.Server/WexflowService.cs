@@ -37,13 +37,14 @@ namespace Wexflow.Server
             //
             Get("/", _ =>
             {
-                return Response.AsRedirect(Root);
+                //return Response.AsRedirect(Root);
+                return Response.AsRedirect("/swagger-ui/index.html");
             });
 
             //
             // Doc
             //
-            Doc();
+            //Doc();
 
             //
             // Dashboard
