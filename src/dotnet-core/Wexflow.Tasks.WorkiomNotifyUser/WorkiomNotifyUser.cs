@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using Wexflow.Core;
 using Workiom.Core;
 using System.Linq;
+using Albatross.Expression;
 
 namespace Wexflow.Tasks.WorkiomNotifyUser
 {
@@ -56,6 +57,17 @@ namespace Wexflow.Tasks.WorkiomNotifyUser
                 {
                     var userId = result.Values.First();
                     var message = Workflow.RestParams["Message"];
+
+                    //var parser = Factory.Instance.Create();
+                    //var finalMessage = parser.Compile(message).EvalText("");
+
+                    //DataRowExecutionContextFactory factory = new DataRowExecutionContextFactory(Factory.Instance.Create());
+                    //IExecutionContext<System.Data.DataRow> context = factory.Create();
+                    //context.SetExpression("message", message);
+                    //System.Data.DataTable table = new System.Data.DataTable();
+                    //table.Columns.Add("message", typeof(string));
+                    //table.Rows.Add(message);
+                    //var finalMessage = context.GetValue("message", table.Rows[0]);
 
                     var json = "{\"userId\":" + userId + ",\"message\":\"" + message + "\"}";
                     InfoFormat("Payload: {0}", json);
