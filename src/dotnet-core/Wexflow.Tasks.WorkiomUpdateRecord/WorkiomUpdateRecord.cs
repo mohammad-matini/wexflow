@@ -50,11 +50,11 @@ namespace Wexflow.Tasks.WorkiomUpdateRecord
                 }
                 else
                 {
-                    var linkedFieledId = recordIdSourceObj.Value<string>("linkedFieledId");
+                    var linkedFieldId = recordIdSourceObj.Value<string>("linkedFieldId");
 
                     foreach (var kvp in trigger.Payload)
                     {
-                        if (kvp.Key == linkedFieledId)
+                        if (kvp.Key == linkedFieldId)
                         {
                             var linkedFiled = JArray.Parse(kvp.Value.ToString());
                             recordId = linkedFiled[0].Value<string>();
