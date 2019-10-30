@@ -540,7 +540,7 @@ paths:
         description: "XML"
         required: true
         schema:
-          type: "string"
+          $ref: "#/definitions/isXmlWorkflowValid"   
      responses:
         200:
           description: "successful operation"
@@ -1162,7 +1162,13 @@ definitions:
          type: "array"
          items:
           $ref: "#/definitions/task"    
-          
+  
+  isXmlWorkflowValid:
+    type: "object"
+    properties:
+       xml:
+         type: "string"
+
 externalDocs:
   description: "Find out more about Wexflow"
   url: "https://wexflow.github.io"

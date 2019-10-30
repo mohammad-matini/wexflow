@@ -1307,8 +1307,10 @@ namespace Wexflow.Server
                     if (user.Password.Equals(password))
                     {
 
-                        var xml = RequestStream.FromStream(Request.Body).AsString();
-                        xml = CleanupXml(xml);
+                        var json = RequestStream.FromStream(Request.Body).AsString();
+                        JObject o = JObject.Parse(json);
+                        var xml = o.Value<string>("xml");
+                        //xml = CleanupXml(xml);
 
                         var xdoc = XDocument.Parse(xml);
 
@@ -1378,7 +1380,7 @@ namespace Wexflow.Server
                     JObject o = JObject.Parse(json);
                     int workflowId = int.Parse((string)o.SelectToken("workflowId"));
                     string xml = (string)o.SelectToken("xml");
-                    xml = CleanupXml(xml);
+                    //xml = CleanupXml(xml);
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
                     if (user.Password.Equals(password))
