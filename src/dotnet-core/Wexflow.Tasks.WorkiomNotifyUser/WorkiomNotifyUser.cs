@@ -18,7 +18,8 @@ namespace Wexflow.Tasks.WorkiomNotifyUser
 
         public WorkiomNotifyUser(XElement xe, Workflow wf) : base(xe, wf)
         {
-            NotifyUserUrl = GetSetting("notifyUserUrl");
+            //NotifyUserUrl = GetSetting("notifyUserUrl");
+            NotifyUserUrl = Workflow.NotifyUserUrl;
             Mapping = GetSetting("mapping");
         }
 

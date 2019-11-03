@@ -208,6 +208,10 @@ namespace Wexflow.Core
         /// </summary>
         public string WorkiomTenantName { get; private set; }
 
+        public string CreateRecordUrl { get; private set; }
+        public string UpdateRecordUrl { get; private set; }
+        public string NotifyUserUrl { get; private set; }
+
         private Queue<Job> _jobsQueue;
         private Thread _thread;
         private HistoryEntry _historyEntry;
@@ -233,7 +237,11 @@ namespace Wexflow.Core
             , string approvalFolder
             , string xsdPath
             , Db.Db database
-            , Variable[] globalVariables)
+            , Variable[] globalVariables
+            , string workiomAuthUrl
+            , string createRecordUrl
+            , string updateRecordUrl
+            , string notifyUserUrl)
         {
             JobId = 1;
             _jobsQueue = new Queue<Job>();
@@ -252,6 +260,11 @@ namespace Wexflow.Core
             Hashtable = new Hashtable();
             GlobalVariables = globalVariables;
             RestVariables = new List<Variable>();
+            WorkiomAuthUrl = workiomAuthUrl;
+            CreateRecordUrl = createRecordUrl;
+            UpdateRecordUrl = updateRecordUrl;
+            NotifyUserUrl = notifyUserUrl;
+
             Check();
             LoadLocalVariables();
             Load(Xml);
@@ -514,7 +527,7 @@ namespace Wexflow.Core
                 var hasRestParamsStr = GetWorkflowSetting(xdoc, "hasRestParams", false);
                 HasRestParams = bool.Parse(string.IsNullOrEmpty(hasRestParamsStr) ? "false" : hasRestParamsStr);
 
-                WorkiomAuthUrl = GetWorkflowSetting(xdoc, "workiomAuthUrl", false);
+                //WorkiomAuthUrl = GetWorkflowSetting(xdoc, "workiomAuthUrl", false);
                 WorkiomUsername = GetWorkflowSetting(xdoc, "workiomUsername", false);
                 WorkiomPassword = GetWorkflowSetting(xdoc, "workiomPassword", false);
                 WorkiomTenantName = GetWorkflowSetting(xdoc, "workiomTenantName", false);
