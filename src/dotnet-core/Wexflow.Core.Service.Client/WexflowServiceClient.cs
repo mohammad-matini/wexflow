@@ -57,12 +57,13 @@ namespace Wexflow.Core.Service.Client
             webClient.UploadString(uri, string.Empty);
         }
 
-        public void StartWorkflow(int id, string username, string password, string json)
+        public bool StartWorkflow(int id, string username, string password, string json)
         {
             string uri = Uri + "/startWithRestParams?w=" + id;
             var webClient = new WebClient();
             webClient.Headers.Add("Authorization", Base64Encode(username + ":" + GetMd5(password)));
-            webClient.UploadString(uri, json);
+            var resp = webClient.UploadString(uri, json);
+            return bool.Parse(resp);
         }
 
         public void StopWorkflow(int id, string username, string password)

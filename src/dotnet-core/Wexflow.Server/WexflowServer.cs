@@ -83,18 +83,25 @@ namespace Wexflow.Server
 
                             var o = JObject.Parse(message);
                             var workflowId = o.Value<int>("workflowId");
-                            //var recordId = o.Value<string>("recordId");
                             var payload = o.Value<JObject>("payload");
                             var msg = o.Value<string>("message");
 
                             var parameters =
                             "[" +
                                 "{\"ParamName\":\"Payload\",\"ParamValue\":" + (payload == null ? "\"\"" : payload.ToString()) + "}," +
-                                //"{\"ParamName\":\"RecordId\",\"ParamValue\":\"" + recordId + "\"}," +
                                 "{\"ParamName\":\"Message\",\"ParamValue\":\"" + msg + "\"}" +
                             "]";
 
-                            client.StartWorkflow(workflowId, username, password, parameters);
+                            var res = client.StartWorkflow(workflowId, username, password, parameters);
+
+                            if (res)
+                            {
+                                Logger.InfoFormat("Workflow {0} started.", workflowId);
+                            }
+                            else
+                            {
+                                Logger.ErrorFormat("Workflow {0} not started. Error: Unauthorized.", workflowId);
+                            }
                         }
                         catch (Exception e)
                         {
