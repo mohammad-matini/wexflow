@@ -106,6 +106,11 @@ namespace Wexflow.Core
         /// </summary>
         public Db.Db Database { get; private set; }
 
+        public string WorkiomAuthUrl { get; private set; }
+        public string CreateRecordUrl { get; private set; }
+        public string UpdateRecordUrl { get; private set; }
+        public string NotifyUserUrl { get; private set; }
+
         //
         // Quartz scheduler
         //
@@ -122,9 +127,18 @@ namespace Wexflow.Core
         /// Creates a new instance of Wexflow engine.
         /// </summary>
         /// <param name="settingsFile">Settings file path.</param>
-        public WexflowEngine(string settingsFile)
+        public WexflowEngine(string settingsFile
+            , string workiomAuthUrl
+            , string createRecordUrl
+            , string updateRecordUrl
+            , string notifyUserUrl)
         {
             SettingsFile = settingsFile;
+            WorkiomAuthUrl = workiomAuthUrl;
+            CreateRecordUrl = createRecordUrl;
+            UpdateRecordUrl = updateRecordUrl;
+            NotifyUserUrl = notifyUserUrl;
+
             Workflows = new List<Workflow>();
 
             Logger.Info("");
@@ -264,7 +278,11 @@ namespace Wexflow.Core
                     , ApprovalFolder
                     , XsdPath
                     , Database
-                    , GlobalVariables);
+                    , GlobalVariables
+                    , WorkiomAuthUrl
+                    , CreateRecordUrl
+                    , UpdateRecordUrl
+                    , NotifyUserUrl);
                 Logger.InfoFormat("Workflow loaded: {0}", wf);
                 return wf;
             }
@@ -314,7 +332,10 @@ namespace Wexflow.Core
                             , XsdPath
                             , Database
                             , GlobalVariables
-                            );
+                            , WorkiomAuthUrl
+                            , CreateRecordUrl
+                            , UpdateRecordUrl
+                            , NotifyUserUrl);
                         }
                         catch (Exception e)
                         {
@@ -350,7 +371,10 @@ namespace Wexflow.Core
                             , XsdPath
                             , Database
                             , GlobalVariables
-                            );
+                            , WorkiomAuthUrl
+                            , CreateRecordUrl
+                            , UpdateRecordUrl
+                            , NotifyUserUrl);
                         }
                         catch (Exception e)
                         {

@@ -46,14 +46,20 @@ namespace Wexflow.Server
                     wexflowSettingsFile = Config["WexflowSettingsFileMacOS"];
                 }
 
-                WexflowEngine = new WexflowEngine(wexflowSettingsFile);
+                WexflowEngine = new WexflowEngine(wexflowSettingsFile
+                    , Config["WorkiomAuthUrl"]
+                    , Config["CreateRecordUrl"]
+                    , Config["UpdateRecordUrl"]
+                    , Config["NotifyUserUrl"]);
+
                 WexflowEngine.Run();
 
                 var uri = Config["CloudAmpqUrl"];
                 var queueName = Config["QueueName"];
                 var factory = new ConnectionFactory() { Uri = new Uri(uri) };
                 //var factory = new ConnectionFactory() { HostName = "localhost" };
-                var wexflowWebServiceUri = string.Format("http://localhost:{0}/wexflow/", port);
+                //var wexflowWebServiceUri = string.Format("http://localhost:{0}/wexflow/", port);
+                var wexflowWebServiceUri = Config["WexflowWebServiceUri"];
                 var client = new WexflowServiceClient(wexflowWebServiceUri);
                 var username = Config["Username"];
                 var password = Config["Password"];

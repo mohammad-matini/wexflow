@@ -1324,6 +1324,10 @@ namespace Wexflow.Server
                               , WexflowServer.WexflowEngine.XsdPath
                               , WexflowServer.WexflowEngine.Database
                               , WexflowServer.WexflowEngine.GlobalVariables
+                              , WexflowServer.WexflowEngine.WorkiomAuthUrl
+                              , WexflowServer.WexflowEngine.CreateRecordUrl
+                              , WexflowServer.WexflowEngine.UpdateRecordUrl
+                              , WexflowServer.WexflowEngine.NotifyUserUrl
                             );
 
                         var resStr = JsonConvert.SerializeObject(true);
@@ -1597,7 +1601,7 @@ namespace Wexflow.Server
                             hasRestParams = (bool)hasRestParamsObj;
                         }
 
-                        var workiomAuthUrl = wi.Value<string>("WorkiomAuthUrl");
+                        //var workiomAuthUrl = wi.Value<string>("WorkiomAuthUrl");
                         var workiomUsername = wi.Value<string>("WorkiomUsername");
                         var workiomPassword = wi.Value<string>("WorkiomPassword");
                         var workiomTenantName = wi.Value<string>("WorkiomTenantName");
@@ -1723,13 +1727,14 @@ namespace Wexflow.Server
                                 );
                         }
 
-                        if (!string.IsNullOrEmpty(workiomAuthUrl) && !string.IsNullOrEmpty(workiomUsername) && !string.IsNullOrEmpty(workiomPassword) && !string.IsNullOrEmpty(workiomTenantName))
+                        //if (!string.IsNullOrEmpty(workiomAuthUrl) && !string.IsNullOrEmpty(workiomUsername) && !string.IsNullOrEmpty(workiomPassword) && !string.IsNullOrEmpty(workiomTenantName))
+                        if (!string.IsNullOrEmpty(workiomUsername) && !string.IsNullOrEmpty(workiomPassword) && !string.IsNullOrEmpty(workiomTenantName))
                         {
-                            xwf.Element(xn + "Settings").Add(
-                                 new XElement(xn + "Setting"
-                                    , new XAttribute("name", "workiomAuthUrl")
-                                    , new XAttribute("value", workiomAuthUrl))
-                                );
+                            //xwf.Element(xn + "Settings").Add(
+                            //     new XElement(xn + "Setting"
+                            //        , new XAttribute("name", "workiomAuthUrl")
+                            //        , new XAttribute("value", workiomAuthUrl))
+                            //    );
 
                             xwf.Element(xn + "Settings").Add(
                                 new XElement(xn + "Setting"
@@ -1880,7 +1885,7 @@ namespace Wexflow.Server
                                 hasRestParams = (bool)hasRestParamsObj;
                             }
 
-                            var workiomAuthUrl = wi.Value<string>("WorkiomAuthUrl");
+                            //var workiomAuthUrl = wi.Value<string>("WorkiomAuthUrl");
                             var workiomUsername = wi.Value<string>("WorkiomUsername");
                             var workiomPassword = wi.Value<string>("WorkiomPassword");
                             var workiomTenantName = wi.Value<string>("WorkiomTenantName");
@@ -1898,20 +1903,21 @@ namespace Wexflow.Server
                                 xwfHasRestParams.Attribute("value").Value = hasRestParams.ToString().ToLower();
                             }
 
-                            if (!string.IsNullOrEmpty(workiomAuthUrl) && !string.IsNullOrEmpty(workiomUsername) && !string.IsNullOrEmpty(workiomPassword) && !string.IsNullOrEmpty(workiomTenantName))
+                            //if (!string.IsNullOrEmpty(workiomAuthUrl) && !string.IsNullOrEmpty(workiomUsername) && !string.IsNullOrEmpty(workiomPassword) && !string.IsNullOrEmpty(workiomTenantName))
+                            if (!string.IsNullOrEmpty(workiomUsername) && !string.IsNullOrEmpty(workiomPassword) && !string.IsNullOrEmpty(workiomTenantName))
                             {
-                                var xwfWorkiomAuthUrl = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='workiomAuthUrl']", wf.XmlNamespaceManager);
-                                if (xwfWorkiomAuthUrl == null)
-                                {
-                                    xdoc.Root.XPathSelectElement("wf:Settings", wf.XmlNamespaceManager)
-                                        .Add(new XElement(xn + "Setting"
-                                                , new XAttribute("name", "workiomAuthUrl")
-                                                , new XAttribute("value", workiomAuthUrl.ToString())));
-                                }
-                                else
-                                {
-                                    xwfWorkiomAuthUrl.Attribute("value").Value = workiomAuthUrl.ToString();
-                                }
+                                //var xwfWorkiomAuthUrl = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='workiomAuthUrl']", wf.XmlNamespaceManager);
+                                //if (xwfWorkiomAuthUrl == null)
+                                //{
+                                //    xdoc.Root.XPathSelectElement("wf:Settings", wf.XmlNamespaceManager)
+                                //        .Add(new XElement(xn + "Setting"
+                                //                , new XAttribute("name", "workiomAuthUrl")
+                                //                , new XAttribute("value", workiomAuthUrl.ToString())));
+                                //}
+                                //else
+                                //{
+                                //    xwfWorkiomAuthUrl.Attribute("value").Value = workiomAuthUrl.ToString();
+                                //}
 
                                 var xwfWorkiomUsername = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='workiomUsername']", wf.XmlNamespaceManager);
                                 if (xwfWorkiomUsername == null)
