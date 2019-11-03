@@ -9,7 +9,7 @@ info:
     name: "MIT"
     url: "https://opensource.org/licenses/MIT"
 #host: "localhost:8000"
-host: "wexflow.workiom.club:8000"
+host: "wexflow.workiom.com:8020"
 basePath: "/wexflow"
 tags:
 - name: "Dashboard"

@@ -1,16 +1,12 @@
-﻿using System;
-using System.Configuration;
-using System.IO;
+﻿using System.Linq;
 using Wexflow.Core.Service.Client;
-using Microsoft.Extensions.Configuration;
-using System.Linq;
 using Wexflow.Core.Service.Contracts;
 
 namespace WexFlow.Client
 {
     public class WexFlowManager
     {
-        WexFlowConfig _configs;
+        private WexFlowConfig _configs;
 
         public WexFlowManager(WexFlowConfig configs)
         {
@@ -28,7 +24,8 @@ namespace WexFlow.Client
             var client = new WexflowServiceClient(_configs.WexflowWebServiceUri);
 
             client.CreateWorkflow(_configs.Username, _configs.Password, payload);
-            // return workflowId;
+            
+            // TODO return workflowId;
             return 0;
         }
 
@@ -45,14 +42,18 @@ namespace WexFlow.Client
             return workflows.FirstOrDefault(p => p.Id == id);
         }
 
-        public void update(int id, string payload)
+        public void Update(int id, string payload)
         {
             // Update Code
+            var client = new WexflowServiceClient(_configs.WexflowWebServiceUri);
+            client.CreateWorkflow(_configs.Username, _configs.Password, payload);
         }
 
         public void Delete(int id)
         {
             // Delete a workflow
+            var client = new WexflowServiceClient(_configs.WexflowWebServiceUri);
+            client.DeleteWorkflow(_configs.Username, _configs.Password, id);
         }
     }
 }
