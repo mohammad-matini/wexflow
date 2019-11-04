@@ -1036,7 +1036,6 @@ namespace Wexflow.Server
 
                         var workflow = new Contracts.Workflow.Workflow
                         {
-                            Id = wf.Id,
                             WorkflowInfo = wi,
                             Tasks = tasks.ToArray()
                         };
@@ -1615,15 +1614,11 @@ namespace Wexflow.Server
                     JObject o = JObject.Parse(json);
                     var wi = o.SelectToken("WorkflowInfo");
                     int currentWorkflowId = (int)wi.SelectToken("Id");
-                    //var isNew = (bool)wi.SelectToken("IsNew");
                     var isNew = !WexflowServer.WexflowEngine.Workflows.Any(w => w.Id == currentWorkflowId);
 
                     var auth = GetAuth(Request);
                     var username = auth.Username;
                     var password = auth.Password;
-
-                    //var username = o.Value<string>("Username");
-                    //var password = o.Value<string>("Password");
 
                     var user = WexflowServer.WexflowEngine.GetUser(username);
 
@@ -1639,8 +1634,7 @@ namespace Wexflow.Server
 
                     if (user.UserProfile == Core.Db.UserProfile.Administrator && !isNew)
                     {
-                        var id = o.Value<int>("Id");
-                        var workflowDbId = WexflowServer.WexflowEngine.Workflows.First(w => w.Id == id).DbId;
+                        var workflowDbId = WexflowServer.WexflowEngine.Workflows.First(w => w.Id == currentWorkflowId).DbId;
                         var check = WexflowServer.WexflowEngine.CheckUserWorkflow(user.GetId(), workflowDbId);
                         if (!check)
                         {
@@ -1683,7 +1677,6 @@ namespace Wexflow.Server
                             hasRestParams = (bool)hasRestParamsObj;
                         }
 
-                        //var workiomAuthUrl = wi.Value<string>("WorkiomAuthUrl");
                         var workiomUsername = wi.Value<string>("WorkiomUsername");
                         var workiomPassword = wi.Value<string>("WorkiomPassword");
                         var workiomTenantName = wi.Value<string>("WorkiomTenantName");
@@ -1809,15 +1802,8 @@ namespace Wexflow.Server
                                 );
                         }
 
-                        //if (!string.IsNullOrEmpty(workiomAuthUrl) && !string.IsNullOrEmpty(workiomUsername) && !string.IsNullOrEmpty(workiomPassword) && !string.IsNullOrEmpty(workiomTenantName))
                         if (!string.IsNullOrEmpty(workiomUsername) && !string.IsNullOrEmpty(workiomPassword) && !string.IsNullOrEmpty(workiomTenantName))
                         {
-                            //xwf.Element(xn + "Settings").Add(
-                            //     new XElement(xn + "Setting"
-                            //        , new XAttribute("name", "workiomAuthUrl")
-                            //        , new XAttribute("value", workiomAuthUrl))
-                            //    );
-
                             xwf.Element(xn + "Settings").Add(
                                 new XElement(xn + "Setting"
                                    , new XAttribute("name", "workiomUsername")
@@ -1839,13 +1825,8 @@ namespace Wexflow.Server
 
                         xdoc.Add(xwf);
 
-                        //var path = (string)wi.SelectToken("Path");
-                        //xdoc.Save(path);
                         var id = WexflowServer.WexflowEngine.SaveWorkflow(user.GetId(), user.UserProfile, xdoc.ToString());
-                        //if (user.UserProfile == Core.Db.UserProfile.Administrator)
-                        //{
-                        //    Program.WexflowEngine.InsertUserWorkflowRelation(user.GetId(), dbId);
-                        //}
+                        
                         if (id == "-1")
                         {
                             var qFalseStr = JsonConvert.SerializeObject(false);
@@ -1861,9 +1842,7 @@ namespace Wexflow.Server
                     else
                     {
                         XNamespace xn = "urn:wexflow-schema";
-
-                        int id = int.Parse((string)o.SelectToken("Id"));
-                        var wf = WexflowServer.WexflowEngine.GetWorkflow(id);
+                        var wf = WexflowServer.WexflowEngine.GetWorkflow(currentWorkflowId);
                         if (wf != null)
                         {
                             var xdoc = wf.XDoc;
@@ -1985,22 +1964,8 @@ namespace Wexflow.Server
                                 xwfHasRestParams.Attribute("value").Value = hasRestParams.ToString().ToLower();
                             }
 
-                            //if (!string.IsNullOrEmpty(workiomAuthUrl) && !string.IsNullOrEmpty(workiomUsername) && !string.IsNullOrEmpty(workiomPassword) && !string.IsNullOrEmpty(workiomTenantName))
                             if (!string.IsNullOrEmpty(workiomUsername) && !string.IsNullOrEmpty(workiomPassword) && !string.IsNullOrEmpty(workiomTenantName))
                             {
-                                //var xwfWorkiomAuthUrl = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='workiomAuthUrl']", wf.XmlNamespaceManager);
-                                //if (xwfWorkiomAuthUrl == null)
-                                //{
-                                //    xdoc.Root.XPathSelectElement("wf:Settings", wf.XmlNamespaceManager)
-                                //        .Add(new XElement(xn + "Setting"
-                                //                , new XAttribute("name", "workiomAuthUrl")
-                                //                , new XAttribute("value", workiomAuthUrl.ToString())));
-                                //}
-                                //else
-                                //{
-                                //    xwfWorkiomAuthUrl.Attribute("value").Value = workiomAuthUrl.ToString();
-                                //}
-
                                 var xwfWorkiomUsername = xdoc.Root.XPathSelectElement("wf:Settings/wf:Setting[@name='workiomUsername']", wf.XmlNamespaceManager);
                                 if (xwfWorkiomUsername == null)
                                 {
@@ -2124,7 +2089,6 @@ namespace Wexflow.Server
                                 xtasks.Add(xtask);
                             }
 
-                            //xdoc.Save(wf.WorkflowFilePath);
                             var qid = WexflowServer.WexflowEngine.SaveWorkflow(user.GetId(), user.UserProfile, xdoc.ToString());
                             if (qid == "-1")
                             {

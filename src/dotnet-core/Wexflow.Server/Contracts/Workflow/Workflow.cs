@@ -2,7 +2,7 @@
 {
     public class Workflow
     {
-        public int Id { get; set; }
+        //public int Id { get; set; }
 
         public WorkflowInfo WorkflowInfo { get; set; }
 

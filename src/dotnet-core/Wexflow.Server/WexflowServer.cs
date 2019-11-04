@@ -92,9 +92,9 @@ namespace Wexflow.Server
                                 "{\"ParamName\":\"Message\",\"ParamValue\":\"" + msg + "\"}" +
                             "]";
 
-                            var res = client.StartWorkflow(workflowId, username, password, parameters);
+                            var started = client.StartWorkflow(workflowId, username, password, parameters);
 
-                            if (res)
+                            if (started)
                             {
                                 Logger.InfoFormat("Workflow {0} started.", workflowId);
                             }
