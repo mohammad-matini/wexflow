@@ -24,14 +24,18 @@ namespace WexFlow.Client
         {
             var client = new WexflowServiceClient(_configs.WexflowWebServiceUri);
 
-            client.CreateWorkflow(_configs.Username, _configs.Password, payload);
+            var created = client.CreateWorkflow(_configs.Username, _configs.Password, payload);
 
             // return workflowId
-            var o = JObject.Parse(payload);
-            var wi = o.Value<JObject>("WorkflowInfo");
-            var id = wi.Value<int>("Id");
+            if (created)
+            {
+                var o = JObject.Parse(payload);
+                var wi = o.Value<JObject>("WorkflowInfo");
+                var id = wi.Value<int>("Id");
+                return id;
+            }
 
-            return id;
+            return -1;
         }
 
         /// <summary>
@@ -47,18 +51,20 @@ namespace WexFlow.Client
             return workflows.FirstOrDefault(p => p.Id == id);
         }
 
-        public void Update(int id, string payload)
+        public bool Update(int id, string payload)
         {
             // Update Code
             var client = new WexflowServiceClient(_configs.WexflowWebServiceUri);
-            client.UpdateWorkflow(_configs.Username, _configs.Password, payload);
+            var updated = client.UpdateWorkflow(_configs.Username, _configs.Password, payload);
+            return updated;
         }
 
-        public void Delete(int id)
+        public bool Delete(int id)
         {
             // Delete a workflow
             var client = new WexflowServiceClient(_configs.WexflowWebServiceUri);
-            client.DeleteWorkflow(_configs.Username, _configs.Password, id);
+            var deleted = client.DeleteWorkflow(_configs.Username, _configs.Password, id);
+            return deleted;
         }
     }
 }

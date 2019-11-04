@@ -213,7 +213,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wexflow.Tasks.FilesJoiner",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wexflow.Clients.Test", "src\dotnet-core\Wexflow.Clients.Test\Wexflow.Clients.Test.csproj", "{21BD3E72-5AAA-4127-963D-34FB4BC5865B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WexFlow.Client", "src\dotnet-core\Client\WexFlow.Client\WexFlow.Client.csproj", "{08E0AA07-2323-4FFF-8D9E-CC031EE8348E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WexFlow.Client", "src\dotnet-core\Client\WexFlow.Client\WexFlow.Client.csproj", "{08E0AA07-2323-4FFF-8D9E-CC031EE8348E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wexflow.Tasks.Twilio", "src\dotnet-core\Wexflow.Tasks.Twilio\Wexflow.Tasks.Twilio.csproj", "{6DD953E7-4973-47CA-B156-C44931F4CAB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1763,6 +1765,22 @@ Global
 		{08E0AA07-2323-4FFF-8D9E-CC031EE8348E}.Release|x64.Build.0 = Release|Any CPU
 		{08E0AA07-2323-4FFF-8D9E-CC031EE8348E}.Release|x86.ActiveCfg = Release|Any CPU
 		{08E0AA07-2323-4FFF-8D9E-CC031EE8348E}.Release|x86.Build.0 = Release|Any CPU
+		{6DD953E7-4973-47CA-B156-C44931F4CAB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DD953E7-4973-47CA-B156-C44931F4CAB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DD953E7-4973-47CA-B156-C44931F4CAB3}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{6DD953E7-4973-47CA-B156-C44931F4CAB3}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{6DD953E7-4973-47CA-B156-C44931F4CAB3}.Debug|x64.ActiveCfg = Debug|x64
+		{6DD953E7-4973-47CA-B156-C44931F4CAB3}.Debug|x64.Build.0 = Debug|x64
+		{6DD953E7-4973-47CA-B156-C44931F4CAB3}.Debug|x86.ActiveCfg = Debug|x86
+		{6DD953E7-4973-47CA-B156-C44931F4CAB3}.Debug|x86.Build.0 = Debug|x86
+		{6DD953E7-4973-47CA-B156-C44931F4CAB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DD953E7-4973-47CA-B156-C44931F4CAB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DD953E7-4973-47CA-B156-C44931F4CAB3}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{6DD953E7-4973-47CA-B156-C44931F4CAB3}.Release|Mixed Platforms.Build.0 = Release|x86
+		{6DD953E7-4973-47CA-B156-C44931F4CAB3}.Release|x64.ActiveCfg = Release|x64
+		{6DD953E7-4973-47CA-B156-C44931F4CAB3}.Release|x64.Build.0 = Release|x64
+		{6DD953E7-4973-47CA-B156-C44931F4CAB3}.Release|x86.ActiveCfg = Release|x86
+		{6DD953E7-4973-47CA-B156-C44931F4CAB3}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1872,6 +1890,7 @@ Global
 		{B065F8AA-8804-4BE1-9E6A-B5FE3F56E1E2} = {6CC60633-28FB-45F3-8434-A79D00150CB2}
 		{21BD3E72-5AAA-4127-963D-34FB4BC5865B} = {DA5ABE22-6810-4693-9280-FEC63D257195}
 		{08E0AA07-2323-4FFF-8D9E-CC031EE8348E} = {DA5ABE22-6810-4693-9280-FEC63D257195}
+		{6DD953E7-4973-47CA-B156-C44931F4CAB3} = {6CC60633-28FB-45F3-8434-A79D00150CB2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {694D69C8-AA13-4F54-BAAA-5B967F1A8F9C}

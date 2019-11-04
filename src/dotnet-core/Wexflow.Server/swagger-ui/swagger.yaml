@@ -1136,8 +1136,6 @@ definitions:
          type: "string"
        HasRestParams:
          type: "boolean"
-       WorkiomAuthUrl:
-         type: "string"
        WorkiomUsername:
          type: "string"
        WorkiomPassword:
