@@ -12,7 +12,6 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
-using System.Xml.Schema;
 using System.Xml.XPath;
 using Wexflow.Core;
 using Wexflow.Core.Db;
@@ -85,6 +84,7 @@ namespace Wexflow.Server
             // 
             GetTasks();
             GetWorkflowXml();
+            GetWorkflowJson();
             GetTaskNames();
             GetSettings();
             GetTaskXml();
@@ -966,6 +966,88 @@ namespace Wexflow.Server
                         {
                             ContentType = "application/json",
                             Contents = s => s.Write(xmlBytes, 0, xmlBytes.Length)
+                        };
+                    }
+                }
+
+                return new Response()
+                {
+                    ContentType = "application/json"
+                };
+            });
+        }
+
+        /// <summary>
+        /// Returns a workflow as XML.
+        /// </summary>
+        private void GetWorkflowJson()
+        {
+            Get(Root + "json/{id}", args =>
+            {
+                var auth = GetAuth(Request);
+                var username = auth.Username;
+                var password = auth.Password;
+
+                var user = WexflowServer.WexflowEngine.GetUser(username);
+                if (user.Password.Equals(password))
+                {
+                    Core.Workflow wf = WexflowServer.WexflowEngine.GetWorkflow(args.id);
+                    if (wf != null)
+                    {
+                        var variables = new List<Contracts.Variable>();
+                        foreach (var variable in wf.LocalVariables)
+                        {
+                            variables.Add(new Contracts.Variable { Key = variable.Key, Value = variable.Value });
+                        }
+
+                        var wi = new Contracts.Workflow.WorkflowInfo
+                        {
+                            Id = wf.Id,
+                            Name = wf.Name,
+                            LaunchType = (int)wf.LaunchType,
+                            Period = wf.Period.ToString(),
+                            CronExpression = wf.CronExpression,
+                            IsEnabled = wf.IsEnabled,
+                            IsApproval = wf.IsApproval,
+                            HasRestParams = wf.HasRestParams,
+                            Description = wf.Description,
+                            WorkiomUsername = wf.WorkiomUsername,
+                            WorkiomPassword = wf.WorkiomPassword,
+                            WorkiomTenantName = wf.WorkiomTenantName,
+                            LocalVariables = variables.ToArray()
+                        };
+
+                        var tasks = new List<TaskInfo>();
+                        foreach (var task in wf.Tasks)
+                        {
+                            var settings = new List<SettingInfo>();
+                            foreach (var setting in task.Settings)
+                            {
+                                var attributes = new List<AttributeInfo>();
+                                foreach (var attr in setting.Attributes)
+                                {
+                                    attributes.Add(new AttributeInfo(attr.Name, attr.Value));
+                                }
+
+                                settings.Add(new SettingInfo(setting.Name, setting.Value, attributes.ToArray()));
+                            }
+                            tasks.Add(new TaskInfo(task.Id, task.Name, task.Description, task.IsEnabled, settings.ToArray()));
+                        }
+
+                        var workflow = new Contracts.Workflow.Workflow
+                        {
+                            Id = wf.Id,
+                            WorkflowInfo = wi,
+                            Tasks = tasks.ToArray()
+                        };
+
+                        var jsonStr = JsonConvert.SerializeObject(workflow);
+                        var jsonbBytes = Encoding.UTF8.GetBytes(jsonStr);
+
+                        return new Response()
+                        {
+                            ContentType = "application/json",
+                            Contents = s => s.Write(jsonbBytes, 0, jsonbBytes.Length)
                         };
                     }
                 }
