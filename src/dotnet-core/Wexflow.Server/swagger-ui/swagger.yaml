@@ -1172,9 +1172,6 @@ definitions:
   workflow:
     type: "object"
     properties:
-       Id:
-         type: "integer"
-         format: "int64"
        WorkflowInfo:
           $ref: "#/definitions/workflowInfo"
        Tasks:   
