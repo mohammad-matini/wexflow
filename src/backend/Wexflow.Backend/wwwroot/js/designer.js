@@ -342,7 +342,6 @@
                         "HasRestParams": document.getElementById("wf-restparams").checked,
                         "Description": document.getElementById("wf-desc").value,
                         "Path": "",
-                        "IsNew": true,
                         "LocalVariables": []
                     };
 
@@ -519,7 +518,6 @@
                                                     function () {
                                                         newWorkflow = false;
                                                         saveCalled = true;
-                                                        workflowInfos[workflowId].IsNew = false;
 
                                                         document.getElementById("wf-xml").style.display = "inline-block";
                                                         //showThemeButton();
@@ -595,7 +593,6 @@
                                         function () {
                                             newWorkflow = false;
                                             saveCalled = true;
-                                            workflowInfos[workflowId].IsNew = false;
 
                                             document.getElementById("wf-xml").style.display = "inline-block";
                                             //showThemeButton();
@@ -1980,7 +1977,6 @@
                     "HasRestParams": workflow.HasRestParams,
                     "Description": workflow.Description,
                     "Path": workflow.Path,
-                    "IsNew": false,
                     "LocalVariables": workflow.LocalVariables
                 };
 
