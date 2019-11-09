@@ -36,14 +36,8 @@ namespace Wexflow.Server
             //
             Get("/", _ =>
             {
-                //return Response.AsRedirect(Root);
                 return Response.AsRedirect("/swagger-ui/index.html");
             });
-
-            //
-            // Doc
-            //
-            //Doc();
 
             //
             // Dashboard
@@ -124,97 +118,6 @@ namespace Wexflow.Server
             SearchAdministrators();
             GetUserWorkflows();
             SaveUserWorkflows();
-        }
-
-        private string DocH1(string title)
-        {
-            return "<h1>" + title + "</h1>";
-        }
-
-        private string DocH2(string title)
-        {
-            return "<h2>" + title + "</h2>";
-        }
-
-        private string DocGet(string name, string description)
-        {
-            return "<b>GET</b> " + Root + name + "<br/>" + description + "<br/><br/>";
-        }
-
-        private string DocPost(string name, string description)
-        {
-            return "<b>POST</b> " + Root + name + "<br/>" + description + "<br/><br/>";
-        }
-
-        private void Doc()
-        {
-            Get(Root, args =>
-            {
-                var doc =
-                  DocH1("Wexflow server running on CoreCLR")
-                + DocH2("Dashboard")
-                + DocGet("statusCount", "Returns status count.")
-                + DocGet("entriesCountByDate?s={keyword}&from={date}&to={date}", "Returns entries count by keyword and date filter.")
-                + DocGet("searchEntriesByPageOrderBy?s={keyword}&from={date}&to={date}&page={page}&entriesCount={entriesCount}&heo={orderBy}", "Searches for entries.")
-                + DocGet("entryStatusDateMin", "Returns entry min date.")
-                + DocGet("entryStatusDateMax", "Returns entry max date.")
-                + DocH2("Manager")
-                //+ DocGet("workflows", "Returns the list of workflows.")
-                + DocGet("search?s={keyword}", "Search for workflows.")
-                + DocGet("searchApprovalWorkflows?s={keyword}", "Search for approval workflows.")
-                + DocGet("workflow?w={id}", "Returns a workflow from its id.")
-                + DocPost("start?w={id}", "Starts a workflow.")
-                + DocPost("startWithVariables", "Starts a workflow with variables.")
-                + DocPost("stop?w={id}", "Stops a workflow.")
-                + DocPost("suspend?w={id}", "Suspends a workflow.")
-                + DocPost("resume?w={id}", "Resumes a workflow.")
-                + DocPost("approve?w={id}", "Approves a workflow.")
-                + DocPost("disapprove?w={id}", "Disapproves a workflow.")
-                + DocH2("Workiom")
-                + DocGet("searchWithRestParams?s={keyword}", "Search for workflows with REST params.")
-                + DocPost("startWithRestParams?w={id}", "Starts a workflow with REST params.")
-                + DocH2("Designer")
-                + DocGet("tasks/{id}", "Returns workflow's tasks.")
-                + DocGet("xml/{id}", "Returns a workflow as XML.")
-                + DocGet("taskNames", "Returns task names.")
-                + DocGet("settings/{taskName}", "Returns task settings.")
-                + DocPost("taskToXml", "Returns a task as XML.")
-                + DocGet("isWorkflowIdValid/{id}", "Checks if a workflow id is valid.")
-                + DocGet("isCronExpressionValid?e={cronExpression}", "Checks if a cron expression is valid.")
-                + DocGet("isPeriodValid/{period}", "Checks if a period is valid.")
-                + DocPost("isXmlWorkflowValid", "Checks if the XML of a workflow is valid.")
-                + DocPost("saveXml", "Saves a workflow from XML.")
-                + DocPost("save", "Saves a workflow from JSON.")
-                + DocPost("delete?w={id}", "Deletes a workflow.")
-                + DocPost("deleteWorkflows", "Deletes workflows.")
-                + DocGet("graph/{id}", "Returns the execution graph of the workflow.")
-                + DocH2("History")
-                + DocGet("historyEntriesCountByDate?s={keyword}&from={date}&to={date}", "Returns history entries count by keyword and date filter.")
-                + DocGet("searchHistoryEntriesByPageOrderBy?s={keyword}&from={date}&to={date}&page={page}&entriesCount={entriesCount}&heo={orderBy}", "Searches for history entries.")
-                + DocGet("historyEntryStatusDateMin", "Returns history entry min date.")
-                + DocGet("historyEntryStatusDateMax", "Returns history entry max date.")
-                + DocH2("Users")
-                + DocGet("user?username={username}", "Returns a user from his username.")
-                //+ DocGet("password?u={username}", "Returns user's password (encrypted).")
-                + DocGet("searchUsers?keyword={keyword}&uo={orderBy}", "Searches for users.")
-                + DocPost("insertUser?username={username}&password={password}&up={userProfile}&email={email}", "Inserts a user.")
-                + DocPost("updateUser?userId={userId}&username={username}&password={password}&up={userProfile}&email={email}", "Updates a user.")
-                + DocPost("updateUsernameAndEmailAndUserProfile?userId={userId}&username={username}&password={password}&up={userProfile}&email={email}", "Updates the username, the email and the user profile of a user.")
-                + DocPost("deleteUser?username={username}&password={password}", "Deletes a user.")
-                + DocPost("resetPassword?username={username}&email={email}", "Resets a password.")
-                + DocH2("Profiles")
-                + DocGet("searchAdmins?keyword={keyword}&uo={orderBy}", "Searches for administrators.")
-                + DocGet("userWorkflows?u={userId}", "Returns user workflows.")
-                + DocPost("saveUserWorkflows", "Saves user workflow relations.");
-
-                var docBytes = Encoding.UTF8.GetBytes(doc);
-
-                return new Response()
-                {
-                    ContentType = "text/html",
-                    Contents = s => s.Write(docBytes, 0, docBytes.Length)
-                };
-            });
         }
 
         /// <summary>
@@ -978,7 +881,7 @@ namespace Wexflow.Server
         }
 
         /// <summary>
-        /// Returns a workflow as XML.
+        /// Returns a workflow as JSON.
         /// </summary>
         private void GetWorkflowJson()
         {
