@@ -17,7 +17,6 @@ namespace Wexflow.Tasks.WorkiomCreateRecord
 
         public WorkiomCreateRecord(XElement xe, Workflow wf) : base(xe, wf)
         {
-            //CreateRecordUrl = GetSetting("createRecordUrl");
             CreateRecordUrl = Workflow.CreateRecordUrl;
             ListId = GetSetting("listId");
             Mapping = GetSetting("mapping");

@@ -67,7 +67,7 @@
 	"Wait": [ "duration" ],
 	"WorkiomCreateRecord": [ "listId", "mapping" ],
 	"WorkiomUpdateRecord": [ "listId", "mapping", "recordIdSource" ],
-	"WorkiomNotifyUser": [ "mapping" ],
+	"WorkiomNotifyUser": [ "mapping", "message" ],
 	"XmlToCsv": [ "selectFiles" ],
 	"Xslt": [ "selectFiles", "xsltPath", "version", "removeWexflowProcessingNodes" ],
 	"YouTube" : ["selectFiles", "user", "applicationName", "clientSecrets"],

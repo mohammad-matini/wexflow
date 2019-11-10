@@ -2,12 +2,11 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
 using Wexflow.Core;
 using Workiom.Core;
-using System.Linq;
-using Albatross.Expression;
 
 namespace Wexflow.Tasks.WorkiomNotifyUser
 {
@@ -15,12 +14,13 @@ namespace Wexflow.Tasks.WorkiomNotifyUser
     {
         public string NotifyUserUrl { get; }
         public string Mapping { get; }
+        public string Message { get; }
 
         public WorkiomNotifyUser(XElement xe, Workflow wf) : base(xe, wf)
         {
-            //NotifyUserUrl = GetSetting("notifyUserUrl");
             NotifyUserUrl = Workflow.NotifyUserUrl;
             Mapping = GetSetting("mapping");
+            Message = GetSetting("message");
         }
 
         public override TaskStatus Run()
@@ -31,8 +31,6 @@ namespace Wexflow.Tasks.WorkiomNotifyUser
 
             try
             {
-                //var userId = int.Parse(Workflow.RestParams["UserId"]);
-
                 InfoFormat("Mapping: {0}", Mapping);
 
                 // Retrieve payload
@@ -57,20 +55,8 @@ namespace Wexflow.Tasks.WorkiomNotifyUser
                 if (result.Count > 0)
                 {
                     var userId = result.Values.First();
-                    var message = Workflow.RestParams["Message"];
 
-                    //var parser = Factory.Instance.Create();
-                    //var finalMessage = parser.Compile(message).EvalText("");
-
-                    //DataRowExecutionContextFactory factory = new DataRowExecutionContextFactory(Factory.Instance.Create());
-                    //IExecutionContext<System.Data.DataRow> context = factory.Create();
-                    //context.SetExpression("message", message);
-                    //System.Data.DataTable table = new System.Data.DataTable();
-                    //table.Columns.Add("message", typeof(string));
-                    //table.Rows.Add(message);
-                    //var finalMessage = context.GetValue("message", table.Rows[0]);
-
-                    var json = "{\"userId\":" + userId + ",\"message\":\"" + message + "\"}";
+                    var json = "{\"userId\":" + userId + ",\"message\":\"" + Message + "\"}";
                     InfoFormat("Payload: {0}", json);
                     var auth = Workflow.GetWorkiomAccessToken();
                     var notifyTask = WorkiomHelper.Post(NotifyUserUrl, auth, json);

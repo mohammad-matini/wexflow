@@ -18,7 +18,6 @@ namespace Wexflow.Tasks.WorkiomUpdateRecord
 
         public WorkiomUpdateRecord(XElement xe, Workflow wf) : base(xe, wf)
         {
-            //UpdateRecordUrl = GetSetting("updateRecordUrl");
             UpdateRecordUrl = Workflow.UpdateRecordUrl;
             ListId = GetSetting("listId");
             Mapping = GetSetting("mapping");

@@ -84,12 +84,10 @@ namespace Wexflow.Server
                             var o = JObject.Parse(message);
                             var workflowId = o.Value<int>("workflowId");
                             var payload = o.Value<JObject>("payload");
-                            var msg = o.Value<string>("message");
 
                             var parameters =
                             "[" +
-                                "{\"ParamName\":\"Payload\",\"ParamValue\":" + (payload == null ? "\"\"" : payload.ToString()) + "}," +
-                                "{\"ParamName\":\"Message\",\"ParamValue\":\"" + msg + "\"}" +
+                                "{\"ParamName\":\"Payload\",\"ParamValue\":" + (payload == null ? "\"\"" : payload.ToString()) + "}" +
                             "]";
 
                             var started = client.StartWorkflow(workflowId, username, password, parameters);
