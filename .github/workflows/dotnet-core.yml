@@ -17,8 +17,8 @@ jobs:
       run: dotnet build src/dotnet-core/Wexflow.Server/Wexflow.Server.csproj --configuration Release
     - name: Build WexFlow.Client.csproj
       run: dotnet build src/dotnet-core/Client/WexFlow.Client/WexFlow.Client.csproj --configuration Release
-    - name: Build Wexflow.RabbitMQ.Client
-      run: dotnet build src/dotnet-core/Wexflow.RabbitMQ.Client.csproj --configuration Release
+    - name: Build Wexflow.RabbitMQ.Client.csproj
+      run: dotnet build src/dotnet-core/Wexflow.RabbitMQ.Client/Wexflow.RabbitMQ.Client.csproj --configuration Release
     - name: Build Wexflow.Clients.CommandLine.csproj
       run: dotnet build src/dotnet-core/Wexflow.Clients.CommandLine/Wexflow.Clients.CommandLine.csproj --configuration Release
     - name: Build Wexflow.Scripts.LiteDB.csproj
