@@ -13,7 +13,11 @@ namespace Wexflow.DotnetCore.Tests
             ? "/opt/wexflow/Wexflow/Wexflow.xml"
             : (Environment.OSVersion.Platform == PlatformID.MacOSX
                ? "/Applications/wexflow/Wexflow/Wexflow.xml"
-               : @"C:\Workiom\Wexflow\Wexflow.xml"));
+               : @"C:\Workiom\Wexflow\Wexflow.xml")
+            , "http://api.workiom.club:88/api/TokenAuth/Authenticate"
+            , "http://api.workiom.club:88/api/services/app/Data/Create?listId="
+            , "http://api.workiom.club:88/api/services/app/Data/Update?listId="
+            , "http://api.workiom.club:88/api/services/app/Notification/CreateNotification");
 
         public static readonly string TempFolder =
             Environment.OSVersion.Platform == PlatformID.Unix
