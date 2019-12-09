@@ -47,11 +47,11 @@ namespace Wexflow.Server
             SearchEntriesByPageOrderBy();
             GetEntryStatusDateMin();
             GetEntryStatusDateMax();
+            GetEntryLogs();
 
             //
             // Manager
             //
-            //GetWorkflows();
             Search();
             GetWorkflow();
             StartWorkflow();
@@ -99,12 +99,12 @@ namespace Wexflow.Server
             SearchHistoryEntriesByPageOrderBy();
             GetHistoryEntryStatusDateMin();
             GetHistoryEntryStatusDateMax();
+            GetHistoryEntryLogs();
 
             //
             // Users
             //
             GetUser();
-            //GetPassword();
             SearchUsers();
             InsertUser();
             UpdateUser();
@@ -3223,6 +3223,102 @@ namespace Wexflow.Server
                     Console.WriteLine(e);
 
                     var resStr = JsonConvert.SerializeObject(false);
+                    var resBytes = Encoding.UTF8.GetBytes(resStr);
+
+                    return new Response()
+                    {
+                        ContentType = "application/json",
+                        Contents = s => s.Write(resBytes, 0, resBytes.Length)
+                    };
+                }
+            });
+
+        }
+
+        /// <summary>
+        /// Returns entry logs.
+        /// </summary>
+        private void GetEntryLogs()
+        {
+            Get(Root + "entryLogs", args =>
+            {
+                try
+                {
+                    var entryId = Request.Query["id"].ToString();
+                    var res = string.Empty;
+                    var auth = GetAuth(Request);
+                    var username = auth.Username;
+                    var password = auth.Password;
+
+                    var user = WexflowServer.WexflowEngine.GetUser(username);
+                    if (user.Password.Equals(password))
+                    {
+                        res = WexflowServer.WexflowEngine.GetEntryLogs(entryId);
+                    }
+
+                    var resStr = JsonConvert.SerializeObject(res);
+                    var resBytes = Encoding.UTF8.GetBytes(resStr);
+
+                    return new Response()
+                    {
+                        ContentType = "application/json",
+                        Contents = s => s.Write(resBytes, 0, resBytes.Length)
+                    };
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+
+                    var resStr = JsonConvert.SerializeObject(string.Empty);
+                    var resBytes = Encoding.UTF8.GetBytes(resStr);
+
+                    return new Response()
+                    {
+                        ContentType = "application/json",
+                        Contents = s => s.Write(resBytes, 0, resBytes.Length)
+                    };
+                }
+            });
+
+        }
+
+        /// <summary>
+        /// Returns history entry logs.
+        /// </summary>
+        private void GetHistoryEntryLogs()
+        {
+            Get(Root + "historyEntryLogs", args =>
+            {
+                try
+                {
+                    var entryId = Request.Query["id"].ToString();
+                    var res = string.Empty;
+                    var auth = GetAuth(Request);
+                    var username = auth.Username;
+                    var password = auth.Password;
+
+                    var user = WexflowServer.WexflowEngine.GetUser(username);
+                    if (user.Password.Equals(password))
+                    {
+                        res = WexflowServer.WexflowEngine.GetHistoryEntryLogs(entryId);
+                    }
+
+                    var resStr = JsonConvert.SerializeObject(res);
+                    var resBytes = Encoding.UTF8.GetBytes(resStr);
+
+                    return new Response()
+                    {
+                        ContentType = "application/json",
+                        Contents = s => s.Write(resBytes, 0, resBytes.Length)
+                    };
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+
+                    var resStr = JsonConvert.SerializeObject(string.Empty);
                     var resBytes = Encoding.UTF8.GetBytes(resStr);
 
                     return new Response()

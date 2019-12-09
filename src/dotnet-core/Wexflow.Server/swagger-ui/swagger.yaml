@@ -9,7 +9,8 @@ info:
     name: "MIT"
     url: "https://opensource.org/licenses/MIT"
 #host: "localhost:8000"
-host: "wexflow.workiom.com:8020"
+host: "wexflow.workiom.club:8010"
+#host: "wexflow.workiom.com:8020"
 basePath: "/wexflow"
 tags:
 - name: "Dashboard"
@@ -136,6 +137,25 @@ paths:
      consumes:
       - "application/json"    
   
+  /entryLogs:
+    get:
+     tags:
+     - "Dashboard"
+     summary: "Returns entry logs"
+     description: ""
+     produces:
+       - "application/json"
+     parameters:
+        - in: query
+          name: id
+          type: "string"
+          description: Entry id
+     responses:
+        200:
+          description: "successful operation"
+     consumes:
+      - "application/json" 
+
   /search:
     get:
      tags:
@@ -764,6 +784,25 @@ paths:
      consumes:
       - "application/json"    
   
+  /historyEntryLogs:
+    get:
+     tags:
+     - "History"
+     summary: "Returns history entry logs"
+     description: ""
+     produces:
+       - "application/json"
+     parameters:
+        - in: query
+          name: id
+          type: "string"
+          description: Entry id
+     responses:
+        200:
+          description: "successful operation"
+     consumes:
+      - "application/json"
+
   /user:
     get:
      tags:

@@ -8,16 +8,12 @@
   <Setting name="xsd" value="C:\Workiom\Wexflow\Workflow.xsd" />
   <Setting name="tasksNamesFile" value="C:\Workiom\Wexflow\TasksNames.json" />
   <Setting name="tasksSettingsFile" value="C:\Workiom\Wexflow\TasksSettings.json" />
-  <!-- LiteDB or MongoDB or RavenDB or CosmosDB -->
+  <!-- LiteDB or MongoDB -->
   <Setting name="dbType" value="LiteDB" />
   <!--LiteDB-->
   <Setting name="connectionString" value="Filename=C:\Workiom\Wexflow\Database\Wexflow.db; Mode=Exclusive" />
   <!--MongoDB. SslProtocols: None|Ssl2|Ssl3|Tls|Default|Tls11|Tls12-->
   <!--<Setting name="connectionString" value="DatabaseName=wexflow-workiom;MongoUrl=mongodb://localhost:27017;EnabledSslProtocols=false;SslProtocols=None" />-->
-  <!--RavenDB-->
-  <!--<Setting name="connectionString" value="DatabaseName=wexflow-workiom;RavenUrl=http://localhost:8080" />-->
-  <!--CosmosDB-->
-  <!--<Setting name="connectionString" value="DatabaseName=wexflow-workiom;EndpointUrl=URL;AuthorizationKey=KEY" />-->
   <Setting name="globalVariablesFile" value="C:\Workiom\Wexflow\GlobalVariables.xml" />
   <Setting name="maxRetries" value="5" />
   <Setting name="retryTimeout" value="700" />

@@ -25,10 +25,6 @@ jobs:
       run: dotnet build src/dotnet-core/Wexflow.Scripts.LiteDB/Wexflow.Scripts.LiteDB.csproj --configuration Release
     - name: Build Wexflow.Scripts.MongoDB.csproj
       run: dotnet build src/dotnet-core/Wexflow.Scripts.MongoDB/Wexflow.Scripts.MongoDB.csproj --configuration Release
-    - name: Build Wexflow.Scripts.RavenDB.csproj
-      run: dotnet build src/dotnet-core/Wexflow.Scripts.RavenDB/Wexflow.Scripts.RavenDB.csproj --configuration Release
-    - name: Build Wexflow.Scripts.CosmosDB.csproj
-      run: dotnet build src/dotnet-core/Wexflow.Scripts.CosmosDB/Wexflow.Scripts.CosmosDB.csproj --configuration Release       
     - name: Build Wexflow.DotnetCore.Tests.csproj
       run: dotnet build tests/dotnet-core/Wexflow.DotnetCore.Tests/Wexflow.DotnetCore.Tests.csproj --configuration Release
          

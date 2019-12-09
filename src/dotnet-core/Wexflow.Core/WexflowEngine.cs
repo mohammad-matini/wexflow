@@ -18,21 +18,13 @@ namespace Wexflow.Core
     public enum DbType
     {
         /// <summary>
-        /// CosmosDB
-        /// </summary>
-        CosmosDB,
-        /// <summary>
         /// LiteDB
         /// </summary>
         LiteDB,
         /// <summary>
         /// MongoDB
         /// </summary>
-        MongoDB,
-        /// <summary>
-        /// RavenDB
-        /// </summary>
-        RavenDB
+        MongoDB
     }
 
     /// <summary>
@@ -148,17 +140,11 @@ namespace Wexflow.Core
 
             switch (DbType)
             {
-                case DbType.CosmosDB:
-                    Database = new CosmosDB.Db(ConnectionString);
-                    break;
                 case DbType.MongoDB:
                     Database = new MongoDB.Db(ConnectionString);
                     break;
                 case DbType.LiteDB:
                     Database = new LiteDB.Db(ConnectionString);
-                    break;
-                case DbType.RavenDB:
-                    Database = new RavenDB.Db(ConnectionString);
                     break;
             }
 
@@ -1114,6 +1100,26 @@ namespace Wexflow.Core
         public DateTime GetEntryStatusDateMax()
         {
             return Database.GetEntryStatusDateMax();
+        }
+
+        /// <summary>
+        /// Returns entry logs.
+        /// </summary>
+        /// <param name="entryId">Entry id.</param>
+        /// <returns>Entry logs.</returns>
+        public string GetEntryLogs(string entryId)
+        {
+            return Database.GetEntryLogs(entryId);
+        }
+
+        /// <summary>
+        /// Returns entry logs.
+        /// </summary>
+        /// <param name="entryId">Entry id.</param>
+        /// <returns>Entry logs.</returns>
+        public string GetHistoryEntryLogs(string entryId)
+        {
+            return Database.GetHistoryEntryLogs(entryId);
         }
     }
 }

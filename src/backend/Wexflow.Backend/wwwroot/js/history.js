@@ -232,6 +232,7 @@
                     var lt = Common.launchType(val.LaunchType);
                     var entryStatus = Common.status(val.Status);
                     items.push("<tr>"
+                        + "<input type='hidden' class='entryId' value='" + val.Id + "'>"
                         + "<td class='status'>" + entryStatus + "</td>"
                         //+ "<td class='date'>" + Common.formatDate(new Date(val.StatusDate)) + "</td>"
                         + "<td class='date'>" + val.StatusDate + "</td>"
@@ -269,6 +270,23 @@
                             selected[0].className = selected[0].className.replace("selected", "");
                         }
                         this.className += "selected";
+
+                        var entryId = this.getElementsByClassName("entryId")[0].value;
+
+                        Common.get(uri + "/historyEntryLogs?id=" + entryId, function (logs) {
+                            var grabMe = document.getElementById("grabMe");
+                            grabMe.innerHTML = Common.escape(logs).replace(/\r\n/g, "<br>");
+
+                            new jBox('Modal', {
+                                width: 800,
+                                height: 420,
+                                title: 'Logs',
+                                content: $('#grabMe'),
+                            }).open();
+
+                        }, function () {
+                            Common.toastError("An error occured while retrieving logs.");
+                        }, auth);
                     };
                 }
 
