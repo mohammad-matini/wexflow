@@ -66,6 +66,7 @@
 	"VimeoListUploads": [ "token" ],
 	"Wait": [ "duration" ],
 	"WorkiomCreateRecord": [ "listId", "mapping" ],
+	"WorkiomMailsSender": [ "host", "port", "enableSsl", "user", "password", "from", "toMapping", "ccMapping", "bccMapping", "subjectMapping", "bodyMapping" ],
 	"WorkiomUpdateRecord": [ "listId", "mapping", "recordIdSource" ],
 	"WorkiomNotifyUser": [ "mapping", "message" ],
 	"XmlToCsv": [ "selectFiles" ],

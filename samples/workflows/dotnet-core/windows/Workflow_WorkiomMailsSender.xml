@@ -1,0 +1,24 @@
+<Workflow id="151" name="Workflow_WorkiomMailsSender" description="Workflow_WorkiomMailsSender" xmlns="urn:wexflow-schema">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+    <Setting name="approval" value="false" />
+    <Setting name="hasRestParams" value="true" />
+  </Settings>
+  <LocalVariables />
+  <Tasks>
+    <Task id="1" name="WorkiomMailsSender" description="Sending email" enabled="true">
+      <Setting name="host" value="smtp.gmail.com" />
+      <Setting name="port" value="587" />
+      <Setting name="enableSsl" value="true" />
+      <Setting name="user" value="user" />
+      <Setting name="password" value="password" />
+      <Setting name="from" value="user@host.com" />
+      <Setting name="toMapping" value="[{&quot;Field&quot;: 61069,&quot;Value&quot;: &quot;user@host.com&quot;,&quot;Type&quot;:&quot;Static&quot;}]" />
+      <Setting name="ccMapping" value="[{&quot;Field&quot;: 61069,&quot;Value&quot;: &quot;user@host.com&quot;,&quot;Type&quot;:&quot;Static&quot;}]" />
+      <Setting name="bccMapping" value="[{&quot;Field&quot;: 61069,&quot;Value&quot;: &quot;user@host.com&quot;,&quot;Type&quot;:&quot;Static&quot;}]" />
+      <Setting name="subjectMapping" value="[{&quot;Field&quot;: 61069,&quot;Value&quot;: &quot;Test from Wexflow&quot;,&quot;Type&quot;:&quot;Static&quot;}]" />
+      <Setting name="bodyMapping" value="[{&quot;Field&quot;: 61069,&quot;Value&quot;: &quot;&lt;b&gt;Test from Wexflow &lt;b&gt;&quot;,&quot;Type&quot;:&quot;Static&quot;}]" />
+    </Task>
+  </Tasks>
+</Workflow>

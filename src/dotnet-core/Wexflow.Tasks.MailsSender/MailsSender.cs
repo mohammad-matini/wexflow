@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace Wexflow.Tasks.MailsSender
 {
-    public class MailsSender:Task
+    public class MailsSender : Task
     {
         public string Host { get; }
         public int Port { get; }
@@ -17,8 +17,7 @@ namespace Wexflow.Tasks.MailsSender
         public string Password { get; }
         public bool IsBodyHtml { get; }
 
-        public MailsSender(XElement xe, Workflow wf)
-            : base(xe, wf)
+        public MailsSender(XElement xe, Workflow wf) : base(xe, wf)
         {
             Host = GetSetting("host");
             Port = int.Parse(GetSetting("port"));
@@ -58,7 +57,7 @@ namespace Wexflow.Tasks.MailsSender
                         }
                         catch (Exception e)
                         {
-							ErrorFormat("An error occured while parsing the mail {0}. Please check the XML configuration according to the documentation. Error: {1}", count, e.Message);
+                            ErrorFormat("An error occured while parsing the mail {0}. Please check the XML configuration according to the documentation. Error: {1}", count, e.Message);
                             success = false;
                             count++;
                             continue;
@@ -69,7 +68,7 @@ namespace Wexflow.Tasks.MailsSender
                             mail.Send(Host, Port, EnableSsl, User, Password, IsBodyHtml);
                             InfoFormat("Mail {0} sent.", count);
                             count++;
-                            
+
                             if (!atLeastOneSucceed) atLeastOneSucceed = true;
                         }
                         catch (ThreadAbortException)
@@ -126,8 +125,8 @@ namespace Wexflow.Tasks.MailsSender
                 else
                 {
                     var qf = (from lf in Workflow.FilesPerTask.Values
-                        from f in QueryFiles(lf, xSelectFile)
-                        select f).Distinct().ToArray();
+                              from f in QueryFiles(lf, xSelectFile)
+                              select f).Distinct().ToArray();
 
                     files.AddRange(qf);
                 }

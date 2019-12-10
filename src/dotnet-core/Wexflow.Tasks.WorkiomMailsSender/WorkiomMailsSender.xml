@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+  <!--
+    WorkiomMailsSender is a sequential task that sends an email.
+  -->
+  <Task id="$int" name="MailsSender" description="$string" enabled="true|false">
+    <!-- The email server host address. Example:  smtp.gmail.com-->
+    <Setting name="host" value="$string" />
+    <!-- The email server port. Example: 587-->
+    <Setting name="port" value="$int" />
+    <!-- true if the email server uses SSL, false otherwise.-->
+    <Setting name="enableSsl" value="true|false" />
+    <!-- The user name to connect to the email server.-->
+    <Setting name="user" value="$string" />
+    <!-- The password to connect to the email server.-->
+    <Setting name="password" value="$string" />
+    <!-- Optional and defaults to true. True to send email body as HTML, false to send email body as TEXT.-->
+    <Setting name="isBodyHtml" value="true|false" />
+    <!-- Mappings -->
+    <!--[{"Field": 61069,"Value": "Test from Wexflow","Type":"Static"}]-->
+    <!--[{"Field": 61069,"Value": 61068,"Type":"Field"}]-->
+    <Setting name="toMapping" value="$string" />
+    <Setting name="ccMapping" value="$string" />
+    <Setting name="bccMapping" value="$string" />
+    <Setting name="subjectMapping" value="$string" />
+    <Setting name="bodyMapping" value="$string" />
+  </Task>
+</Tasks>

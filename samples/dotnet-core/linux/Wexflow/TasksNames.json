@@ -66,6 +66,7 @@
 	"VimeoListUploads",
 	"Wait",
 	"WorkiomCreateRecord",
+	"WorkiomMailsSender",
 	"WorkiomNotifyUser",
 	"WorkiomUpdateRecord",
 	"XmlToCsv",

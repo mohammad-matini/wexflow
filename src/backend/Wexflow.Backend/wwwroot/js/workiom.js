@@ -294,10 +294,17 @@
                                 "ParamName": "Payload",
                                 //"ParamValue": { "59792": "destination-updated", "59793": "desc-updated" }
                                 //"ParamValue": { "_id": "5d97cb1261e64c00015ff44c", "61068": "T-updated" }
-                                "ParamValue": { "_id": "5d9d373af9f9490001d2d1e8", "999": ["5d987cb061e64c00015ff44f"], "61095": "Create Record Trigger - 03", "61096": "Test Thing", "61097": 34.0, "61098": "2019-10-05T00:00:00Z", "61099": "2019-10-27T01:25:00Z", "61100": true, "61101": "ec65bb4432b347b7aa3b2ce6fc30e704", "61104": [{ "_id": "5d9d2c8af9f9490001d2d1e4", "label": "Linked Record - 01" }], "61106": 331, "61107": "http://google.com", "61108": "Test@lolz.ooo", "61109": [{ "_id": "df035a15d6ef463b92aea575e90a02bd", "FileName": "Automation Trigger List .csv", "ContentType": "text/csv", "Size": 102, "HasThumbnail": false, "UserId": 106, "AnonymousForm": false, "IsPermanent": true }], "61111": "+90 334 111 52 45", "61114": ";p", "61110": 42.0, "61112": 1 }
+                                "ParamValue": { "_id": "5d9d373af9f9490001d2d1e8", "999": ["5d987cb061e64c00015ff44f"], "61095": "Create Record Trigger - 03 updated!", "61096": "Test Thing", "61097": 34.0, "61098": "2019-10-05T00:00:00Z", "61099": "2019-10-27T01:25:00Z", "61100": true, "61101": "ec65bb4432b347b7aa3b2ce6fc30e704", "61104": [{ "_id": "5d9d2c8af9f9490001d2d1e4", "label": "Linked Record - 01" }], "61106": 331, "61107": "http://google.com", "61108": "Test@lolz.ooo", "61109": [{ "_id": "df035a15d6ef463b92aea575e90a02bd", "FileName": "Automation Trigger List .csv", "ContentType": "text/csv", "Size": 102, "HasThumbnail": false, "UserId": 106, "AnonymousForm": false, "IsPermanent": true }], "61111": "+90 334 111 52 45", "61114": ";p", "61110": 42.0, "61112": 1 }
                             }
                         ];
                     } else if (selectedId === 140 || selectedId === 153) {  // notify user
+                        json = [
+                            {
+                                "ParamName": "Payload",
+                                "ParamValue": { "_id": "5d97cb1261e64c00015ff44c", "61068": 106 }
+                            }
+                        ];
+                    } else if (selectedId === 151) {  // send email
                         json = [
                             {
                                 "ParamName": "Payload",

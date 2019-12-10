@@ -4,9 +4,10 @@
     WorkiomUpdateRecord is a sequential task that updates a Workiom record.
   -->
   <Task id="$int" name="WorkiomUpdateRecord" description="$string" enabled="true|false">
-    <!-- Update record URL. Ex: http://api.workiom.club:88/api/services/app/Data/Update?listId= -->
-    <Setting name="updateRecordUrl" value="$string" />
     <Setting name="listId" value="$string" />
     <Setting name="mapping" value="$string" />
+    <!--{"id": "5dee5d30de41240001c46509", "type": "static"}-->
+    <!--{"linkedFiledId": "61104", "type": "dynamic"}-->
+    <Setting name="recordIdSource" value="$string" />
   </Task>
 </Tasks>
