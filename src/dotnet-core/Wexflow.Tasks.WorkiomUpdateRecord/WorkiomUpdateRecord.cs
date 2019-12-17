@@ -57,7 +57,7 @@ namespace Wexflow.Tasks.WorkiomUpdateRecord
                         if (kvp.Key == linkedFieldId)
                         {
                             var linkedFiled = JArray.Parse(kvp.Value.ToString());
-                            recordId = linkedFiled[0].Value<string>();
+                            recordId = linkedFiled[0].Value<string>("_id");
                             break;
                         }
                     }
