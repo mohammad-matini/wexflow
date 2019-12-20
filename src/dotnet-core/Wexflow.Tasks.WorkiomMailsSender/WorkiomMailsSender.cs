@@ -194,7 +194,7 @@ namespace Wexflow.Tasks.WorkiomMailsSender
                     Info("bodyMapping: The mapping resulted in an empty payload.");
                 }
 
-                // TODO send email
+                // Send email
                 var tos = to.Split(',');
                 var ccs = cc.Split(',');
                 var bccs = bcc.Split(',');
