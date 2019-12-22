@@ -39,39 +39,6 @@ namespace Wexflow.Tasks.WorkiomUpdateRecord
                 // Retrieve trigger
                 var trigger = new Trigger { Payload = JsonConvert.DeserializeObject<Dictionary<string, object>>(Workflow.RestParams["Payload"]) };
 
-                // Retrieve recordId
-                //var recordId = Workflow.RestParams["RecordId"];
-                var recordId = string.Empty;
-                var recordIdSourceObj = JObject.Parse(RecordIdSource);
-                var recordIdSourceType = recordIdSourceObj.Value<string>("type");
-                if (recordIdSourceType.ToLower() == "static")
-                {
-                    recordId = recordIdSourceObj.Value<string>("id");
-                }
-                else
-                {
-                    var linkedFieldId = recordIdSourceObj.Value<string>("linkedFieldId");
-
-                    foreach (var kvp in trigger.Payload)
-                    {
-                        if (kvp.Key == linkedFieldId)
-                        {
-                            var linkedField = JArray.Parse(kvp.Value.ToString());
-                            recordId = linkedField[0].Value<string>("_id");
-                            break;
-                        }
-                    }
-
-                }
-
-                if (string.IsNullOrEmpty(recordId))
-                {
-                    Info("RecordId not found.");
-                }
-                else
-                {
-                    InfoFormat("RecordId: {0}", recordId);
-                }
 
                 // Retrieve mapping
                 var jArray = JArray.Parse(Mapping);
@@ -88,35 +55,46 @@ namespace Wexflow.Tasks.WorkiomUpdateRecord
 
                 // Genereate result
                 var result = WorkiomHelper.Map(trigger, mapping);
+                InfoFormat("Payload: {0}", JsonConvert.SerializeObject(result));
 
-                // Update record from result
-                if (result.Count > 0)
+                // Retrieve recordId
+                var recordId = string.Empty;
+                var recordIdSourceObj = JObject.Parse(RecordIdSource);
+                var recordIdSourceType = recordIdSourceObj.Value<string>("type");
+                if (recordIdSourceType.ToLower() == "static")
                 {
-                    var url = UpdateRecordUrl + ListId + "&id=" + recordId;
-                    var auth = Workflow.GetWorkiomAccessToken();
-                    var json = JsonConvert.SerializeObject(result);
-                    InfoFormat("Payload: {0}", json);
+                    recordId = recordIdSourceObj.Value<string>("id");
 
-                    var updateTask = WorkiomHelper.Put(url, auth, json);
-                    updateTask.Wait();
-                    var response = updateTask.Result;
-                    var responseSuccess = (bool)JObject.Parse(response).SelectToken("success");
-
-                    if (responseSuccess)
+                    if (string.IsNullOrEmpty(recordId))
                     {
-                        Info("Record " + recordId + " updated.");
+                        Info("RecordId not found.");
                     }
                     else
                     {
-                        ErrorFormat("An error occured while updating the record {0}: {1}", recordId, response);
-                        success = false;
+                        InfoFormat("RecordId: {0}", recordId);
                     }
+
+                    // Update record from result
+                    success &= UpdateRecord(recordId, result);
                 }
                 else
                 {
-                    Info("The mapping resulted in an empty payload.");
-                }
+                    var linkedFieldId = recordIdSourceObj.Value<string>("linkedFieldId");
 
+                    foreach (var kvp in trigger.Payload)
+                    {
+                        if (kvp.Key == linkedFieldId)
+                        {
+                            var linkedField = JArray.Parse(kvp.Value.ToString());
+                            foreach (var recordField in linkedField)
+                            {
+                                var rId = recordField.Value<string>("_id");
+                                success &= UpdateRecord(rId, result);
+                            }
+                            break;
+                        }
+                    }
+                }
             }
             catch (ThreadAbortException)
             {
@@ -137,6 +115,38 @@ namespace Wexflow.Tasks.WorkiomUpdateRecord
 
             Info("Task finished.");
             return new TaskStatus(status);
+        }
+
+        private bool UpdateRecord(string recordId, Dictionary<string, object> result)
+        {
+            if (result.Count > 0)
+            {
+                var url = UpdateRecordUrl + ListId + "&id=" + recordId;
+                var auth = Workflow.GetWorkiomAccessToken();
+                var json = JsonConvert.SerializeObject(result);
+
+                var updateTask = WorkiomHelper.Put(url, auth, json);
+                updateTask.Wait();
+                var response = updateTask.Result;
+                var responseSuccess = (bool)JObject.Parse(response).SelectToken("success");
+
+                if (responseSuccess)
+                {
+                    Info("Record " + recordId + " updated.");
+                    return true;
+                }
+                else
+                {
+                    ErrorFormat("An error occured while updating the record {0}: {1}", recordId, response);
+                    return false;
+                }
+            }
+            else
+            {
+                Info("The mapping resulted in an empty payload.");
+            }
+
+            return false;
         }
 
     }
