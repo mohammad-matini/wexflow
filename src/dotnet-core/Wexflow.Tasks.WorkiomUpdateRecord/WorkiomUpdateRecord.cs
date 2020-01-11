@@ -85,12 +85,20 @@ namespace Wexflow.Tasks.WorkiomUpdateRecord
                     {
                         if (kvp.Key == linkedFieldId)
                         {
-                            var linkedField = JArray.Parse(kvp.Value.ToString());
-                            foreach (var recordField in linkedField)
+                            if (linkedFieldId == "_id")
                             {
-                                var rId = recordField.Value<string>("_id");
+                                var rId = kvp.Value.ToString();
                                 success &= UpdateRecord(rId, result);
                             }
+                            else {
+                                var linkedField = JArray.Parse(kvp.Value.ToString());
+                                foreach (var recordField in linkedField)
+                                {
+                                    var rId = recordField.Value<string>("_id");
+                                    success &= UpdateRecord(rId, result);
+                                }
+                            }
+                            
                             break;
                         }
                     }
