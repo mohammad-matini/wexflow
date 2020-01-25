@@ -195,9 +195,9 @@ namespace Wexflow.Tasks.WorkiomMailsSender
                 }
 
                 // Send email
-                var tos = to.Split(',');
-                var ccs = cc.Split(',');
-                var bccs = bcc.Split(',');
+                var tos = to.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).Where(s => s != string.Empty).ToArray();
+                var ccs = cc.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).Where(s => s != string.Empty).ToArray();
+                var bccs = bcc.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).Where(s => s != string.Empty).ToArray();
                 Send(Host, Port, EnableSsl, User, Password, IsBodyHtml, tos, ccs, bccs, subject, body);
                 Info("Mail sent.");
             }
