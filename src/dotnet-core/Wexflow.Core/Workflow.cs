@@ -223,6 +223,10 @@ namespace Wexflow.Core
         /// Log messages.
         /// </summary>
         public List<string> Logs { get; private set; }
+        /// <summary>
+        /// Indicates whether a REST workflow is running or not.
+        /// </summary>
+        public bool IsRestWorkflowRunning { get; set; }
 
         private bool _stopCalled;
         private Queue<Job> _jobsQueue;
@@ -1122,6 +1126,8 @@ namespace Wexflow.Core
                     }
                     finally
                     {
+                        IsRestWorkflowRunning = false;
+
                         if (!_stopCalled)
                         {
                             Logs.Clear();
@@ -1580,6 +1586,7 @@ namespace Wexflow.Core
                 {
                     _stopCalled = true;
                     _thread.Abort();
+                    IsRestWorkflowRunning = false;
                     var logs = string.Join("\r\n", Logs);
                     IsWaitingForApproval = false;
                     Database.DecrementRunningCount();

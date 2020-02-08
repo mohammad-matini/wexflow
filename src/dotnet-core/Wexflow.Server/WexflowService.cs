@@ -193,8 +193,6 @@ namespace Wexflow.Server
             {
                 try
                 {
-                    //var username = Request.Query["u"].ToString();
-                    //var password = Request.Query["p"].ToString();
                     var auth = GetAuth(Request);
                     var username = auth.Username;
                     var password = auth.Password;
@@ -204,6 +202,9 @@ namespace Wexflow.Server
                     Core.Workflow workflow = WexflowServer.WexflowEngine.GetWorkflow(workflowId);
                     var json = RequestStream.FromStream(Request.Body).AsString();
 
+                    while (workflow.IsRestWorkflowRunning) Thread.Sleep(100);
+
+                    workflow.IsRestWorkflowRunning = true;
                     JArray jArray = JArray.Parse(json);
                     workflow.RestParams.Clear();
                     foreach (JObject item in jArray)
@@ -232,8 +233,20 @@ namespace Wexflow.Server
                                 WexflowServer.WexflowEngine.StartWorkflow(workflowId);
                                 res = true;
                             }
+                            else
+                            {
+                                workflow.IsRestWorkflowRunning = false;
+                            }
 
                         }
+                        else
+                        {
+                            workflow.IsRestWorkflowRunning = false;
+                        }
+                    }
+                    else
+                    {
+                        workflow.IsRestWorkflowRunning = false;
                     }
 
                     var resStr = JsonConvert.SerializeObject(res);
